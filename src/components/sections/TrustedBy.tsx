@@ -32,11 +32,11 @@ export function TrustedBy() {
         <h2 id="trusted-heading" className="type-h2 mb-8">
           Trusted by global brands and agencies
         </h2>
-        <ul className="flex gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-4 md:overflow-visible lg:grid-cols-8">
+        <ul className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-4 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:grid-cols-4 md:overflow-visible md:snap-none md:scroll-px-0 lg:grid-cols-8 [&::-webkit-scrollbar]:hidden">
           {TRUSTED_BY_LOGOS.map((logo) => (
             <li
               key={logo.slug}
-              className="wire-box flex min-h-16 min-w-[7.5rem] shrink-0 items-center justify-center px-4 py-3 md:min-w-0"
+              className="wire-box flex min-h-16 min-w-[7.5rem] shrink-0 snap-start items-center justify-center px-4 py-3 md:min-w-0"
             >
               <TrustedByLogo name={logo.name} src={logo.src} alt={logo.alt} />
             </li>

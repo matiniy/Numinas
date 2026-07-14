@@ -21,7 +21,7 @@ export function Projects() {
                 className="wire-box group block overflow-hidden transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--n-paper)]"
               >
                 <div
-                  className="flex aspect-video items-center justify-center border-b border-dashed border-[var(--n-wire)] font-mono text-[10px] uppercase tracking-wider text-[var(--n-mist)]"
+                  className="flex aspect-video items-center justify-center border-b border-dashed border-[var(--n-wire)] px-4 text-center font-mono text-[10px] uppercase tracking-wider text-balance text-[var(--n-mist)] line-clamp-2"
                   style={{
                     background: `linear-gradient(135deg, ${project.accentSoft}22, ${project.accent}33)`,
                   }}

@@ -33,7 +33,7 @@ export function Pillars() {
         </h2>
       </div>
 
-      <div className="h-[min(58vh,520px)] min-h-[360px] w-full">
+      <div className="h-[min(58vh,520px)] min-h-[min(360px,50svh)] w-full">
         <FlowingMenu items={pillars} />
       </div>
     </section>

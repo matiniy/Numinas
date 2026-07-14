@@ -30,7 +30,7 @@ export function CaseStudyHeader({ project }: CaseStudyHeaderProps) {
           />
         </Link>
 
-        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--cs-muted)]">
+        <p className="hidden max-w-[30%] truncate font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--cs-muted)] sm:block">
           {project.client}
         </p>
       </div>

@@ -10,7 +10,7 @@ import { Contact } from '@/components/sections/Contact'
 
 export function HomePage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-clip">
       <Nav />
       <main>
         <Hero />

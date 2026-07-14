@@ -75,7 +75,13 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
-  padding-left: calc(var(--gutter) + 14rem);
+  padding-left: calc(var(--gutter) + clamp(0rem, 8vw, 14rem));
+}
+
+@media (min-width: 768px) {
+  .flowing-menu__marquee-inner-wrap {
+    padding-left: calc(var(--gutter) + 14rem);
+  }
 }
 
 .flowing-menu__marquee-inner {

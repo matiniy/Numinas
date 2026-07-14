@@ -3,8 +3,6 @@ export type Testimonial = {
   text: string
 }
 
-export const TESTIMONIALS_HEADING = 'Trusted by Teams Like Yours'
-
 export const TESTIMONIALS: Testimonial[] = [
   {
     name: 'Kania Lou',

@@ -50,7 +50,7 @@
   --n-mist: #8a8a93;
   --n-paper: #f4f4f5;
   --n-wire: #5c5c66;
-  --gutter: clamp(54px, calc(2vw + 40px), 64px);
+  --gutter: clamp(1rem, calc(2vw + 1rem), 4rem);
   --section-y: clamp(3.5rem, 8vw, 6rem);
   --container: calc(100% - 2 * var(--gutter));
 
@@ -65,6 +65,7 @@
 
 html {
   scroll-behavior: auto;
+  overflow-x: clip;
 }
 
 .gpu-layer {
@@ -153,6 +154,14 @@ body {
     padding-block: var(--section-y);
   }
 
+  #projects.wire-section {
+    border-bottom: none;
+  }
+
+  .testimonials-section {
+    padding-block: var(--section-y);
+  }
+
   .wire-container {
     width: var(--container);
     margin-inline: auto;
@@ -171,11 +180,10 @@ body {
     background-color: rgb(17 17 20 / 0.6);
   }
 
-  /* Glass chips — pastel gradients + blur (reusable across sections) */
+  /* Pastel gradient chips */
   .glass-chip {
     display: inline-flex;
     align-items: center;
-    border: 1px solid rgb(255 255 255 / 0.24);
     border-radius: 9999px;
     padding: 0.45rem 0.95rem;
     font-family: var(--font-body);
@@ -183,15 +191,8 @@ body {
     font-size: 0.75rem;
     line-height: 1.2;
     letter-spacing: 0.01em;
-    color: rgb(255 255 255 / 0.94);
-    backdrop-filter: blur(14px) saturate(150%);
-    -webkit-backdrop-filter: blur(14px) saturate(150%);
-    box-shadow:
-      0 8px 28px rgb(0 0 0 / 0.14),
-      inset 0 1px 0 rgb(255 255 255 / 0.22);
-    transition:
-      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    color: rgb(24 24 31 / 0.9);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   @media (min-width: 768px) {
@@ -203,54 +204,13 @@ body {
 
   .glass-chip:hover {
     transform: translateY(-2px);
-    box-shadow:
-      0 12px 32px rgb(0 0 0 / 0.18),
-      inset 0 1px 0 rgb(255 255 255 / 0.3);
   }
 
-  .glass-chip--lavender {
-    background: linear-gradient(
-      135deg,
-      rgb(196 181 253 / 0.42) 0%,
-      rgb(129 140 248 / 0.28) 55%,
-      rgb(255 255 255 / 0.08) 100%
-    );
-  }
-
-  .glass-chip--peach {
-    background: linear-gradient(
-      135deg,
-      rgb(254 215 170 / 0.48) 0%,
-      rgb(251 146 120 / 0.3) 55%,
-      rgb(255 255 255 / 0.08) 100%
-    );
-  }
-
-  .glass-chip--mint {
-    background: linear-gradient(
-      135deg,
-      rgb(167 243 208 / 0.45) 0%,
-      rgb(94 234 212 / 0.28) 55%,
-      rgb(255 255 255 / 0.08) 100%
-    );
-  }
-
-  .glass-chip--sky {
-    background: linear-gradient(
-      135deg,
-      rgb(186 230 253 / 0.46) 0%,
-      rgb(125 211 252 / 0.3) 55%,
-      rgb(255 255 255 / 0.08) 100%
-    );
-  }
-
-  .glass-chip--rose {
-    background: linear-gradient(
-      135deg,
-      rgb(251 207 232 / 0.46) 0%,
-      rgb(244 114 182 / 0.28) 55%,
-      rgb(255 255 255 / 0.08) 100%
-    );
+  @media (max-width: 639px) {
+    .glass-chip {
+      font-size: 0.6875rem;
+      padding: 0.4rem 0.75rem;
+    }
   }
 
   .glass-chip-list {
@@ -264,6 +224,56 @@ body {
 
   .glass-chip-list > li {
     display: flex;
+  }
+
+  .testimonials-heading__accent {
+    font-family: var(--font-service);
+    font-weight: var(--font-weight-service);
+    font-style: italic;
+    font-size: 0.68em;
+    letter-spacing: -0.02em;
+  }
+
+  .appear-text__mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+  }
+
+  .appear-text__word {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+
+  .testimonial-rotator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .testimonial-rotator__viewport {
+    position: relative;
+    min-height: clamp(8rem, 18vw, 11rem);
+  }
+
+  @media (min-width: 768px) {
+    .testimonial-rotator__viewport {
+      min-height: clamp(7rem, 14vw, 10rem);
+    }
+  }
+
+  .testimonial-rotator__dot {
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    border-radius: 9999px;
+    background: rgb(138 138 147 / 0.35);
+    transition: background-color 0.4s ease, transform 0.4s ease;
+  }
+
+  .testimonial-rotator__dot--active {
+    background: var(--n-paper);
+    transform: scaleX(1.15);
   }
 
   .wire-chip {
@@ -291,7 +301,7 @@ body {
   .wire-input {
     font-family: var(--font-body);
     font-weight: var(--font-weight-body);
-    @apply min-h-11 w-full border border-dashed border-[var(--n-wire)] bg-transparent px-3 text-sm text-[var(--n-paper)] outline-none;
+    @apply min-h-11 w-full border border-dashed border-[var(--n-wire)] bg-transparent px-3 text-base text-[var(--n-paper)] outline-none md:text-sm;
   }
 
   .wire-input:focus {

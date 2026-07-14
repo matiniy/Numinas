@@ -15,8 +15,8 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <div className="wire-container relative z-10 flex flex-1 flex-col pb-16 pt-24 md:pb-20 md:pt-28 lg:pb-24">
-        <GlassChipList aria-label="Core offerings">
+      <div className="wire-container relative z-10 flex min-h-[100svh] flex-col justify-end pb-16 pt-24 md:pb-20 md:pt-28 lg:pb-24">
+        <GlassChipList className="mb-5 md:mb-6" aria-label="Core offerings">
           {HERO_OFFERINGS.map((item) => (
             <li key={item.label}>
               <GlassChip variant={item.variant}>{item.label}</GlassChip>
@@ -24,19 +24,17 @@ export function Hero() {
           ))}
         </GlassChipList>
 
-        <div className="mt-auto pt-10 md:pt-12">
-          <h1 className="type-display max-w-4xl">
-            Crafting Scroll-Stopping Motion That{' '}
-            <span className="type-display-accent">Clarifies</span> And{' '}
-            <span className="type-display-accent">Converts</span>
-          </h1>
+        <h1 className="type-display max-w-4xl text-balance">
+          Crafting Scroll-Stopping Motion That{' '}
+          <span className="type-display-accent">Clarifies</span> And{' '}
+          <span className="type-display-accent">Converts</span>
+        </h1>
 
-          <p className="type-body mt-5 max-w-2xl text-[var(--n-mist)] md:max-w-3xl">
-            We build visuals that travel across every channel, from concept and styleframes to 2D/3D
-            animation, sound, and delivery kits.
-          </p>
-          <CreativeCallButton className="mt-8" />
-        </div>
+        <p className="type-body mt-5 max-w-2xl text-[var(--n-mist)] md:max-w-3xl">
+          We build visuals that travel across every channel, from concept and styleframes to 2D/3D
+          animation, sound, and delivery kits.
+        </p>
+        <CreativeCallButton className="mt-8 max-w-full" />
       </div>
     </section>
   )

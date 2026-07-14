@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { cn } from '@/lib/utils'
-import type { GlassChipVariant } from '@/lib/glass-chips'
+import { GLASS_CHIP_GRADIENTS, type GlassChipVariant } from '@/lib/glass-chips'
 
 interface GlassChipProps {
   children: ReactNode
@@ -9,8 +9,14 @@ interface GlassChipProps {
 }
 
 export function GlassChip({ children, variant = 'lavender', className }: GlassChipProps) {
+  const style: CSSProperties = {
+    background: GLASS_CHIP_GRADIENTS[variant],
+  }
+
   return (
-    <span className={cn('glass-chip', `glass-chip--${variant}`, className)}>{children}</span>
+    <span className={cn('glass-chip', className)} style={style}>
+      {children}
+    </span>
   )
 }
 

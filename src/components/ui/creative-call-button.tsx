@@ -22,7 +22,7 @@ export function CreativeCallButton({
 }: CreativeCallButtonProps) {
   return (
     <NoiseBackground
-      containerClassName={cn('w-fit rounded-full p-2', className)}
+      containerClassName={cn('w-fit max-w-full rounded-full p-2', className)}
       gradientColors={GRADIENT_COLORS}
       noiseIntensity={0.22}
     >
@@ -30,7 +30,8 @@ export function CreativeCallButton({
         href={href}
         onClick={onClick}
         className={cn(
-          'inline-flex w-auto shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full',
+          'inline-flex w-auto max-w-full min-w-0 shrink cursor-pointer items-center justify-center gap-2 rounded-full',
+          'whitespace-normal text-center sm:whitespace-nowrap',
           'bg-gradient-to-r from-black via-neutral-950 to-neutral-900 text-white',
           'shadow-[0px_1px_0px_0px_#0a0a0a_inset,0px_1px_0px_0px_#262626]',
           'transition-all duration-100 active:scale-[0.98]',

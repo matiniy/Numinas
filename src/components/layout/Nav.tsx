@@ -24,7 +24,7 @@ function easeOutQuint(t: number) {
 export function Nav() {
   const [open, setOpen] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [isDesktop, setIsDesktop] = useState(true)
+  const [isDesktop, setIsDesktop] = useState(false)
   const currentRef = useRef(0)
   const reducedMotionRef = useRef(false)
 
@@ -79,9 +79,9 @@ export function Nav() {
 
   const p = easeOutQuint(progress)
   const isFloating = p > 0.04 || open
-  const floatInset = lerp(0, 16, p)
-  const sideInset = lerp(0, 20, p)
-  const shrunkWidth = isDesktop ? 50 : 92
+  const floatInset = lerp(0, isDesktop ? 16 : 10, p)
+  const sideInset = lerp(0, isDesktop ? 20 : 12, p)
+  const shrunkWidth = isDesktop ? 50 : 100
 
   const headerStyle = {
     paddingTop: isFloating ? undefined : 'env(safe-area-inset-top)',
@@ -109,8 +109,12 @@ export function Nav() {
     minHeight: `${lerp(56, 44, p)}px`,
     paddingTop: `${lerp(12, 6, p)}px`,
     paddingBottom: `${lerp(12, 6, p)}px`,
-    paddingLeft: `calc(var(--gutter) * ${lerp(1, 0.45, p)})`,
-    paddingRight: `calc(var(--gutter) * ${lerp(1, 0.45, p)})`,
+    paddingLeft: isDesktop
+      ? `calc(var(--gutter) * ${lerp(1, 0.45, p)})`
+      : `max(1rem, calc(var(--gutter) * ${lerp(1, 0.85, p)}))`,
+    paddingRight: isDesktop
+      ? `calc(var(--gutter) * ${lerp(1, 0.45, p)})`
+      : `max(1rem, calc(var(--gutter) * ${lerp(1, 0.85, p)}))`,
     gap: `${lerp(16, 8, p)}px`,
   }
 

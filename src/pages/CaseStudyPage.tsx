@@ -36,7 +36,7 @@ export function CaseStudyPage() {
   }
 
   return (
-    <div className="case-study">
+    <div className="case-study overflow-x-clip">
       <CaseStudyHeader project={project} />
       <main>
         <CaseStudyHero project={project} />

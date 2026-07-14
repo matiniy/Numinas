@@ -74,6 +74,9 @@ export function ParallaxMediaGrid({ project }: ParallaxMediaGridProps) {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reducedMotion) return
 
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
+    const parallaxRange = isMobile ? 48 : 120
+
     const ctx = gsap.context(() => {
       itemRefs.current.forEach((item, index) => {
         if (!item) return
@@ -81,7 +84,7 @@ export function ParallaxMediaGrid({ project }: ParallaxMediaGridProps) {
         if (!slot) return
 
         gsap.to(item, {
-          y: () => -120 * slot.parallax,
+          y: () => -parallaxRange * slot.parallax,
           ease: 'none',
           scrollTrigger: {
             trigger: section,
