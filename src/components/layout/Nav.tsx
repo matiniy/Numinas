@@ -145,7 +145,7 @@ export function Nav() {
               <a
                 key={link.href}
                 href={link.href}
-                className="type-small text-[var(--n-mist)] hover:text-[var(--n-paper)]"
+                className="site-nav__link type-small"
                 style={{ fontSize: `${lerp(14, 12, p)}px` }}
               >
                 {link.label}
@@ -188,7 +188,7 @@ export function Nav() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="type-small flex min-h-11 items-center"
+                  className="site-nav__link type-small flex min-h-11 items-center"
                   onClick={() => setOpen(false)}
                 >
                   {link.label}

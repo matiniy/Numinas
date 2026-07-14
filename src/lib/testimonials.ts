@@ -1,7 +1,11 @@
+import type { GlassChipVariant } from './glass-chips'
+
 export type Testimonial = {
   name: string
   text: string
 }
+
+export const TESTIMONIAL_INDICATOR_VARIANTS: GlassChipVariant[] = ['lavender', 'peach', 'mint']
 
 export const TESTIMONIALS: Testimonial[] = [
   {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AppearText } from '@/components/ui/appear-text'
-import { TESTIMONIALS } from '@/lib/testimonials'
+import { GLASS_CHIP_GRADIENTS } from '@/lib/glass-chips'
+import { TESTIMONIAL_INDICATOR_VARIANTS, TESTIMONIALS } from '@/lib/testimonials'
 
 const ROTATE_MS = 4000
 
@@ -10,10 +11,62 @@ function TestimonialSlide({ name, text }: { name: string; text: string }) {
       <figcaption className="type-h3 mb-4">
         <AppearText text={name} />
       </figcaption>
-      <blockquote className="type-body max-w-prose text-balance leading-relaxed text-[var(--n-mist)]">
+      <blockquote className="type-body text-balance leading-relaxed text-[var(--n-mist)]">
         <AppearText text={`“${text}”`} />
       </blockquote>
     </figure>
+  )
+}
+
+function TestimonialTimers({
+  index,
+  paused,
+  onSelect,
+}: {
+  index: number
+  paused: boolean
+  onSelect: (nextIndex: number) => void
+}) {
+  return (
+    <div
+      className="testimonial-timers"
+      role="tablist"
+      aria-label="Testimonial progress"
+      data-paused={paused ? 'true' : 'false'}
+    >
+      {TESTIMONIALS.map((item, itemIndex) => {
+        const isComplete = itemIndex < index
+        const isActive = itemIndex === index
+        const variant = TESTIMONIAL_INDICATOR_VARIANTS[itemIndex] ?? 'lavender'
+
+        return (
+          <button
+            key={item.name}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            aria-label={`Show testimonial from ${item.name}`}
+            className="testimonial-timer"
+            onClick={() => onSelect(itemIndex)}
+          >
+            <span
+              key={isActive ? `active-${index}` : `idle-${itemIndex}`}
+              className={[
+                'testimonial-timer__fill',
+                isComplete ? 'testimonial-timer__fill--complete' : '',
+                isActive ? 'testimonial-timer__fill--active' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              style={{
+                background: GLASS_CHIP_GRADIENTS[variant],
+                animationDuration: `${ROTATE_MS}ms`,
+              }}
+            />
+          </button>
+        )
+      })}
+    </div>
   )
 }
 
@@ -33,23 +86,14 @@ export function Testimonials() {
     }, ROTATE_MS)
 
     return () => window.clearInterval(timer)
-  }, [paused])
+  }, [paused, index])
 
   return (
     <section id="testimonials" className="testimonials-section" aria-labelledby="testimonials-heading">
       <div className="wire-container">
-        <div className="grid items-center gap-8 md:grid-cols-12 md:gap-12 lg:gap-16">
-          <h2
-            id="testimonials-heading"
-            className="type-h2 testimonials-heading text-balance md:col-span-4"
-          >
-            <span className="testimonials-heading__accent">Trusted</span>
-            <br />
-            by Teams Like Yours
-          </h2>
-
+        <div className="testimonials-section__inner">
           <div
-            className="testimonial-rotator md:col-span-8"
+            className="testimonials-section__grid"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
             onFocusCapture={() => setPaused(true)}
@@ -59,17 +103,23 @@ export function Testimonials() {
               }
             }}
           >
-            <div className="testimonial-rotator__viewport" aria-live="polite" aria-atomic="true">
-              <TestimonialSlide key={quote.name} name={quote.name} text={quote.text} />
+            <div className="testimonials-section__heading">
+              <h2
+                id="testimonials-heading"
+                className="type-h2 testimonials-heading text-balance"
+              >
+                <span className="testimonials-heading__accent">Trusted</span>
+                <br />
+                by Teams Like Yours
+              </h2>
+
+              <TestimonialTimers index={index} paused={paused} onSelect={setIndex} />
             </div>
 
-            <div className="mt-6 flex items-center gap-2 md:mt-8" aria-hidden="true">
-              {TESTIMONIALS.map((item, itemIndex) => (
-                <span
-                  key={item.name}
-                  className={`testimonial-rotator__dot${itemIndex === index ? ' testimonial-rotator__dot--active' : ''}`}
-                />
-              ))}
+            <div className="testimonial-rotator">
+              <div className="testimonial-rotator__viewport" aria-live="polite" aria-atomic="true">
+                <TestimonialSlide key={quote.name} name={quote.name} text={quote.text} />
+              </div>
             </div>
           </div>
         </div>
