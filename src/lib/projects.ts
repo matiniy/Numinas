@@ -39,8 +39,10 @@ export type Project = {
 
 const PROJECT_MEDIA = '/media/projects'
 const BELLEMINT_MEDIA = `${PROJECT_MEDIA}/bellemint`
+const DOLBY_MEDIA = `${PROJECT_MEDIA}/dolby`
 const URBAN_DECAY_MEDIA = `${PROJECT_MEDIA}/urban-decay-ride-or-die`
 const OLAY_STEM_MEDIA = `${PROJECT_MEDIA}/olay-stem`
+const AMEX_MEDIA = `${PROJECT_MEDIA}/american-express-play-it`
 const SECRET_MEDIA = `${PROJECT_MEDIA}/secret-aluminum-free`
 
 function projectMediaFile(base: string, filename: string) {
@@ -157,6 +159,92 @@ export const PROJECTS: Project[] = [
     heroVideo: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1.mp4`,
     heroImage: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10025.png`,
     thumbnail: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10025.png`,
+  },
+  {
+    slug: 'dolby',
+    client: 'Dolby',
+    title: 'Dolby',
+    tagline: 'Immersive brand motion built around sound, light, and cinematic rhythm.',
+    year: '2024',
+    services: ['Brand Film', 'Motion Design', 'Sound Design'],
+    accent: '#635bff',
+    accentSoft: '#ebe8ff',
+    overview:
+      'A short-form brand film and styleframe suite for Dolby — translating premium audio identity into a visual language that feels spatial, precise, and alive.',
+    challenge:
+      'Express intangible sound quality in motion graphics that still feel human, premium, and immediately legible in short-form media.',
+    approach:
+      'We built a modular styleframe system — luminous gradients, waveform-inspired forms, and restrained typography — then carried it through a tight hero cut.',
+    outcome:
+      'Hero film, styleframes, and gallery assets ready for presentations, social, and brand extensions.',
+    story: [
+      {
+        id: 'system',
+        eyebrow: 'System',
+        title: 'Sound made visible',
+        body: 'Abstract waveforms and light fields give audio a tangible shape without literal UI or device clutter.',
+      },
+      {
+        id: 'craft',
+        eyebrow: 'Craft',
+        title: 'Precision in every frame',
+        body: 'Controlled contrast, soft bloom, and rhythmic cuts keep the film feeling technical yet emotive.',
+      },
+    ],
+    media: [
+      {
+        id: 'hero',
+        type: 'video',
+        label: 'Hero film',
+        span: 'wide',
+        parallax: 0.18,
+        src: projectMediaFile(DOLBY_MEDIA, '06 - Dolby_Short.mp4'),
+        poster: projectMediaFile(DOLBY_MEDIA, 'Dolby_Styleframe_1.jpg'),
+      },
+      {
+        id: 'still-01',
+        type: 'image',
+        label: 'Styleframe 01',
+        span: 'tall',
+        parallax: 0.32,
+        src: projectMediaFile(DOLBY_MEDIA, 'Dolby_Styleframe_1.jpg'),
+      },
+      {
+        id: 'still-02',
+        type: 'image',
+        label: 'Styleframe 02',
+        span: 'square',
+        parallax: 0.24,
+        src: projectMediaFile(DOLBY_MEDIA, 'Dolby_Styleframe_2.jpg'),
+      },
+      {
+        id: 'loop',
+        type: 'image',
+        label: 'Styleframe 03',
+        span: 'square',
+        parallax: 0.4,
+        src: projectMediaFile(DOLBY_MEDIA, 'Dolby_Styleframe_3.jpg'),
+      },
+      {
+        id: 'still-03',
+        type: 'image',
+        label: 'Styleframe 04',
+        span: 'wide',
+        parallax: 0.28,
+        src: projectMediaFile(DOLBY_MEDIA, 'Dolby_Styleframe_4.jpg'),
+      },
+      {
+        id: 'bts',
+        type: 'image',
+        label: 'Styleframe detail',
+        span: 'tall',
+        parallax: 0.36,
+        src: projectMediaFile(DOLBY_MEDIA, 'Dolby_Styleframe_3_0.jpg'),
+      },
+    ],
+    heroVideo: projectMediaFile(DOLBY_MEDIA, '06 - Dolby_Short.mp4'),
+    heroImage: projectMediaFile(DOLBY_MEDIA, 'Dolby_Styleframe_1.jpg'),
+    thumbnail: projectMediaFile(DOLBY_MEDIA, 'Dolby_Styleframe_1.jpg'),
   },
   {
     slug: 'urban-decay-ride-or-die',
@@ -331,45 +419,88 @@ export const PROJECTS: Project[] = [
   {
     slug: 'american-express-play-it',
     client: 'American Express',
-    title: 'Play It',
-    tagline: 'Premium motion for a campaign built around momentum.',
+    title: 'Plan It',
+    tagline: 'Clear, confident motion for a product explainer built to scale.',
     year: '2023',
-    services: ['Campaign Film', 'Motion Systems', 'Delivery Kits'],
+    services: ['Explainer Film', 'Motion Systems', 'Delivery Kits'],
     accent: '#2f6bff',
     accentSoft: '#dfe9ff',
     overview:
-      'A high-energy campaign film and motion toolkit designed for broadcast, digital, and partner channels.',
+      'An explainer film and frame suite for American Express Plan It — turning a financial feature into motion that feels approachable, premium, and easy to follow.',
     challenge:
-      'Create a distinctive visual tempo that feels unmistakably Amex while staying flexible for regional variants.',
+      'Make a multi-step product story legible in one hero film while leaving room for cutdowns and toolkit frames.',
     approach:
-      'We developed a beat-mapped edit language with repeatable type cards, transitions, and logo resolves.',
+      'Structured story beats, clean UI-inspired compositions, and a repeatable frame system for channel variants.',
     outcome:
-      'A campaign system with master film, toolkit elements, and channel-ready exports.',
+      'Hero explainer, thumbnail, and styleframes ready for digital, partner, and presentation use.',
     story: [
       {
-        id: 'rhythm',
-        eyebrow: 'Rhythm',
-        title: 'Cut to the beat',
-        body: 'Motion beats align to a flexible audio grid so regional edits stay on-brand without rebuilding timelines.',
+        id: 'clarity',
+        eyebrow: 'Clarity',
+        title: 'Complex made simple',
+        body: 'Each beat isolates one benefit so viewers grasp Plan It without dense on-screen copy.',
       },
       {
         id: 'toolkit',
         eyebrow: 'Toolkit',
         title: 'Built to scale',
-        body: 'End cards, supers, and logo resolves ship as editable shells for fast versioning.',
+        body: 'Frame exports and end states ship as modular assets for fast versioning across markets.',
       },
     ],
     media: [
-      { id: 'hero', type: 'video', label: 'Master film', span: 'wide', parallax: 0.2 },
-      { id: 'card-01', type: 'image', label: 'Title card', span: 'square', parallax: 0.28 },
-      { id: 'card-02', type: 'image', label: 'Scene still', span: 'tall', parallax: 0.34 },
-      { id: 'end', type: 'video', label: 'End frame loop', span: 'square', parallax: 0.42 },
-      { id: 'ooh', type: 'image', label: 'OOH mockup', span: 'wide', parallax: 0.24 },
-      { id: 'detail', type: 'image', label: 'Typography study', span: 'tall', parallax: 0.3 },
+      {
+        id: 'hero',
+        type: 'video',
+        label: 'Explainer film',
+        span: 'wide',
+        parallax: 0.2,
+        src: projectMediaFile(AMEX_MEDIA, '02 - AmericanExpress_PlanIt_ExplainerVideo.mp4'),
+        poster: projectMediaFile(AMEX_MEDIA, 'AmericanExpress_PlanIt_ExplainerVideo_Thumbnail.jpg'),
+      },
+      {
+        id: 'card-01',
+        type: 'image',
+        label: 'Frame 02',
+        span: 'square',
+        parallax: 0.28,
+        src: projectMediaFile(AMEX_MEDIA, 'AMEX_PlanIt_Frame2.jpg'),
+      },
+      {
+        id: 'card-02',
+        type: 'image',
+        label: 'Frame 04',
+        span: 'tall',
+        parallax: 0.34,
+        src: projectMediaFile(AMEX_MEDIA, 'AMEX_PlanIt_Frame4.jpg'),
+      },
+      {
+        id: 'end',
+        type: 'image',
+        label: 'Frame 05',
+        span: 'square',
+        parallax: 0.42,
+        src: projectMediaFile(AMEX_MEDIA, 'AMEX_PlanIt_Frame5.jpg'),
+      },
+      {
+        id: 'ooh',
+        type: 'image',
+        label: 'Frame 06',
+        span: 'wide',
+        parallax: 0.24,
+        src: projectMediaFile(AMEX_MEDIA, 'AMEX_PlanIt_Frame6.jpg'),
+      },
+      {
+        id: 'detail',
+        type: 'image',
+        label: 'Frame 07',
+        span: 'tall',
+        parallax: 0.3,
+        src: projectMediaFile(AMEX_MEDIA, 'AMEX_PlanIt_Frame7.jpg'),
+      },
     ],
-    heroVideo: `${PROJECT_MEDIA}/american-express-play-it/hero.mp4`,
-    heroImage: `${PROJECT_MEDIA}/american-express-play-it/hero.jpg`,
-    thumbnail: `${PROJECT_MEDIA}/american-express-play-it/thumb.jpg`,
+    heroVideo: projectMediaFile(AMEX_MEDIA, '02 - AmericanExpress_PlanIt_ExplainerVideo.mp4'),
+    heroImage: projectMediaFile(AMEX_MEDIA, 'AmericanExpress_PlanIt_ExplainerVideo_Thumbnail.jpg'),
+    thumbnail: projectMediaFile(AMEX_MEDIA, 'AmericanExpress_PlanIt_ExplainerVideo_Thumbnail.jpg'),
   },
   {
     slug: 'excel-get-chewing',
