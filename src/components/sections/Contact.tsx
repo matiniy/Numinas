@@ -1,4 +1,25 @@
 import { FormEvent, useState } from 'react'
+import Aurora from '@/components/ui/Aurora'
+
+const CONTACT_AURORA_COLORS = ['#EC4899', '#B497CF', '#5227FF'] as const
+
+function MailIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4 7.2C4 6.08 4 5.52 4.218 5.092c.192-.336.498-.642.834-.834C5.28 4 5.84 4 6.96 4h10.08c1.12 0 1.68 0 1.908.258.336.192.642.498.834.834C20 5.52 20 6.08 20 7.2v9.6c0 1.12 0 1.68-.218 2.108a1.6 1.6 0 0 1-.834.834C18.72 20 18.16 20 17.04 20H6.96c-1.12 0-1.68 0-1.908-.258a1.6 1.6 0 0 1-.834-.834C4 18.48 4 17.92 4 16.8V7.2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <path
+        d="m4 7 7.447 4.966a2 2 0 0 0 2.106 0L21 7"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false)
@@ -9,72 +30,101 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="wire-section" aria-labelledby="contact-heading">
-      <div className="wire-container">
-        <p className="wire-label">07 · Contact</p>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <h2 id="contact-heading" className="type-h2">
-              Get in Touch
+    <section id="contact" className="contact-section" aria-labelledby="contact-heading">
+      <div className="contact-section__aurora" aria-hidden="true">
+        <Aurora
+          colorStops={CONTACT_AURORA_COLORS}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.5}
+        />
+      </div>
+
+      <div className="wire-container contact-section__container">
+        <div className="contact-section__grid">
+          <div className="contact-section__content">
+            <div className="contact-section__badge">
+              <MailIcon />
+            </div>
+
+            <p className="contact-section__label">Contact</p>
+
+            <h2 id="contact-heading" className="type-h2 contact-section__title">
+              Tailored for You
             </h2>
-            <p className="type-body mt-3 text-[var(--n-mist)]">
-              Based in Vancouver and Toronto. Prefer email?
+
+            <p className="type-body contact-section__subtitle">
+              Timelines and deliverables designed around your launch. We scope fast, share a clear
+              plan, and deliver buttoned-up files for every channel.
             </p>
-            <a
-              href="mailto:collab@numinas.studio"
-              className="type-small mt-4 inline-block hover:underline"
-            >
+
+            <a href="mailto:collab@numinas.studio" className="contact-section__email">
               collab@numinas.studio
             </a>
           </div>
 
-          <div className="lg:col-span-7">
+          <div className="contact-section__form-wrap">
             {submitted ? (
-              <div className="wire-box p-6">
+              <div className="contact-form contact-form--success">
                 <p className="type-h3">Thanks — we’ll be in touch.</p>
                 <p className="type-small mt-2 text-[var(--n-mist)]">
                   Form is wireframe-only (no backend yet).
                 </p>
                 <button
                   type="button"
-                  className="wire-btn mt-6"
+                  className="contact-form__submit mt-6"
                   onClick={() => setSubmitted(false)}
                 >
                   Reset
                 </button>
               </div>
             ) : (
-              <form className="wire-box grid gap-4 p-4 md:p-6" onSubmit={onSubmit} noValidate>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <label className="type-small flex flex-col gap-2">
-                    First name
-                    <input className="wire-input" name="firstName" autoComplete="given-name" required />
-                  </label>
-                  <label className="type-small flex flex-col gap-2">
-                    Last name
-                    <input className="wire-input" name="lastName" autoComplete="family-name" required />
-                  </label>
-                </div>
-                <label className="type-small flex flex-col gap-2">
-                  Email
+              <form className="contact-form" onSubmit={onSubmit} noValidate>
+                <label className="contact-field">
+                  <span className="contact-field__label">Full name</span>
                   <input
-                    className="wire-input"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
+                    className="contact-field__input"
+                    name="fullName"
+                    autoComplete="name"
+                    placeholder="Your name"
                     required
                   />
                 </label>
-                <label className="type-small flex flex-col gap-2">
-                  Company name
-                  <input className="wire-input" name="company" autoComplete="organization" />
+
+                <label className="contact-field">
+                  <span className="contact-field__label">Email Address</span>
+                  <input
+                    className="contact-field__input"
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    placeholder="you@company.com"
+                    required
+                  />
                 </label>
-                <label className="type-small flex flex-col gap-2">
-                  How can we help?
-                  <textarea className="wire-input min-h-28 py-3" name="message" required />
+
+                <label className="contact-field">
+                  <span className="contact-field__label">Company</span>
+                  <input
+                    className="contact-field__input"
+                    name="company"
+                    autoComplete="organization"
+                    placeholder="Company name"
+                  />
                 </label>
-                <button type="submit" className="wire-btn w-full md:w-auto">
-                  Let’s Talk
+
+                <label className="contact-field">
+                  <span className="contact-field__label">Message</span>
+                  <textarea
+                    className="contact-field__input contact-field__input--textarea"
+                    name="message"
+                    placeholder="Tell us about your project"
+                    required
+                  />
+                </label>
+
+                <button type="submit" className="contact-form__submit">
+                  Submit
                 </button>
               </form>
             )}
