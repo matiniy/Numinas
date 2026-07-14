@@ -195,7 +195,7 @@ body {
 
   .projects-scroll__control {
     position: absolute;
-    top: 38%;
+    top: 32%;
     z-index: 2;
     display: inline-flex;
     align-items: center;

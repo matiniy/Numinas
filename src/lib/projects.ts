@@ -39,6 +39,7 @@ export type Project = {
 
 const PROJECT_MEDIA = '/media/projects'
 const BELLEMINT_MEDIA = `${PROJECT_MEDIA}/bellemint`
+const URBAN_DECAY_MEDIA = `${PROJECT_MEDIA}/urban-decay-ride-or-die`
 const OLAY_STEM_MEDIA = `${PROJECT_MEDIA}/olay-stem`
 const SECRET_MEDIA = `${PROJECT_MEDIA}/secret-aluminum-free`
 
@@ -189,16 +190,57 @@ export const PROJECTS: Project[] = [
       },
     ],
     media: [
-      { id: 'hero', type: 'video', label: 'Hero film', span: 'wide', parallax: 0.18 },
-      { id: 'still-01', type: 'image', label: 'Key still 01', span: 'tall', parallax: 0.32 },
-      { id: 'still-02', type: 'image', label: 'Key still 02', span: 'square', parallax: 0.24 },
-      { id: 'loop', type: 'video', label: 'Social loop', span: 'square', parallax: 0.4 },
-      { id: 'still-03', type: 'image', label: 'Key still 03', span: 'wide', parallax: 0.28 },
-      { id: 'bts', type: 'image', label: 'Process frame', span: 'tall', parallax: 0.36 },
+      {
+        id: 'hero',
+        type: 'video',
+        label: 'Hero film',
+        span: 'wide',
+        parallax: 0.18,
+        poster: projectMediaFile(URBAN_DECAY_MEDIA, 'Urban Decay.jpg'),
+      },
+      {
+        id: 'still-01',
+        type: 'image',
+        label: 'Key still 01',
+        span: 'tall',
+        parallax: 0.32,
+        src: projectMediaFile(URBAN_DECAY_MEDIA, 'Urban Decay.jpg'),
+      },
+      {
+        id: 'still-02',
+        type: 'image',
+        label: 'Key still 02',
+        span: 'square',
+        parallax: 0.24,
+        src: projectMediaFile(URBAN_DECAY_MEDIA, 'Urban Decay.jpg'),
+      },
+      {
+        id: 'loop',
+        type: 'video',
+        label: 'Social loop',
+        span: 'square',
+        parallax: 0.4,
+        poster: projectMediaFile(URBAN_DECAY_MEDIA, 'Urban Decay.jpg'),
+      },
+      {
+        id: 'still-03',
+        type: 'image',
+        label: 'Key still 03',
+        span: 'wide',
+        parallax: 0.28,
+        src: projectMediaFile(URBAN_DECAY_MEDIA, 'Urban Decay.jpg'),
+      },
+      {
+        id: 'bts',
+        type: 'image',
+        label: 'Process frame',
+        span: 'tall',
+        parallax: 0.36,
+        src: projectMediaFile(URBAN_DECAY_MEDIA, 'Urban Decay.jpg'),
+      },
     ],
-    heroVideo: `${PROJECT_MEDIA}/urban-decay-ride-or-die/hero.mp4`,
-    heroImage: `${PROJECT_MEDIA}/urban-decay-ride-or-die/hero.jpg`,
-    thumbnail: `${PROJECT_MEDIA}/urban-decay-ride-or-die/thumb.jpg`,
+    heroImage: projectMediaFile(URBAN_DECAY_MEDIA, 'Urban Decay.jpg'),
+    thumbnail: projectMediaFile(URBAN_DECAY_MEDIA, 'Urban Decay.jpg'),
   },
   {
     slug: 'olay-stem',

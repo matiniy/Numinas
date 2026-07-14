@@ -48,7 +48,7 @@ function ProjectCardMedia({ project }: { project: Project }) {
   }
 
   return (
-    <span className="relative px-4 text-center font-mono text-[10px] uppercase tracking-wider text-balance text-[var(--n-mist)] line-clamp-2">
+    <span className="absolute inset-0 flex items-center justify-center px-4 text-center font-mono text-[10px] uppercase tracking-wider text-balance text-[var(--n-mist)] line-clamp-2">
       {project.client} · {project.title}
     </span>
   )
@@ -95,10 +95,10 @@ export function Projects() {
               <li key={project.slug} className="projects-scroll__item">
                 <Link
                   to={`/work/${project.slug}`}
-                  className="wire-box group block h-full overflow-hidden transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--n-paper)]"
+                  className="group block transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--n-paper)]"
                 >
                   <div
-                    className="relative flex aspect-video items-center justify-center overflow-hidden border-b border-dashed border-[var(--n-wire)] bg-[var(--n-ink)]"
+                    className="relative aspect-video overflow-hidden rounded-[8px] bg-[var(--n-ink)]"
                     style={
                       hasVisual
                         ? undefined
@@ -109,7 +109,7 @@ export function Projects() {
                   >
                     <ProjectCardMedia project={project} />
                   </div>
-                  <div className="p-4">
+                  <div className="mt-3">
                     <p className="type-eyebrow text-[var(--n-mist)]">{project.client}</p>
                     <h3 className="type-h3 mt-1">{project.title}</h3>
                     <p className="type-small mt-2 text-[var(--n-mist)]">View case study →</p>
