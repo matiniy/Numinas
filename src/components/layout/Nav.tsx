@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
+import { BRAND_LOGO } from '@/lib/brand-logo'
 const links = [
   { href: '#projects', label: 'Work' },
   { href: '#services', label: 'Services' },
@@ -32,8 +33,15 @@ export function Nav() {
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
       <div className="wire-container flex min-h-14 items-center justify-between gap-4 py-3">
-        <a href="#top" className="type-brand text-base">
-          Numinas
+        <a href="#top" className="flex shrink-0 items-center" aria-label="Numinas home">
+          <img
+            src={BRAND_LOGO.white}
+            alt="Numinas"
+            width={356}
+            height={50}
+            className="h-6 w-auto md:h-7"
+            decoding="async"
+          />
         </a>
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">

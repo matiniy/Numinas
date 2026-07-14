@@ -19,7 +19,7 @@ interface FlowingMenuProps {
   borderColor?: string
 }
 
-const animationDefaults = { duration: 0.6, ease: 'expo' }
+const animationDefaults = { duration: 0.85, ease: 'power3.inOut' }
 
 function distMetric(x: number, y: number, x2: number, y2: number) {
   const xDiff = x - x2
@@ -62,8 +62,10 @@ function MenuItem({
   const marqueeRef = useRef<HTMLDivElement>(null)
   const marqueeInnerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<gsap.core.Tween | null>(null)
+  const linkRef = useRef<HTMLButtonElement>(null)
   const [repetitions, setRepetitions] = useState(4)
   const [canHover, setCanHover] = useState(true)
+  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
     setCanHover(window.matchMedia('(hover: hover) and (pointer: fine)').matches)
@@ -122,6 +124,10 @@ function MenuItem({
       .set(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
       .set(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' }, 0)
       .to([marqueeRef.current, marqueeInnerRef.current], { y: '0%' }, 0)
+
+    if (linkRef.current) {
+      gsap.to(linkRef.current, { x: 0, opacity: 1, duration: 0.85, ease: 'power3.inOut' })
+    }
   }
 
   const closeMarquee = (edge: 'top' | 'bottom') => {
@@ -143,6 +149,7 @@ function MenuItem({
 
   const handlePointerEnter = (ev: MouseEvent<HTMLButtonElement>) => {
     if (!canHover || !itemRef.current) return
+    setIsHovered(true)
     const rect = itemRef.current.getBoundingClientRect()
     const edge = findClosestEdge(
       ev.clientX - rect.left,
@@ -155,6 +162,7 @@ function MenuItem({
 
   const handlePointerLeave = (ev: MouseEvent<HTMLButtonElement>) => {
     if (!canHover || !itemRef.current) return
+    setIsHovered(false)
     const rect = itemRef.current.getBoundingClientRect()
     const edge = findClosestEdge(
       ev.clientX - rect.left,
@@ -165,6 +173,8 @@ function MenuItem({
     closeMarquee(edge)
   }
 
+  const isActive = isHovered || isOpen
+
   return (
     <li
       ref={itemRef}
@@ -172,13 +182,14 @@ function MenuItem({
       style={{ borderColor }}
     >
       <button
+        ref={linkRef}
         type="button"
-        className="flowing-menu__item-link"
-        style={{ color: textColor }}
+        className={`flowing-menu__item-link${isActive ? ' flowing-menu__item-link--active' : ''}`}
+        style={{ color: isActive ? marqueeTextColor : textColor }}
         onMouseEnter={handlePointerEnter}
         onMouseLeave={handlePointerLeave}
         onClick={canHover ? undefined : onToggle}
-        aria-expanded={isOpen}
+        aria-expanded={isOpen || isHovered}
       >
         {index ? <span className="flowing-menu__item-index">{index}</span> : null}
         {text}

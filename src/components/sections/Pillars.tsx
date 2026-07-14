@@ -28,9 +28,8 @@ export function Pillars() {
   return (
     <section id="pillars" className="wire-section" aria-labelledby="pillars-heading">
       <div className="wire-container mb-8 md:mb-10">
-        <p className="wire-label">03 · Positioning pillars</p>
-        <h2 id="pillars-heading" className="type-h2">
-          Communicate · Captivate · Connect
+        <h2 id="pillars-heading" className="wire-label">
+          Our services
         </h2>
       </div>
 
