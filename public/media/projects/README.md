@@ -6,6 +6,7 @@ Drop visuals for each case study in its own folder.
 
 | Slug | Client · Title |
 |------|----------------|
+| `bellemint` | Bellemint · Bellemint |
 | `urban-decay-ride-or-die` | Urban Decay · Ride or Die |
 | `olay-stem` | Olay · STEM |
 | `american-express-play-it` | American Express · Play It |

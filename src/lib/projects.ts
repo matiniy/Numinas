@@ -33,11 +33,130 @@ export type Project = {
   thumbnail?: string
   heroVideo?: string
   heroImage?: string
+  /** Homepage work card: defaults to video when heroVideo exists. Set to `image` to force thumbnail. */
+  cardMedia?: 'video' | 'image'
 }
 
 const PROJECT_MEDIA = '/media/projects'
+const BELLEMINT_MEDIA = `${PROJECT_MEDIA}/bellemint`
+const OLAY_STEM_MEDIA = `${PROJECT_MEDIA}/olay-stem`
+const SECRET_MEDIA = `${PROJECT_MEDIA}/secret-aluminum-free`
+
+function projectMediaFile(base: string, filename: string) {
+  return `${base}/${encodeURIComponent(filename)}`
+}
 
 export const PROJECTS: Project[] = [
+  {
+    slug: 'bellemint',
+    client: 'Bellemint',
+    title: 'Bellemint',
+    tagline: 'Fresh breath, elevated through cinematic product motion.',
+    year: '2024',
+    services: ['Brand Film', '3D Motion', 'Social Content'],
+    accent: '#34d399',
+    accentSoft: '#d1fae5',
+    overview:
+      'A launch film and still suite for Bellemint — pairing crisp product beauty with a bright, confident visual world built for paid, owned, and social channels.',
+    challenge:
+      'Make a breath-care product feel premium and immediate in feeds that reward clarity in the first second.',
+    approach:
+      'Macro product passes, soft specular light, and rhythmic cuts keep the story fresh while typography lands the benefit fast.',
+    outcome:
+      'Hero film, key stills, and gallery assets ready for site, social, and campaign extensions.',
+    story: [
+      {
+        id: 'look',
+        eyebrow: 'Look',
+        title: 'Clean, bright, tactile',
+        body: 'Mint-forward palettes and high-key lighting keep the world feeling crisp without clinical coldness.',
+      },
+      {
+        id: 'product',
+        eyebrow: 'Product',
+        title: 'Detail that sells',
+        body: 'Close passes on pack, texture, and finish make the product hero in every frame.',
+      },
+    ],
+    media: [
+      {
+        id: 'hero',
+        type: 'video',
+        label: 'Hero film',
+        span: 'wide',
+        parallax: 0.18,
+        src: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1.mp4`,
+        poster: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10025.png`,
+      },
+      {
+        id: 'still-01',
+        type: 'image',
+        label: 'Key still 01',
+        span: 'tall',
+        parallax: 0.32,
+        src: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10003.png`,
+      },
+      {
+        id: 'still-02',
+        type: 'image',
+        label: 'Key still 02',
+        span: 'square',
+        parallax: 0.24,
+        src: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10009.png`,
+      },
+      {
+        id: 'loop',
+        type: 'image',
+        label: 'Product frame',
+        span: 'square',
+        parallax: 0.4,
+        src: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10388.png`,
+      },
+      {
+        id: 'still-03',
+        type: 'image',
+        label: 'Key still 03',
+        span: 'wide',
+        parallax: 0.28,
+        src: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10538.png`,
+      },
+      {
+        id: 'bts',
+        type: 'image',
+        label: 'Gallery still',
+        span: 'tall',
+        parallax: 0.36,
+        src: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10613.png`,
+      },
+      {
+        id: 'detail-01',
+        type: 'image',
+        label: 'Detail 01',
+        span: 'square',
+        parallax: 0.26,
+        src: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10706.png`,
+      },
+      {
+        id: 'detail-02',
+        type: 'image',
+        label: 'Detail 02',
+        span: 'wide',
+        parallax: 0.22,
+        src: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10996.png`,
+      },
+      {
+        id: 'detail-03',
+        type: 'image',
+        label: 'Detail 03',
+        span: 'tall',
+        parallax: 0.34,
+        src: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_11161.png`,
+      },
+    ],
+    heroVideo: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1.mp4`,
+    heroImage: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10025.png`,
+    thumbnail: `${BELLEMINT_MEDIA}/BELLEMINT_16-9_1_10025.png`,
+  },
   {
     slug: 'urban-decay-ride-or-die',
     client: 'Urban Decay',
@@ -113,16 +232,59 @@ export const PROJECTS: Project[] = [
       },
     ],
     media: [
-      { id: 'hero', type: 'video', label: 'Hero explainer', span: 'wide', parallax: 0.16 },
-      { id: 'diagram', type: 'image', label: 'Diagram frame', span: 'square', parallax: 0.3 },
-      { id: 'product', type: 'image', label: 'Product beauty', span: 'tall', parallax: 0.26 },
-      { id: 'social', type: 'video', label: 'Paid social', span: 'square', parallax: 0.38 },
-      { id: 'retail', type: 'image', label: 'Retail screen', span: 'wide', parallax: 0.22 },
-      { id: 'detail', type: 'image', label: 'Macro detail', span: 'tall', parallax: 0.34 },
+      {
+        id: 'hero',
+        type: 'video',
+        label: 'Hero explainer',
+        span: 'wide',
+        parallax: 0.16,
+        src: projectMediaFile(OLAY_STEM_MEDIA, 'ProjectOlay_STEM30_Seconds.mp4'),
+        poster: projectMediaFile(OLAY_STEM_MEDIA, 'ProjectOlay_30_ENG_Final_00088.jpg'),
+      },
+      {
+        id: 'diagram',
+        type: 'image',
+        label: 'Diagram frame',
+        span: 'square',
+        parallax: 0.3,
+        src: projectMediaFile(OLAY_STEM_MEDIA, 'ProjectOlay_30_ENG_Final_00088.jpg'),
+      },
+      {
+        id: 'product',
+        type: 'image',
+        label: 'Product beauty',
+        span: 'tall',
+        parallax: 0.26,
+        src: projectMediaFile(OLAY_STEM_MEDIA, 'ProjectOlay_Phase 1_30_ENG_1920x1080_Final_00085.jpg'),
+      },
+      {
+        id: 'social',
+        type: 'image',
+        label: 'Campaign still',
+        span: 'square',
+        parallax: 0.38,
+        src: projectMediaFile(OLAY_STEM_MEDIA, 'ProjectOlay_30_ENG_Final_00719.jpg'),
+      },
+      {
+        id: 'retail',
+        type: 'image',
+        label: 'Retail screen',
+        span: 'wide',
+        parallax: 0.22,
+        src: projectMediaFile(OLAY_STEM_MEDIA, 'ProjectOlay_Phase 1_30_ENG_1920x1080_Final_00716.jpg'),
+      },
+      {
+        id: 'detail',
+        type: 'image',
+        label: 'Macro detail',
+        span: 'tall',
+        parallax: 0.34,
+        src: projectMediaFile(OLAY_STEM_MEDIA, 'WHite_00028.jpg'),
+      },
     ],
-    heroVideo: `${PROJECT_MEDIA}/olay-stem/hero.mp4`,
-    heroImage: `${PROJECT_MEDIA}/olay-stem/hero.jpg`,
-    thumbnail: `${PROJECT_MEDIA}/olay-stem/thumb.jpg`,
+    heroVideo: projectMediaFile(OLAY_STEM_MEDIA, 'ProjectOlay_STEM30_Seconds.mp4'),
+    heroImage: projectMediaFile(OLAY_STEM_MEDIA, 'ProjectOlay_30_ENG_Final_00088.jpg'),
+    thumbnail: projectMediaFile(OLAY_STEM_MEDIA, 'ProjectOlay_30_ENG_Final_00088.jpg'),
   },
   {
     slug: 'american-express-play-it',
@@ -242,16 +404,59 @@ export const PROJECTS: Project[] = [
       },
     ],
     media: [
-      { id: 'hero', type: 'video', label: 'Hero film', span: 'wide', parallax: 0.18 },
-      { id: 'talent', type: 'image', label: 'Talent frame', span: 'tall', parallax: 0.3 },
-      { id: 'product', type: 'image', label: 'Product lineup', span: 'square', parallax: 0.24 },
-      { id: 'cutdown', type: 'video', label: 'Cutdown', span: 'square', parallax: 0.38 },
-      { id: 'typography', type: 'image', label: 'Type study', span: 'wide', parallax: 0.26 },
-      { id: 'texture', type: 'image', label: 'Texture plate', span: 'tall', parallax: 0.34 },
+      {
+        id: 'hero',
+        type: 'video',
+        label: 'Hero film',
+        span: 'wide',
+        parallax: 0.18,
+        src: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_1.mp4'),
+        poster: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_Social Media thumbnail.jpg'),
+      },
+      {
+        id: 'talent',
+        type: 'image',
+        label: 'Sea salt frame',
+        span: 'tall',
+        parallax: 0.3,
+        src: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_SeaSalt_Screenshot.jpg'),
+      },
+      {
+        id: 'product',
+        type: 'image',
+        label: 'Logo lockup',
+        span: 'square',
+        parallax: 0.24,
+        src: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_Logo.jpg'),
+      },
+      {
+        id: 'cutdown',
+        type: 'image',
+        label: 'pH levels styleframe',
+        span: 'square',
+        parallax: 0.38,
+        src: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_PH Levels_Styleframe.jpg'),
+      },
+      {
+        id: 'typography',
+        type: 'image',
+        label: 'Social thumbnail',
+        span: 'wide',
+        parallax: 0.26,
+        src: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_Social Media thumbnail.jpg'),
+      },
+      {
+        id: 'texture',
+        type: 'image',
+        label: 'Styleframe',
+        span: 'tall',
+        parallax: 0.34,
+        src: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_PH Levels_Styleframe.jpg'),
+      },
     ],
-    heroVideo: `${PROJECT_MEDIA}/secret-aluminum-free/hero.mp4`,
-    heroImage: `${PROJECT_MEDIA}/secret-aluminum-free/hero.jpg`,
-    thumbnail: `${PROJECT_MEDIA}/secret-aluminum-free/thumb.jpg`,
+    heroVideo: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_1.mp4'),
+    heroImage: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_Social Media thumbnail.jpg'),
+    thumbnail: projectMediaFile(SECRET_MEDIA, 'Secret_Aluminum Free_Social Media thumbnail.jpg'),
   },
   {
     slug: 'pellican-cushion',

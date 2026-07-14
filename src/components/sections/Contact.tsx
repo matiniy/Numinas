@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react'
 import Aurora from '@/components/ui/Aurora'
+import { CreativeCallButton } from '@/components/ui/creative-call-button'
 
 const CONTACT_AURORA_COLORS = ['#EC4899', '#B497CF', '#5227FF'] as const
 
@@ -70,13 +71,15 @@ export function Contact() {
                 <p className="type-small mt-2 text-[var(--n-mist)]">
                   Form is wireframe-only (no backend yet).
                 </p>
-                <button
+                <CreativeCallButton
                   type="button"
-                  className="contact-form__submit mt-6"
+                  className="mt-6"
+                  showArrow={false}
+                  compact
                   onClick={() => setSubmitted(false)}
                 >
                   Reset
-                </button>
+                </CreativeCallButton>
               </div>
             ) : (
               <form className="contact-form" onSubmit={onSubmit} noValidate>
@@ -123,9 +126,9 @@ export function Contact() {
                   />
                 </label>
 
-                <button type="submit" className="contact-form__submit">
+                <CreativeCallButton type="submit" compact className="contact-form__action">
                   Submit
-                </button>
+                </CreativeCallButton>
               </form>
             )}
           </div>

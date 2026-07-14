@@ -37,20 +37,42 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
         <p className="type-body mt-5 max-w-2xl text-[var(--cs-muted)]">{project.tagline}</p>
 
         <div className="case-study__panel mt-10 overflow-hidden">
-          <div
-            className="flex aspect-[16/8] flex-col items-start justify-end gap-4 p-5 sm:flex-row sm:items-end sm:justify-between md:p-6"
-            style={{
-              background: `linear-gradient(135deg, ${project.accentSoft} 0%, ${project.accent} 48%, #ffffff 120%)`,
-            }}
-          >
-            <div>
-              <p className="case-study__media-label">Hero media slot</p>
-              <p className="mt-2 max-w-md text-balance text-sm text-white/90 md:text-base">
-                Drop `hero.mp4` or `hero.jpg` in `/public/media/projects/{project.slug}/`
-              </p>
+          {project.heroVideo || project.heroImage ? (
+            <div className="relative aspect-[16/8] bg-[var(--cs-ink)]">
+              {project.heroVideo ? (
+                <video
+                  src={project.heroVideo}
+                  poster={project.heroImage}
+                  className="h-full w-full object-cover"
+                  muted
+                  loop
+                  playsInline
+                  autoPlay
+                />
+              ) : (
+                <img
+                  src={project.heroImage}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+              )}
             </div>
-            <span className="case-study__media-type">Video / Image</span>
-          </div>
+          ) : (
+            <div
+              className="flex aspect-[16/8] flex-col items-start justify-end gap-4 p-5 sm:flex-row sm:items-end sm:justify-between md:p-6"
+              style={{
+                background: `linear-gradient(135deg, ${project.accentSoft} 0%, ${project.accent} 48%, #ffffff 120%)`,
+              }}
+            >
+              <div>
+                <p className="case-study__media-label">Hero media slot</p>
+                <p className="mt-2 max-w-md text-balance text-sm text-white/90 md:text-base">
+                  Drop `hero.mp4` or `hero.jpg` in `/public/media/projects/{project.slug}/`
+                </p>
+              </div>
+              <span className="case-study__media-type">Video / Image</span>
+            </div>
+          )}
         </div>
       </div>
     </section>
