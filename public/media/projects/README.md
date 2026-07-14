@@ -35,3 +35,34 @@ Grid slot IDs are defined in `src/lib/projects.ts` under each project's `media` 
 - Until files are added, case study pages show vibrant gradient placeholders.
 - Videos should be muted-friendly loops for autoplay in the gallery grid.
 - Update `src` paths in `projects.ts` when filenames differ from slot IDs.
+
+## Git: videos vs code (avoid large-file warnings)
+
+**Videos (`*.mp4`) are tracked with [Git LFS](https://git-lfs.github.com/).** Images and code stay in normal git.
+
+### Adding new project media
+
+1. **Code first** — commit `src/lib/projects.ts` (and any component changes) without new video files.
+2. **Images** — add JPG/PNG for a project, commit, push.
+3. **Video last** — add one project’s `.mp4` at a time, commit, push (LFS uploads separately).
+
+Example:
+
+```bash
+# 1) Code + image paths only
+git add src/lib/projects.ts public/media/projects/my-project/*.jpg
+git commit -m "Wire My Project case study assets (images)."
+git push
+
+# 2) Video via LFS (one file or one project per commit)
+git add public/media/projects/my-project/hero.mp4
+git commit -m "Add My Project hero video (LFS)."
+git push
+```
+
+### Tips
+
+- Keep each MP4 **under ~50 MB** when possible (compress for web) — GitHub still accepts larger LFS files but smaller uploads are faster.
+- Do **not** commit multiple large MP4s in a single push if you can split them.
+- **Do not commit raw `.mov` masters** (often 300MB+) — export a compressed `.mp4` for the site first.
+- After clone, run `git lfs pull` if videos look missing (most clients fetch LFS automatically).

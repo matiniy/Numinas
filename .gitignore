@@ -25,5 +25,9 @@ npm-debug.log*
 
 # Local planning — never commit or push
 docs/
+
+# Raw video masters — export compressed MP4 before committing
+public/media/**/*.mov
+public/media/**/*.MOV
 **/*design-system*.md
 **/*user-flow*.md
