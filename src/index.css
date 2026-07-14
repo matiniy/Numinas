@@ -506,10 +506,28 @@ body {
     gap: 1.1rem;
     padding: clamp(1.25rem, 3vw, 2rem);
     border-radius: 1rem;
-    border: 1px solid rgb(255 255 255 / 0.07);
-    background: rgb(18 18 22);
-    box-shadow: 0 24px 60px rgb(0 0 0 / 0.28);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    background: rgb(10 10 11 / 0.38);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    box-shadow:
+      0 24px 60px rgb(0 0 0 / 0.28),
+      inset 0 1px 0 rgb(255 255 255 / 0.1);
     overflow: hidden;
+  }
+
+  .contact-form::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.06) 0%,
+      rgb(255 255 255 / 0.02) 28%,
+      transparent 55%
+    );
+    pointer-events: none;
   }
 
   .contact-form::before {
@@ -517,6 +535,7 @@ body {
     position: absolute;
     top: 0;
     right: 0;
+    z-index: 0;
     width: min(58%, 18rem);
     height: min(52%, 12rem);
     background-image:
@@ -525,6 +544,11 @@ body {
     background-size: 1.35rem 1.35rem;
     mask-image: radial-gradient(ellipse at top right, black 10%, transparent 72%);
     pointer-events: none;
+  }
+
+  .contact-form > * {
+    position: relative;
+    z-index: 1;
   }
 
   .contact-form--success {
@@ -548,9 +572,11 @@ body {
     width: 100%;
     min-height: 2.75rem;
     padding: 0.7rem 0.9rem;
-    border: 1px solid rgb(255 255 255 / 0.07);
+    border: 1px solid rgb(255 255 255 / 0.1);
     border-radius: 0.55rem;
-    background: rgb(30 30 36);
+    background: rgb(10 10 11 / 0.32);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     font-family: var(--font-body);
     font-size: 1rem;
     font-weight: var(--font-weight-body);
@@ -572,8 +598,8 @@ body {
   }
 
   .contact-field__input:focus {
-    border-color: rgb(255 255 255 / 0.18);
-    background: rgb(34 34 40);
+    border-color: rgb(255 255 255 / 0.22);
+    background: rgb(10 10 11 / 0.45);
   }
 
   .contact-field__input--textarea {
