@@ -39,10 +39,7 @@
   white-space: nowrap;
   background: transparent;
   border: 0;
-  padding-left: max(
-    var(--gutter),
-    calc((100% - min(1120px, 100% - 2 * var(--gutter))) / 2 + var(--gutter))
-  );
+  padding-left: var(--gutter);
   padding-right: var(--gutter);
   font-family: var(--font-title);
   font-weight: var(--font-weight-title);
@@ -78,10 +75,7 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
-  padding-left: max(
-    14rem,
-    calc((100% - min(1120px, 100% - 2 * var(--gutter))) / 2 + 14rem)
-  );
+  padding-left: calc(var(--gutter) + 14rem);
 }
 
 .flowing-menu__marquee-inner {

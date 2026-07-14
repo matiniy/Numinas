@@ -3,5 +3,5 @@
  */
 
 export const BRAND_LOGO = {
-  white: '/logo/numinas_logo%2BWhite.svg',
+  white: '/logo/numinas-logo-white.svg',
 } as const

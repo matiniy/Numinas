@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] flex-col justify-end border-b border-dashed border-[var(--n-fog)]"
+      className="relative flex min-h-[100svh] flex-col justify-end"
     >
       <HeroVideo />
       <div
@@ -15,7 +15,7 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <div className="wire-container relative z-10 pb-16 pt-28 md:pb-20 lg:pb-24">
+      <div className="wire-container relative z-10 pb-16 pt-24 md:pb-20 lg:pb-24">
         <h1 className="type-display max-w-4xl">
           Crafting Scroll-Stopping Motion That{' '}
           <span className="type-display-accent">Clarifies</span> And{' '}

@@ -50,9 +50,9 @@
   --n-mist: #8a8a93;
   --n-paper: #f4f4f5;
   --n-wire: #5c5c66;
-  --gutter: clamp(16px, 4vw, 40px);
+  --gutter: clamp(54px, calc(2vw + 40px), 64px);
   --section-y: clamp(3.5rem, 8vw, 6rem);
-  --container: min(1120px, calc(100% - 2 * var(--gutter)));
+  --container: calc(100% - 2 * var(--gutter));
 
   --font-title: "PP Mori", ui-sans-serif, system-ui, sans-serif;
   --font-body: "PP Mori", ui-sans-serif, system-ui, sans-serif;
@@ -201,6 +201,13 @@ body {
 
   .wire-input:focus {
     @apply border-[var(--n-paper)];
+  }
+
+  .site-nav__menu-btn {
+    transition:
+      background-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      border-radius 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
