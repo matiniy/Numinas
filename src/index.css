@@ -164,14 +164,15 @@ body {
   }
 
   .projects-scroll {
+    --project-card-width: clamp(16rem, 84vw, 20rem);
     display: flex;
+    align-items: center;
     gap: 1rem;
     margin: 0;
-    padding: 0 var(--gutter);
+    padding: 0.75rem max(var(--gutter), calc(50% - var(--project-card-width) / 2));
     list-style: none;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--gutter);
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -182,20 +183,32 @@ body {
   }
 
   .projects-scroll__item {
-    flex: 0 0 clamp(16rem, 84vw, 20rem);
-    scroll-snap-align: start;
+    flex: 0 0 var(--project-card-width);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
     min-width: 0;
   }
 
   @media (min-width: 768px) {
-    .projects-scroll__item {
-      flex-basis: calc((100vw - 2 * var(--gutter) - 2rem) / 3);
+    .projects-scroll {
+      --project-card-width: calc((100vw - 2 * var(--gutter) - 2rem) / 3);
     }
+  }
+
+  .projects-scroll__item-inner {
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .projects-scroll__item--center .projects-scroll__item-inner {
+    transform: scale(1.15);
   }
 
   .projects-scroll__control {
     position: absolute;
-    top: 32%;
+    top: 34%;
     z-index: 2;
     display: inline-flex;
     align-items: center;

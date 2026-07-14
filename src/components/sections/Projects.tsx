@@ -1,19 +1,8 @@
-import { useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PROJECTS, type Project } from '@/lib/projects'
 
-function scrollProjects(container: HTMLUListElement | null, direction: -1 | 1) {
-  if (!container) return
-
-  const card = container.querySelector<HTMLElement>('.projects-scroll__item')
-  if (!card) return
-
-  const styles = window.getComputedStyle(container)
-  const gap = Number.parseFloat(styles.columnGap || styles.gap || '0')
-  const amount = card.offsetWidth + gap
-
-  container.scrollBy({ left: direction * amount, behavior: 'smooth' })
-}
+const AUTO_PLAY_MS = 5000
 
 function ProjectCardMedia({ project }: { project: Project }) {
   const useVideo = Boolean(project.heroVideo) && project.cardMedia !== 'image'
@@ -56,6 +45,108 @@ function ProjectCardMedia({ project }: { project: Project }) {
 
 export function Projects() {
   const scrollRef = useRef<HTMLUListElement>(null)
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([])
+  const [activeIndex, setActiveIndex] = useState(0)
+  const activeIndexRef = useRef(0)
+  const autoPlayTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const prefersReducedMotion = useRef(
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+
+  const scrollToIndex = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
+    const container = scrollRef.current
+    const item = itemRefs.current[index]
+    if (!container || !item) return
+
+    const target = item.offsetLeft - (container.offsetWidth - item.offsetWidth) / 2
+    container.scrollTo({ left: target, behavior })
+  }, [])
+
+  const syncActiveIndexFromScroll = useCallback(() => {
+    const container = scrollRef.current
+    if (!container) return
+
+    const center = container.scrollLeft + container.offsetWidth / 2
+    let closest = 0
+    let minDist = Infinity
+
+    itemRefs.current.forEach((item, i) => {
+      if (!item) return
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2
+      const dist = Math.abs(itemCenter - center)
+      if (dist < minDist) {
+        minDist = dist
+        closest = i
+      }
+    })
+
+    activeIndexRef.current = closest
+    setActiveIndex(closest)
+  }, [])
+
+  const clearAutoPlay = useCallback(() => {
+    if (autoPlayTimerRef.current) {
+      clearInterval(autoPlayTimerRef.current)
+      autoPlayTimerRef.current = null
+    }
+  }, [])
+
+  const startAutoPlay = useCallback(() => {
+    if (prefersReducedMotion.current) return
+
+    clearAutoPlay()
+    autoPlayTimerRef.current = setInterval(() => {
+      const next = (activeIndexRef.current + 1) % PROJECTS.length
+      scrollToIndex(next)
+    }, AUTO_PLAY_MS)
+  }, [clearAutoPlay, scrollToIndex])
+
+  const goTo = useCallback(
+    (index: number) => {
+      scrollToIndex(index)
+      startAutoPlay()
+    },
+    [scrollToIndex, startAutoPlay],
+  )
+
+  const goBy = useCallback(
+    (direction: -1 | 1) => {
+      const next = (activeIndexRef.current + direction + PROJECTS.length) % PROJECTS.length
+      goTo(next)
+    },
+    [goTo],
+  )
+
+  useEffect(() => {
+    const container = scrollRef.current
+    if (!container) return
+
+    let raf = 0
+    const onScroll = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(syncActiveIndexFromScroll)
+    }
+
+    container.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+
+    const layoutRaf = requestAnimationFrame(() => {
+      scrollToIndex(0, 'instant')
+      syncActiveIndexFromScroll()
+    })
+
+    return () => {
+      container.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      cancelAnimationFrame(raf)
+      cancelAnimationFrame(layoutRaf)
+    }
+  }, [scrollToIndex, syncActiveIndexFromScroll])
+
+  useEffect(() => {
+    startAutoPlay()
+    return clearAutoPlay
+  }, [startAutoPlay, clearAutoPlay])
 
   return (
     <section id="projects" className="wire-section projects-section" aria-labelledby="projects-heading">
@@ -74,47 +165,67 @@ export function Projects() {
         </div>
       </div>
 
-      <div className="projects-scroll-viewport">
+      <div
+        className="projects-scroll-viewport"
+        onMouseEnter={clearAutoPlay}
+        onMouseLeave={startAutoPlay}
+        onFocusCapture={clearAutoPlay}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+            startAutoPlay()
+          }
+        }}
+      >
         <button
           type="button"
           className="projects-scroll__control projects-scroll__control--prev"
-          aria-label="Scroll projects left"
-          onClick={() => scrollProjects(scrollRef.current, -1)}
+          aria-label="Previous project"
+          onClick={() => goBy(-1)}
         >
           ←
         </button>
 
         <ul ref={scrollRef} className="projects-scroll" role="list">
-          {PROJECTS.map((project) => {
+          {PROJECTS.map((project, index) => {
             const hasVisual =
               (project.heroVideo && project.cardMedia !== 'image') ||
               project.thumbnail ||
               project.heroImage
+            const isCenter = index === activeIndex
 
             return (
-              <li key={project.slug} className="projects-scroll__item">
-                <Link
-                  to={`/work/${project.slug}`}
-                  className="group block transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--n-paper)]"
-                >
-                  <div
-                    className="relative aspect-video overflow-hidden rounded-[8px] bg-[var(--n-ink)]"
-                    style={
-                      hasVisual
-                        ? undefined
-                        : {
-                            background: `linear-gradient(135deg, ${project.accentSoft}22, ${project.accent}33)`,
-                          }
-                    }
+              <li
+                key={project.slug}
+                ref={(node) => {
+                  itemRefs.current[index] = node
+                }}
+                className={`projects-scroll__item${isCenter ? ' projects-scroll__item--center' : ''}`}
+                aria-current={isCenter ? 'true' : undefined}
+              >
+                <div className="projects-scroll__item-inner">
+                  <Link
+                    to={`/work/${project.slug}`}
+                    className="group block transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--n-paper)]"
                   >
-                    <ProjectCardMedia project={project} />
-                  </div>
-                  <div className="mt-3">
-                    <p className="type-eyebrow text-[var(--n-mist)]">{project.client}</p>
-                    <h3 className="type-h3 mt-1">{project.title}</h3>
-                    <p className="type-small mt-2 text-[var(--n-mist)]">View case study →</p>
-                  </div>
-                </Link>
+                    <div
+                      className="relative aspect-video overflow-hidden rounded-[8px] bg-[var(--n-ink)]"
+                      style={
+                        hasVisual
+                          ? undefined
+                          : {
+                              background: `linear-gradient(135deg, ${project.accentSoft}22, ${project.accent}33)`,
+                            }
+                      }
+                    >
+                      <ProjectCardMedia project={project} />
+                    </div>
+                    <div className="mt-3">
+                      <p className="type-eyebrow text-[var(--n-mist)]">{project.client}</p>
+                      <h3 className="type-h3 mt-1">{project.title}</h3>
+                      <p className="type-small mt-2 text-[var(--n-mist)]">View case study →</p>
+                    </div>
+                  </Link>
+                </div>
               </li>
             )
           })}
@@ -123,8 +234,8 @@ export function Projects() {
         <button
           type="button"
           className="projects-scroll__control projects-scroll__control--next"
-          aria-label="Scroll projects right"
-          onClick={() => scrollProjects(scrollRef.current, 1)}
+          aria-label="Next project"
+          onClick={() => goBy(1)}
         >
           →
         </button>
