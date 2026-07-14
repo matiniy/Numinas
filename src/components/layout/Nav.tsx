@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
 import { BRAND_LOGO } from '@/lib/brand-logo'
 import { cn } from '@/lib/utils'
@@ -119,17 +120,17 @@ export function Nav() {
     <header className="fixed inset-x-0 top-0 z-50" style={headerStyle}>
       <div style={shellStyle}>
         <div className="flex items-center justify-between gap-4" style={rowStyle}>
-          <a href="#top" className="flex shrink-0 items-center" aria-label="Numinas home">
-            <img
-              src={BRAND_LOGO.white}
-              alt=""
-              width={356}
-              height={50}
-              className="w-auto"
-              style={{ height: `${logoHeight}px` }}
-              decoding="async"
-            />
-          </a>
+        <Link to="/" className="flex shrink-0 items-center" aria-label="Numinas home">
+          <img
+            src={BRAND_LOGO.white}
+            alt=""
+            width={356}
+            height={50}
+            className="w-auto"
+            style={{ height: `${logoHeight}px` }}
+            decoding="async"
+          />
+        </Link>
 
           <nav
             className="hidden items-center lg:flex"

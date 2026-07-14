@@ -1,13 +1,13 @@
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
+import { GlassChip, GlassChipList } from '@/components/ui/glass-chip'
+import { HERO_OFFERINGS } from '@/lib/glass-chips'
 import { HeroVideo } from './HeroVideo'
-
-const offerings = ['Launch Films', 'Motion Brand Systems', 'Social Loops']
 
 export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] flex-col justify-end"
+      className="relative flex min-h-[100svh] flex-col"
     >
       <HeroVideo />
       <div
@@ -15,25 +15,28 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <div className="wire-container relative z-10 pb-16 pt-24 md:pb-20 lg:pb-24">
-        <h1 className="type-display max-w-4xl">
-          Crafting Scroll-Stopping Motion That{' '}
-          <span className="type-display-accent">Clarifies</span> And{' '}
-          <span className="type-display-accent">Converts</span>
-        </h1>
-
-        <p className="type-body mt-5 max-w-2xl text-[var(--n-mist)] md:max-w-3xl">
-          We build visuals that travel across every channel, from concept and styleframes to 2D/3D
-          animation, sound, and delivery kits.
-        </p>
-        <ul className="wire-chip-list" aria-label="Core offerings">
-          {offerings.map((item) => (
-            <li key={item}>
-              <span className="wire-chip">{item}</span>
+      <div className="wire-container relative z-10 flex flex-1 flex-col pb-16 pt-24 md:pb-20 md:pt-28 lg:pb-24">
+        <GlassChipList aria-label="Core offerings">
+          {HERO_OFFERINGS.map((item) => (
+            <li key={item.label}>
+              <GlassChip variant={item.variant}>{item.label}</GlassChip>
             </li>
           ))}
-        </ul>
-        <CreativeCallButton className="mt-8" />
+        </GlassChipList>
+
+        <div className="mt-auto pt-10 md:pt-12">
+          <h1 className="type-display max-w-4xl">
+            Crafting Scroll-Stopping Motion That{' '}
+            <span className="type-display-accent">Clarifies</span> And{' '}
+            <span className="type-display-accent">Converts</span>
+          </h1>
+
+          <p className="type-body mt-5 max-w-2xl text-[var(--n-mist)] md:max-w-3xl">
+            We build visuals that travel across every channel, from concept and styleframes to 2D/3D
+            animation, sound, and delivery kits.
+          </p>
+          <CreativeCallButton className="mt-8" />
+        </div>
       </div>
     </section>
   )

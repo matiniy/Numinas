@@ -1,11 +1,5 @@
-const projects = [
-  { name: 'Urban Decay', title: 'Ride or Die' },
-  { name: 'Olay', title: 'STEM' },
-  { name: 'American Express', title: 'Play It' },
-  { name: 'Excel', title: 'Get Chewing' },
-  { name: 'Secret', title: 'Aluminum Free' },
-  { name: 'Pellican', title: 'Cushion' },
-]
+import { Link } from 'react-router-dom'
+import { PROJECTS } from '@/lib/projects'
 
 export function Projects() {
   return (
@@ -16,21 +10,30 @@ export function Projects() {
           <h2 id="projects-heading" className="type-h2">
             Selected Work
           </h2>
-          <p className="type-small text-[var(--n-mist)]">Wireframe grid · media later</p>
+          <p className="type-small text-[var(--n-mist)]">Case studies with media, motion, and story</p>
         </div>
 
         <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {projects.map((project) => (
-            <li key={`${project.name}-${project.title}`}>
-              <article className="wire-box group overflow-hidden">
-                <div className="flex aspect-video items-center justify-center border-b border-dashed border-[var(--n-wire)] font-mono text-[10px] uppercase tracking-wider text-[var(--n-mist)]">
-                  [ project thumbnail ]
+          {PROJECTS.map((project) => (
+            <li key={project.slug}>
+              <Link
+                to={`/work/${project.slug}`}
+                className="wire-box group block overflow-hidden transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--n-paper)]"
+              >
+                <div
+                  className="flex aspect-video items-center justify-center border-b border-dashed border-[var(--n-wire)] font-mono text-[10px] uppercase tracking-wider text-[var(--n-mist)]"
+                  style={{
+                    background: `linear-gradient(135deg, ${project.accentSoft}22, ${project.accent}33)`,
+                  }}
+                >
+                  {project.client} · {project.title}
                 </div>
                 <div className="p-4">
-                  <p className="type-eyebrow text-[var(--n-mist)]">{project.name}</p>
+                  <p className="type-eyebrow text-[var(--n-mist)]">{project.client}</p>
                   <h3 className="type-h3 mt-1">{project.title}</h3>
+                  <p className="type-small mt-2 text-[var(--n-mist)]">View case study →</p>
                 </div>
-              </article>
+              </Link>
             </li>
           ))}
         </ul>
