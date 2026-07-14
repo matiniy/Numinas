@@ -1,0 +1,126 @@
+.flowing-menu-wrap {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.flowing-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flowing-menu__item {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  border-top: 1px solid var(--flowing-border, #2a2a32);
+}
+
+.flowing-menu__item:first-child {
+  border-top: none;
+}
+
+.flowing-menu__item-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-family: var(--font-title);
+  font-weight: var(--font-weight-title);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  letter-spacing: -0.01em;
+}
+
+.flowing-menu__item-index {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  opacity: 0.55;
+}
+
+.flowing-menu__marquee {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transform: translate3d(0, 101%, 0);
+}
+
+.flowing-menu__marquee-inner-wrap {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.flowing-menu__marquee-inner {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  width: fit-content;
+  will-change: transform;
+}
+
+.flowing-menu__marquee-part {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 1.5rem;
+  padding-right: 2rem;
+}
+
+.flowing-menu__marquee-text {
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-body);
+  font-size: clamp(0.95rem, 1.6vw, 1.125rem);
+  line-height: 1.4;
+  max-width: 36rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flowing-menu__marquee-img {
+  width: clamp(120px, 18vw, 200px);
+  height: clamp(48px, 8vh, 72px);
+  flex-shrink: 0;
+  border-radius: 4px;
+  background-color: var(--n-fog);
+  background-size: cover;
+  background-position: center;
+  border: 1px dashed var(--n-wire);
+}
+
+@media (hover: none) {
+  .flowing-menu__item-link {
+    cursor: default;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flowing-menu__marquee {
+    transition: transform 0.2s ease;
+  }
+
+  .flowing-menu__item--open .flowing-menu__marquee {
+    transform: translate3d(0, 0, 0);
+  }
+}

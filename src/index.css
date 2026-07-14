@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* PP Mori + PP Hatton — /public/fonts/ */
+@font-face {
+  font-family: "PP Mori";
+  src:
+    url("/fonts/Mori/PPMori-Book.woff2") format("woff2"),
+    url("/fonts/Mori/PPMori-Book.woff") format("woff");
+  font-weight: 450;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Mori";
+  src:
+    url("/fonts/Mori/PPMori-Regular.woff2") format("woff2"),
+    url("/fonts/Mori/PPMori-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Hatton";
+  src:
+    url("/fonts/Hatton/web/PPHatton-Medium.woff2") format("woff2"),
+    url("/fonts/Hatton/web/PPHatton-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Hatton";
+  src:
+    url("/fonts/Hatton/web/PPHatton-MediumItalic.woff2") format("woff2"),
+    url("/fonts/Hatton/web/PPHatton-MediumItalic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --n-void: #0a0a0b;
+  --n-ink: #111114;
+  --n-fog: #2a2a32;
+  --n-mist: #8a8a93;
+  --n-paper: #f4f4f5;
+  --n-wire: #5c5c66;
+  --gutter: clamp(16px, 4vw, 40px);
+  --section-y: clamp(3.5rem, 8vw, 6rem);
+  --container: min(1120px, calc(100% - 2 * var(--gutter)));
+
+  --font-title: "PP Mori", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "PP Mori", ui-sans-serif, system-ui, sans-serif;
+  --font-service: "PP Hatton", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-weight-title: 450;
+  --font-weight-body: 400;
+  --font-weight-service: 500;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+.gpu-layer {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--n-void);
+  color: var(--n-paper);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .type-display {
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-title);
+    font-size: clamp(1.75rem, 3.25vw + 0.75rem, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+
+  .type-display-accent {
+    font-family: var(--font-service);
+    font-weight: var(--font-weight-service);
+    font-style: italic;
+  }
+
+  .type-h2 {
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-title);
+    font-size: clamp(1.5rem, 2vw + 1rem, 2.75rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .type-h3 {
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-title);
+    font-size: clamp(1.125rem, 0.5vw + 1rem, 1.5rem);
+    line-height: 1.25;
+  }
+
+  .type-service-title {
+    font-family: var(--font-service);
+    font-weight: var(--font-weight-service);
+    font-size: clamp(1.125rem, 0.4vw + 1rem, 1.375rem);
+    line-height: 1.25;
+  }
+
+  .type-body {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-body);
+    font-size: clamp(1rem, 0.2vw + 0.95rem, 1.125rem);
+    line-height: 1.6;
+  }
+
+  .type-small {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-body);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .type-brand {
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-title);
+    letter-spacing: 0.04em;
+  }
+
+  .type-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .wire-section {
+    @apply border-b border-dashed border-[var(--n-fog)];
+    padding-block: var(--section-y);
+  }
+
+  .wire-container {
+    width: var(--container);
+    margin-inline: auto;
+  }
+
+  .wire-label {
+    @apply mb-3 text-[var(--n-mist)];
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .wire-box {
+    @apply border border-dashed border-[var(--n-wire)];
+    background-color: rgb(17 17 20 / 0.6);
+  }
+
+  .wire-chip {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-body);
+    @apply inline-flex items-center border border-[var(--n-fog)] px-3 py-1.5 text-xs text-[var(--n-paper)] md:text-sm;
+    background-color: rgb(17 17 20 / 0.8);
+    border-radius: 2px;
+  }
+
+  .wire-chip-list {
+    @apply mt-5 flex flex-wrap gap-2;
+  }
+
+  .wire-btn {
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-title);
+    @apply inline-flex min-h-11 items-center justify-center border border-[var(--n-paper)] px-5 text-sm text-[var(--n-paper)] transition-colors;
+  }
+
+  .wire-btn:hover {
+    @apply bg-[var(--n-paper)] text-[var(--n-void)];
+  }
+
+  .wire-input {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-body);
+    @apply min-h-11 w-full border border-dashed border-[var(--n-wire)] bg-transparent px-3 text-sm text-[var(--n-paper)] outline-none;
+  }
+
+  .wire-input:focus {
+    @apply border-[var(--n-paper)];
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
