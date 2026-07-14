@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { CaseStudyHeader } from '@/components/case-study/CaseStudyHeader'
 import { CaseStudyHero } from '@/components/case-study/CaseStudyHero'
 import { CaseStudyNext } from '@/components/case-study/CaseStudyNext'
 import { CaseStudyStory } from '@/components/case-study/CaseStudyStory'
 import { ParallaxMediaGrid } from '@/components/case-study/ParallaxMediaGrid'
+import { Nav } from '@/components/layout/Nav'
 import { getAdjacentProjects, getProjectBySlug } from '@/lib/projects'
 import '@/styles/case-study.css'
 
@@ -19,17 +19,20 @@ export function CaseStudyPage() {
 
   if (!project) {
     return (
-      <div className="case-study flex min-h-screen items-center justify-center px-6">
-        <div className="text-center">
-          <h1
-            className="text-3xl"
-            style={{ fontFamily: 'var(--font-title)', fontWeight: 'var(--font-weight-title)' }}
-          >
-            Project not found
-          </h1>
-          <Link to="/" className="type-body mt-4 inline-block text-[var(--cs-muted)] hover:text-[var(--cs-ink)]">
-            ← Back to home
-          </Link>
+      <div className="case-study flex min-h-screen flex-col overflow-x-clip">
+        <Nav surface="light" />
+        <div className="case-study__main flex flex-1 items-center justify-center px-6">
+          <div className="text-center">
+            <h1
+              className="text-3xl"
+              style={{ fontFamily: 'var(--font-title)', fontWeight: 'var(--font-weight-title)' }}
+            >
+              Project not found
+            </h1>
+            <Link to="/" className="type-body mt-4 inline-block text-[var(--cs-muted)] hover:text-[var(--cs-ink)]">
+              ← Back to home
+            </Link>
+          </div>
         </div>
       </div>
     )
@@ -37,8 +40,8 @@ export function CaseStudyPage() {
 
   return (
     <div className="case-study overflow-x-clip">
-      <CaseStudyHeader project={project} />
-      <main>
+      <Nav surface="light" />
+      <main className="case-study__main">
         <CaseStudyHero project={project} />
         <CaseStudyStory project={project} />
         <ParallaxMediaGrid project={project} />

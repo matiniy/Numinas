@@ -510,11 +510,16 @@ body {
       border-radius 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .site-nav__link {
+  .site-nav__link--on-dark {
     color: var(--n-paper);
+  }
+
+  .site-nav__link {
     font-family: var(--font-body);
     font-weight: var(--font-weight-body);
-    transition: font-weight 0.2s ease;
+    transition:
+      font-weight 0.2s ease,
+      color 0.2s ease;
   }
 
   .site-nav__link:hover,

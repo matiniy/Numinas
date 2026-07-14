@@ -5,9 +5,9 @@ import { BRAND_LOGO } from '@/lib/brand-logo'
 import { cn } from '@/lib/utils'
 
 const links = [
-  { href: '#projects', label: 'Work' },
-  { href: '#services', label: 'Services' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#projects', label: 'Work' },
+  { href: '/#services', label: 'Services' },
+  { href: '/#contact', label: 'Contact' },
 ]
 
 const SCROLL_RANGE = 140
@@ -21,12 +21,13 @@ function easeOutQuint(t: number) {
   return 1 - Math.pow(1 - t, 5)
 }
 
-export function Nav() {
+export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
   const [open, setOpen] = useState(false)
   const [progress, setProgress] = useState(0)
   const [isDesktop, setIsDesktop] = useState(false)
   const currentRef = useRef(0)
   const reducedMotionRef = useRef(false)
+  const isLightSurface = surface === 'light'
 
   useEffect(() => {
     reducedMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -47,9 +48,7 @@ export function Nav() {
     const loop = () => {
       if (!mounted) return
 
-      const goal = open
-        ? 1
-        : Math.min(1, Math.max(0, window.scrollY / SCROLL_RANGE))
+      const goal = open ? 1 : Math.min(1, Math.max(0, window.scrollY / SCROLL_RANGE))
 
       if (reducedMotionRef.current) {
         currentRef.current = goal
@@ -119,6 +118,10 @@ export function Nav() {
   }
 
   const logoHeight = lerp(28, 20, p)
+  const linkColor = isLightSurface
+    ? `rgb(${Math.round(lerp(18, 255, p))} ${Math.round(lerp(18, 255, p))} ${Math.round(lerp(22, 255, p))})`
+    : undefined
+  const logoFilter = isLightSurface ? `brightness(${lerp(0, 1, p)})` : undefined
 
   return (
     <header className="fixed inset-x-0 top-0 z-50" style={headerStyle}>
@@ -131,7 +134,7 @@ export function Nav() {
             width={356}
             height={50}
             className="w-auto"
-            style={{ height: `${logoHeight}px` }}
+            style={{ height: `${logoHeight}px`, filter: logoFilter }}
             decoding="async"
           />
         </Link>
@@ -145,8 +148,8 @@ export function Nav() {
               <a
                 key={link.href}
                 href={link.href}
-                className="site-nav__link type-small"
-                style={{ fontSize: `${lerp(14, 12, p)}px` }}
+                className={cn('site-nav__link type-small', !isLightSurface && 'site-nav__link--on-dark')}
+                style={{ fontSize: `${lerp(14, 12, p)}px`, color: linkColor }}
               >
                 {link.label}
               </a>
@@ -160,7 +163,9 @@ export function Nav() {
               'site-nav__menu-btn flex min-h-11 min-w-11 items-center justify-center lg:hidden',
               isFloating
                 ? 'rounded-xl border border-white/[0.08] bg-white/[0.04]'
-                : 'wire-box',
+                : isLightSurface
+                  ? 'rounded-xl border border-[var(--cs-line)] bg-white/70 text-[var(--cs-ink)]'
+                  : 'wire-box',
             )}
             aria-expanded={open}
             aria-controls="mobile-nav"
@@ -176,7 +181,9 @@ export function Nav() {
             id="mobile-nav"
             className={cn(
               'border-t lg:hidden',
-              isFloating ? 'border-white/[0.08] bg-[rgb(10_10_11/0.18)]' : 'border-[var(--n-fog)] bg-[var(--n-void)]',
+              isFloating || !isLightSurface
+                ? 'border-white/[0.08] bg-[rgb(10_10_11/0.18)]'
+                : 'border-[var(--cs-line)] bg-[var(--cs-paper)]',
             )}
           >
             <nav
@@ -188,7 +195,11 @@ export function Nav() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="site-nav__link type-small flex min-h-11 items-center"
+            className={cn(
+              'site-nav__link type-small flex min-h-11 items-center',
+              !isLightSurface && 'site-nav__link--on-dark',
+            )}
+            style={isLightSurface ? { color: linkColor } : undefined}
                   onClick={() => setOpen(false)}
                 >
                   {link.label}
@@ -197,7 +208,7 @@ export function Nav() {
               <CreativeCallButton
                 className="mt-2 w-full"
                 compact
-                href="#contact"
+                href="/#contact"
                 onClick={() => setOpen(false)}
               />
             </nav>

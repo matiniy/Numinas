@@ -1,4 +1,7 @@
 import type { Project } from '@/lib/projects'
+import { GlassChip, GlassChipList } from '@/components/ui/glass-chip'
+import { LoopingVideo } from '@/components/ui/looping-video'
+import { GLASS_CHIP_VARIANTS } from '@/lib/glass-chips'
 
 interface CaseStudyHeroProps {
   project: Project
@@ -16,14 +19,15 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
       />
 
       <div className="wire-container relative">
-        <div className="mb-6 flex flex-wrap gap-2">
-          <span className="case-study__chip">{project.year}</span>
-          {project.services.map((service) => (
-            <span key={service} className="case-study__chip">
-              {service}
-            </span>
+        <GlassChipList className="mb-6" aria-label="Project services">
+          {project.services.map((service, index) => (
+            <li key={service}>
+              <GlassChip variant={GLASS_CHIP_VARIANTS[index % GLASS_CHIP_VARIANTS.length]}>
+                {service}
+              </GlassChip>
+            </li>
           ))}
-        </div>
+        </GlassChipList>
 
         <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--cs-muted)]">
           {project.client}
@@ -40,14 +44,11 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
           {project.heroVideo || project.heroImage ? (
             <div className="relative aspect-[16/8] bg-[var(--cs-ink)]">
               {project.heroVideo ? (
-                <video
+                <LoopingVideo
                   src={project.heroVideo}
                   poster={project.heroImage}
                   className="h-full w-full object-cover"
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
+                  preload="auto"
                 />
               ) : (
                 <img
