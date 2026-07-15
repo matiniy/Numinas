@@ -160,20 +160,23 @@ body {
 
   .projects-scroll-viewport {
     position: relative;
-    overflow: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
+    padding-bottom: 0.5rem;
   }
 
   .projects-scroll {
     --project-card-width: clamp(14rem, 72vw, 17.5rem);
     --project-card-gap: 1.25rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0;
     margin: 0;
-    padding: 1.25rem max(
-      var(--gutter),
-      calc(50% - (var(--project-card-width) + var(--project-card-gap)) / 2)
-    );
+    padding: 0.5rem max(
+        var(--gutter),
+        calc(50% - (var(--project-card-width) + var(--project-card-gap)) / 2)
+      )
+      1.5rem;
     list-style: none;
     overflow-x: auto;
     overflow-y: visible;
@@ -211,17 +214,59 @@ body {
 
   .projects-scroll__item-inner {
     width: 100%;
-    transform: scale(0.88);
-    transform-origin: center center;
+  }
+
+  .projects-scroll__media-wrap {
+    --media-scale: 0.88;
+    transform: scale(var(--media-scale));
+    transform-origin: center top;
+    margin-bottom: calc(var(--project-card-width) * 9 / 16 * (var(--media-scale) - 1));
     transition:
       transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-      filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      filter 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      margin-bottom 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: transform;
   }
 
-  .projects-scroll__item--center .projects-scroll__item-inner {
-    transform: scale(1.15);
+  .projects-scroll__item--center .projects-scroll__media-wrap {
+    --media-scale: 1.15;
     filter: drop-shadow(0 18px 40px rgb(0 0 0 / 0.45));
+  }
+
+  .projects-scroll__overlay {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 2;
+    padding: 1.65rem 0.85rem 0.8rem;
+    background: linear-gradient(180deg, rgb(0 0 0 / 0) 0%, rgb(0 0 0 / 0.9) 100%);
+    pointer-events: none;
+  }
+
+  .projects-scroll__overlay-client {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .projects-scroll__overlay-title {
+    margin-top: 0.25rem;
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-title);
+    font-size: clamp(0.95rem, 2.1vw, 1.3rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--n-paper);
+  }
+
+  .projects-scroll__cta {
+    display: inline-block;
+    margin-top: 0.45rem;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 
   .projects-scroll__control {
@@ -270,29 +315,48 @@ body {
 
   #services.wire-section {
     border-bottom: none;
+    overflow: visible;
   }
 
   .services-section__inner {
     display: grid;
-    gap: clamp(2rem, 5vw, 3rem);
+    grid-template-columns: 1fr;
+    gap: clamp(1.75rem, 4vw, 2.5rem);
     align-items: center;
   }
 
   @media (min-width: 1024px) {
     .services-section__inner {
-      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-      gap: clamp(1.5rem, 4vw, 2.5rem);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: clamp(1.25rem, 2.5vw, 2rem);
     }
   }
 
-  .services-section__copy {
+  .services-section__intro {
     min-width: 0;
+    max-width: 20rem;
+  }
+
+  @media (min-width: 1024px) {
+    .services-section__intro {
+      justify-self: start;
+    }
   }
 
   .services-section__detail {
-    margin-top: clamp(1.75rem, 4vw, 2.5rem);
-    padding-top: 1.5rem;
-    border-top: 1px solid rgb(255 255 255 / 0.08);
+    min-width: 0;
+    max-width: 14rem;
+    padding-top: 0.15rem;
+    position: relative;
+    z-index: 2;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .services-section__detail {
+      justify-self: center;
+      margin-inline: auto;
+    }
   }
 
   .services-section__index {
@@ -302,11 +366,27 @@ body {
     color: var(--n-mist);
   }
 
+  .services-section__title {
+    display: inline-block;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
   .services-section__wheel {
     position: relative;
+    width: 100%;
+    min-width: 0;
     height: clamp(20rem, 52vh, 30rem);
-    border-radius: 1rem;
-    overflow: hidden;
+    overflow: visible;
+  }
+
+  @media (min-width: 1024px) {
+    .services-section__wheel {
+      justify-self: stretch;
+      width: 100%;
+    }
   }
 
   .services-section__wheel .option-wheel {
@@ -314,6 +394,7 @@ body {
     inset: 0;
     width: 100%;
     height: 100%;
+    overflow: visible;
     font-family: var(--font-title);
   }
 
@@ -323,8 +404,8 @@ body {
     }
 
     .services-section__wheel .option-wheel {
-      --ow-font-size: 1.75rem;
-      --ow-inset: 1.5rem;
+      --ow-font-size: 1.85rem;
+      --ow-inset: 1rem;
     }
   }
 

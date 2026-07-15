@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { OptionWheel } from '@/components/ui/OptionWheel'
-
+import { getGrainientPaletteByIndex } from '@/lib/grainient-palettes'
 const services = [
   {
     n: '01',
@@ -37,25 +37,32 @@ const services = [
 export function Services() {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const selected = services[selectedIndex]
+  const grainient = getGrainientPaletteByIndex(selectedIndex)
 
   return (
     <section id="services" className="wire-section services-section" aria-labelledby="services-heading">
       <div className="wire-container services-section__inner">
-        <div className="services-section__copy">
+        <div className="services-section__intro">
           <p className="wire-label">06 · Services</p>
           <h2 id="services-heading" className="type-h2">
             What We Make
           </h2>
           <p className="type-body mt-4 max-w-xl text-[var(--n-mist)]">
-            Animated content that clarifies, captivates, and connects — scroll or drag the wheel to
-            explore what we build.
+            Animated content that clarifies, captivates, and connects.
           </p>
+        </div>
 
-          <div className="services-section__detail" aria-live="polite">
-            <p className="services-section__index">{selected.n}</p>
-            <h3 className="type-service-title mt-2">{selected.title}</h3>
-            <p className="type-small mt-3 max-w-md text-[var(--n-mist)]">{selected.body}</p>
-          </div>
+        <div className="services-section__detail" aria-live="polite">
+          <p className="services-section__index">{selected.n}</p>
+          <h3
+            className="type-service-title services-section__title mt-2"
+            style={{
+              backgroundImage: `linear-gradient(120deg, ${grainient.color1} 0%, ${grainient.color2} 52%, ${grainient.color3} 100%)`,
+            }}
+          >
+            {selected.title}
+          </h3>
+          <p className="type-small mt-3 text-[var(--n-mist)]">{selected.body}</p>
         </div>
 
         <div className="services-section__wheel">
@@ -66,17 +73,19 @@ export function Services() {
             textColor="#8a8a93"
             activeColor="#ffffff"
             side="right"
-            fontSize={2.5}
-            spacing={1.35}
+            fontSize={2.15}
+            spacing={1.3}
             curve={1}
             tilt={7}
             blur={1.5}
             fade={0.2}
             minOpacity={0.12}
             smoothing={200}
-            inset={56}
+            inset={20}
             loop={false}
             draggable
+            soundUrl="/sounds/click-soft.mp3"
+            soundVolume={0.5}
           />
         </div>
       </div>

@@ -71,6 +71,10 @@ function hashSlug(slug: string) {
   return hash
 }
 
+export function getGrainientPaletteByIndex(index: number) {
+  return GRAINIENT_PALETTES[((index % GRAINIENT_PALETTES.length) + GRAINIENT_PALETTES.length) % GRAINIENT_PALETTES.length]
+}
+
 export function getProjectGrainientColors(project: Project) {
   const palette = GRAINIENT_PALETTES[hashSlug(project.slug)]
   const accent = project.accent || palette.color2
