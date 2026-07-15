@@ -49,35 +49,37 @@ function TrustedByLogo({
 export function TrustedBy() {
   return (
     <section id="trusted" className="trusted-by-section wire-section" aria-labelledby="trusted-heading">
-      <div className="wire-container">
-        <h2 id="trusted-heading" className="type-h3 mb-8 md:mb-10">
-          Trusted by global brands and agencies
-        </h2>
-      </div>
-
-      <div className="trusted-by-marquee">
-        <div className="trusted-by-marquee__viewport">
-          <div className="trusted-by-marquee__track">
-            {[0, 1].map((copy) => (
-              <ul
-                key={copy}
-                className="trusted-by-marquee__group"
-                aria-hidden={copy === 1 ? true : undefined}
-              >
-                {TRUSTED_BY_LOGOS.map((logo) => (
-                  <li key={`${copy}-${logo.slug}`} className="trusted-by-marquee__item">
-                    <TrustedByLogo
-                      name={logo.name}
-                      src={logo.src}
-                      alt={logo.alt}
-                      scale={logo.scale}
-                      offsetY={logo.offsetY}
-                    />
-                  </li>
-                ))}
-              </ul>
-            ))}
+      <div className="trusted-by-strip">
+        <div className="trusted-by-marquee">
+          <div className="trusted-by-marquee__viewport">
+            <div className="trusted-by-marquee__track">
+              {[0, 1].map((copy) => (
+                <ul
+                  key={copy}
+                  className="trusted-by-marquee__group"
+                  aria-hidden={copy === 1 ? true : undefined}
+                >
+                  {TRUSTED_BY_LOGOS.map((logo) => (
+                    <li key={`${copy}-${logo.slug}`} className="trusted-by-marquee__item">
+                      <TrustedByLogo
+                        name={logo.name}
+                        src={logo.src}
+                        alt={logo.alt}
+                        scale={logo.scale}
+                        offsetY={logo.offsetY}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
           </div>
+        </div>
+
+        <div className="trusted-by-strip__title">
+          <h2 id="trusted-heading" className="trusted-by-strip__heading">
+            Trusted by global brands
+          </h2>
         </div>
       </div>
     </section>
