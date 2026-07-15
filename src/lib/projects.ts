@@ -548,6 +548,7 @@ export const PROJECTS: Project[] = [
     heroVideo: `${PROJECT_MEDIA}/excel-get-chewing/hero.mp4`,
     heroImage: `${PROJECT_MEDIA}/excel-get-chewing/hero.jpg`,
     thumbnail: `${PROJECT_MEDIA}/excel-get-chewing/thumb.jpg`,
+    cardMedia: 'image',
   },
   {
     slug: 'secret-aluminum-free',
@@ -779,6 +780,7 @@ export const PROJECTS: Project[] = [
     heroVideo: `${PROJECT_MEDIA}/pellican-cushion/hero.mp4`,
     heroImage: `${PROJECT_MEDIA}/pellican-cushion/hero.jpg`,
     thumbnail: `${PROJECT_MEDIA}/pellican-cushion/thumb.jpg`,
+    cardMedia: 'image',
   },
 ]
 

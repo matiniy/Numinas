@@ -8,6 +8,8 @@ interface LazyLoopingVideoProps {
   /** When false, video is not mounted — poster/image only. */
   active?: boolean
   preload?: 'none' | 'metadata' | 'auto'
+  onReady?: () => void
+  onError?: () => void
 }
 
 export function LazyLoopingVideo({
@@ -16,43 +18,72 @@ export function LazyLoopingVideo({
   className,
   active = true,
   preload = 'metadata',
+  onReady,
+  onError,
 }: LazyLoopingVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [ready, setReady] = useState(false)
+  const [failed, setFailed] = useState(false)
 
-  const restart = useCallback((video: HTMLVideoElement) => {
-    video.currentTime = 0
+  const tryPlay = useCallback((video: HTMLVideoElement) => {
     void video.play().catch(() => {
-      // Autoplay policies may block replay until user interaction.
+      // Autoplay may be blocked until enough data is buffered.
     })
   }, [])
 
   useEffect(() => {
     if (!active) {
       setReady(false)
+      setFailed(false)
       return
     }
 
     const video = videoRef.current
     if (!video) return
 
+    setReady(false)
+    setFailed(false)
     video.loop = true
 
-    const onCanPlay = () => setReady(true)
-    const onEnded = () => restart(video)
+    const markReady = () => {
+      setReady(true)
+      onReady?.()
+      tryPlay(video)
+    }
+
+    const onCanPlay = () => markReady()
+    const onLoadedData = () => {
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        markReady()
+      }
+    }
+
+    const onVideoError = () => {
+      setFailed(true)
+      onError?.()
+    }
+
+    const onEnded = () => {
+      video.currentTime = 0
+      tryPlay(video)
+    }
 
     video.addEventListener('canplay', onCanPlay)
+    video.addEventListener('loadeddata', onLoadedData)
+    video.addEventListener('error', onVideoError)
     video.addEventListener('ended', onEnded)
 
-    void video.play().catch(() => {
-      // Ignore autoplay rejection; video still loops once started.
-    })
+    video.load()
+    tryPlay(video)
 
     return () => {
       video.removeEventListener('canplay', onCanPlay)
+      video.removeEventListener('loadeddata', onLoadedData)
+      video.removeEventListener('error', onVideoError)
       video.removeEventListener('ended', onEnded)
+      video.pause()
     }
-  }, [active, restart, src])
+  }, [active, onError, onReady, src, tryPlay])
 
   if (!active) {
     if (!poster) return null
@@ -69,9 +100,11 @@ export function LazyLoopingVideo({
     )
   }
 
+  const showPoster = Boolean(poster) && (!ready || failed)
+
   return (
     <div className={cn('relative h-full w-full', className)}>
-      {poster && !ready ? (
+      {showPoster ? (
         <img
           src={poster}
           alt=""
@@ -81,18 +114,20 @@ export function LazyLoopingVideo({
           aria-hidden="true"
         />
       ) : null}
-      <video
-        ref={videoRef}
-        src={src}
-        poster={poster}
-        className="absolute inset-0 h-full w-full object-cover"
-        muted
-        loop
-        playsInline
-        autoPlay
-        preload={preload}
-        aria-hidden="true"
-      />
+      {!failed ? (
+        <video
+          ref={videoRef}
+          src={src}
+          poster={poster}
+          className="absolute inset-0 h-full w-full object-cover"
+          muted
+          loop
+          playsInline
+          autoPlay
+          preload={preload}
+          aria-hidden="true"
+        />
+      ) : null}
     </div>
   )
 }

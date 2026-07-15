@@ -5,7 +5,8 @@ import { getProjectGrainientColors } from '@/lib/grainient-palettes'
 import { PROJECTS, type Project } from '@/lib/projects'
 import { getDeliverableVideoUrl } from '@/lib/video-delivery'
 
-const AUTO_PLAY_MS = 5000
+const AUTO_PLAY_MS = 8000
+const MIN_SLIDE_MS = 4000
 const CHEVRON_SIZE = 28
 
 type ChevronDirection = 'left' | 'right'
@@ -39,7 +40,17 @@ function ChevronIcon({
   )
 }
 
-function ProjectCardMedia({ project, isActive }: { project: Project; isActive: boolean }) {
+function ProjectCardMedia({
+  project,
+  isActive,
+  onVideoReady,
+  onVideoError,
+}: {
+  project: Project
+  isActive: boolean
+  onVideoReady?: () => void
+  onVideoError?: () => void
+}) {
   const poster = project.heroImage ?? project.thumbnail
   const imageSrc = project.thumbnail ?? project.heroImage
   const showVideo = isActive && Boolean(project.heroVideo) && project.cardMedia !== 'image'
@@ -50,7 +61,9 @@ function ProjectCardMedia({ project, isActive }: { project: Project; isActive: b
         src={getDeliverableVideoUrl(project.heroVideo)}
         poster={poster}
         active
-        preload="metadata"
+        preload="auto"
+        onReady={onVideoReady}
+        onError={onVideoError}
         className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
       />
     )
@@ -76,9 +89,28 @@ export function Projects() {
   const [activeIndex, setActiveIndex] = useState(0)
   const activeIndexRef = useRef(0)
   const autoPlayTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const slideReadyRef = useRef(true)
+  const slideShownAtRef = useRef(Date.now())
   const prefersReducedMotion = useRef(
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   )
+
+  const centerProject = PROJECTS[activeIndex]
+  const centerWantsVideo =
+    Boolean(centerProject?.heroVideo) && centerProject?.cardMedia !== 'image'
+
+  const markSlidePending = useCallback(() => {
+    slideReadyRef.current = !centerWantsVideo
+    slideShownAtRef.current = Date.now()
+  }, [centerWantsVideo])
+
+  const handleCenterVideoReady = useCallback(() => {
+    slideReadyRef.current = true
+  }, [])
+
+  const handleCenterVideoError = useCallback(() => {
+    slideReadyRef.current = true
+  }, [])
 
   const scrollToIndex = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
     const container = scrollRef.current
@@ -111,6 +143,25 @@ export function Projects() {
     setActiveIndex(closest)
   }, [])
 
+  useEffect(() => {
+    markSlidePending()
+  }, [activeIndex, markSlidePending])
+
+  useEffect(() => {
+    const nextProject = PROJECTS[(activeIndex + 1) % PROJECTS.length]
+    if (!nextProject.heroVideo || nextProject.cardMedia === 'image') return
+
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'video'
+    link.href = getDeliverableVideoUrl(nextProject.heroVideo)
+    document.head.appendChild(link)
+
+    return () => {
+      document.head.removeChild(link)
+    }
+  }, [activeIndex])
+
   const clearAutoPlay = useCallback(() => {
     if (autoPlayTimerRef.current) {
       clearInterval(autoPlayTimerRef.current)
@@ -123,6 +174,11 @@ export function Projects() {
 
     clearAutoPlay()
     autoPlayTimerRef.current = setInterval(() => {
+      if (!slideReadyRef.current) return
+
+      const elapsed = Date.now() - slideShownAtRef.current
+      if (elapsed < MIN_SLIDE_MS) return
+
       const next = (activeIndexRef.current + 1) % PROJECTS.length
       scrollToIndex(next)
     }, AUTO_PLAY_MS)
@@ -246,7 +302,12 @@ export function Projects() {
                               }
                         }
                       >
-                        <ProjectCardMedia project={project} isActive={isCenter} />
+                        <ProjectCardMedia
+                          project={project}
+                          isActive={isCenter}
+                          onVideoReady={isCenter ? handleCenterVideoReady : undefined}
+                          onVideoError={isCenter ? handleCenterVideoError : undefined}
+                        />
                         <div className="projects-scroll__overlay">
                           <p className="projects-scroll__overlay-client">{project.client}</p>
                           <h3 className="projects-scroll__overlay-title">{project.title}</h3>
