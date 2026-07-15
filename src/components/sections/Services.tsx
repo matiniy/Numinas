@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { OptionWheel } from '@/components/ui/OptionWheel'
+
 const services = [
   {
     n: '01',
@@ -32,29 +35,50 @@ const services = [
 ]
 
 export function Services() {
-  return (
-    <section id="services" className="wire-section" aria-labelledby="services-heading">
-      <div className="wire-container">
-        <p className="wire-label">06 · Services</p>
-        <h2 id="services-heading" className="type-h2 mb-3">
-          What We Make
-        </h2>
-        <p className="type-body mb-8 max-w-2xl text-[var(--n-mist)]">
-          Animated content that clarifies, captivates, and connects — from brand films to full
-          motion systems.
-        </p>
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const selected = services[selectedIndex]
 
-        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          {services.map((service) => (
-            <li key={service.n} className="wire-box flex gap-4 p-4">
-              <span className="font-mono text-xs text-[var(--n-mist)]">{service.n}</span>
-              <div>
-                <h3 className="type-service-title">{service.title}</h3>
-                <p className="type-small mt-2 text-[var(--n-mist)]">{service.body}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+  return (
+    <section id="services" className="wire-section services-section" aria-labelledby="services-heading">
+      <div className="wire-container services-section__inner">
+        <div className="services-section__copy">
+          <p className="wire-label">06 · Services</p>
+          <h2 id="services-heading" className="type-h2">
+            What We Make
+          </h2>
+          <p className="type-body mt-4 max-w-xl text-[var(--n-mist)]">
+            Animated content that clarifies, captivates, and connects — scroll or drag the wheel to
+            explore what we build.
+          </p>
+
+          <div className="services-section__detail" aria-live="polite">
+            <p className="services-section__index">{selected.n}</p>
+            <h3 className="type-service-title mt-2">{selected.title}</h3>
+            <p className="type-small mt-3 max-w-md text-[var(--n-mist)]">{selected.body}</p>
+          </div>
+        </div>
+
+        <div className="services-section__wheel">
+          <OptionWheel
+            items={services.map((service) => service.title)}
+            defaultSelected={0}
+            onChange={(index) => setSelectedIndex(index)}
+            textColor="#8a8a93"
+            activeColor="#ffffff"
+            side="right"
+            fontSize={2.5}
+            spacing={1.35}
+            curve={1}
+            tilt={7}
+            blur={1.5}
+            fade={0.2}
+            minOpacity={0.12}
+            smoothing={200}
+            inset={56}
+            loop={false}
+            draggable
+          />
+        </div>
       </div>
     </section>
   )

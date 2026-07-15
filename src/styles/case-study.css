@@ -71,43 +71,21 @@
   min-height: 7.25rem;
 }
 
-.case-study__grid-motion-cell {
+.case-study__grid-motion-placeholder {
   display: flex;
   height: 100%;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.5rem;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0.65rem;
 }
 
-.case-study__grid-motion-media {
-  position: relative;
-  flex: 1;
-  min-height: 5.5rem;
-  overflow: hidden;
-  border-radius: 0.65rem;
-}
-
-.case-study__grid-motion-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding-inline: 0.15rem;
-}
-
-.case-study__grid-motion-type,
-.case-study__grid-motion-label {
+.case-study__grid-motion-placeholder-label {
   font-family: var(--font-mono);
   font-size: 0.5625rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgb(255 255 255 / 0.82);
-}
-
-.case-study__grid-motion-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .case-study__media-label {

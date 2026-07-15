@@ -13,6 +13,7 @@ Drop visuals for each case study in its own folder.
 | `american-express-play-it` | American Express · Plan It |
 | `excel-get-chewing` | Excel · Get Chewing |
 | `secret-aluminum-free` | Secret · Aluminum Free |
+| `readcoin` | Readcoin · Readcoin |
 | `pellican-cushion` | Pellican · Cushion |
 
 ## Recommended files per project

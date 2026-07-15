@@ -94,7 +94,8 @@ export function GridMotion({
                 return (
                   <div key={itemIndex} className="grid-motion__item">
                     <div className="grid-motion__item-inner">
-                      {typeof content === 'string' && content.startsWith('http') ? (
+                      {typeof content === 'string' &&
+                      (content.startsWith('http') || content.startsWith('/')) ? (
                         <div
                           className="grid-motion__item-img"
                           style={{ backgroundImage: `url(${content})` }}

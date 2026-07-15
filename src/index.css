@@ -272,6 +272,62 @@ body {
     border-bottom: none;
   }
 
+  .services-section__inner {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3rem);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .services-section__inner {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: clamp(1.5rem, 4vw, 2.5rem);
+    }
+  }
+
+  .services-section__copy {
+    min-width: 0;
+  }
+
+  .services-section__detail {
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid rgb(255 255 255 / 0.08);
+  }
+
+  .services-section__index {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--n-mist);
+  }
+
+  .services-section__wheel {
+    position: relative;
+    height: clamp(20rem, 52vh, 30rem);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .services-section__wheel .option-wheel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-title);
+  }
+
+  @media (max-width: 1023px) {
+    .services-section__wheel {
+      height: clamp(18rem, 48vh, 24rem);
+    }
+
+    .services-section__wheel .option-wheel {
+      --ow-font-size: 1.75rem;
+      --ow-inset: 1.5rem;
+    }
+  }
+
   .testimonials-section {
     padding-block: var(--section-y);
   }
