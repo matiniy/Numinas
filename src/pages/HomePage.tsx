@@ -15,9 +15,9 @@ export function HomePage() {
       <main>
         <Hero />
         <TrustedBy />
+        <Testimonials />
         <Pillars />
         <Projects />
-        <Testimonials />
         <Services />
         <Contact />
       </main>
