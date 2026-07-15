@@ -475,77 +475,141 @@ body {
   #services.wire-section {
     border-bottom: none;
     overflow: visible;
+    padding-block: 0;
+  }
+
+  .services-section__hero {
+    display: flex;
+    align-items: flex-end;
+    min-height: clamp(18rem, 52vh, 30rem);
+    padding-block: clamp(2.5rem, 6vh, 3.5rem) clamp(0.25rem, 0.75vh, 0.75rem);
+  }
+
+  .services-section__hero-inner {
+    width: 100%;
+    container-type: inline-size;
+  }
+
+  .services-section__scroll-float {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .services-section__scroll-float-text {
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-title);
+    font-size: min(11rem, max(1.6rem, 13.25cqi));
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    text-align: left;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .services-section__hero-copy {
+    margin-top: clamp(0.85rem, 2vh, 1.25rem);
+    max-width: 28rem;
+  }
+
+  .services-section__stage {
+    min-height: clamp(20rem, 72vh, 34rem);
+    display: flex;
+    align-items: flex-start;
+    padding-block: clamp(0.25rem, 0.75vh, 0.75rem) clamp(2.5rem, 6vh, 4rem);
+    margin-top: clamp(-1.5rem, -3.5vh, -0.65rem);
   }
 
   .services-section__inner {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(1.75rem, 4vw, 2.5rem);
+    grid-template-columns: minmax(0, 1fr) min(31.25rem, 100%);
+    column-gap: clamp(0.85rem, 2.5vw, 3rem);
+    row-gap: clamp(1rem, 2.5vw, 2rem);
     align-items: center;
-  }
-
-  @media (min-width: 1024px) {
-    .services-section__inner {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      column-gap: clamp(1.25rem, 2.5vw, 2rem);
-    }
-  }
-
-  .services-section__intro {
-    min-width: 0;
-    max-width: 20rem;
-  }
-
-  @media (min-width: 1024px) {
-    .services-section__intro {
-      justify-self: start;
-    }
+    width: 100%;
   }
 
   .services-section__detail {
     min-width: 0;
-    max-width: 14rem;
-    padding-top: 0.15rem;
+    width: 100%;
+    max-width: none;
+    padding-top: 0.35rem;
     position: relative;
     z-index: 2;
-    margin-inline: auto;
-  }
-
-  @media (min-width: 1024px) {
-    .services-section__detail {
-      justify-self: center;
-      margin-inline: auto;
-    }
+    justify-self: start;
+    margin-inline: 0;
+    overflow: visible;
   }
 
   .services-section__index {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     letter-spacing: 0.12em;
     color: var(--n-mist);
   }
 
+  .services-section__detail-stack {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(0.65rem, 2vw, 2.5rem);
+    margin-top: 0.75rem;
+    overflow: visible;
+  }
+
+  .services-section__title-wrap {
+    flex: 0 0 auto;
+    overflow: visible;
+    padding-block: 0.35em 0.1em;
+  }
+
   .services-section__title {
+    position: relative;
+    z-index: 1;
     display: inline-block;
+    margin: 0;
+    max-width: none;
+    overflow: visible;
+    white-space: nowrap;
+    font-family: var(--font-service);
+    font-weight: var(--font-weight-service);
+    font-size: clamp(1.85rem, 4.2vw, 3.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    padding-block: 0.12em 0.04em;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
   }
 
-  .services-section__wheel {
+  .services-section__body {
     position: relative;
-    width: 100%;
-    min-width: 0;
-    height: clamp(20rem, 52vh, 30rem);
-    overflow: visible;
+    z-index: 2;
+    flex: 1 1 14rem;
+    margin: 0;
+    min-width: 12rem;
+    max-width: clamp(15rem, 22vw, 21rem);
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-body);
+    font-size: clamp(1rem, 1vw + 0.88rem, 1.25rem);
+    line-height: 1.4;
+    color: var(--n-paper);
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    max-height: calc(2 * 1.4em);
   }
 
-  @media (min-width: 1024px) {
-    .services-section__wheel {
-      justify-self: stretch;
-      width: 100%;
-    }
+  .services-section__wheel {
+    position: relative;
+    justify-self: end;
+    width: 100%;
+    max-width: 31.25rem;
+    min-width: 0;
+    height: clamp(22rem, 68vh, 44rem);
+    overflow: visible;
   }
 
   .services-section__wheel .option-wheel {
@@ -557,14 +621,63 @@ body {
     font-family: var(--font-title);
   }
 
-  @media (max-width: 1023px) {
-    .services-section__wheel {
-      height: clamp(18rem, 48vh, 24rem);
+  @media (min-width: 1024px) {
+    .services-section__hero {
+      min-height: clamp(11rem, 28vh, 16rem);
+      padding-block: clamp(2rem, 4vh, 2.5rem) 0;
     }
 
-    .services-section__wheel .option-wheel {
-      --ow-font-size: 1.85rem;
-      --ow-inset: 1rem;
+    .services-section__hero-copy {
+      margin-top: clamp(0.65rem, 1.25vh, 0.9rem);
+    }
+
+    .services-section__stage {
+      min-height: auto;
+      padding-block: clamp(0.5rem, 1.25vh, 1rem) clamp(2.5rem, 5vh, 3.5rem);
+      margin-top: 0;
+    }
+
+    .services-section__wheel {
+      height: clamp(20rem, 50vh, 34rem);
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .services-section__hero {
+      min-height: clamp(10rem, 22vh, 14rem);
+    }
+
+    .services-section__stage {
+      padding-block-start: clamp(0.35rem, 0.85vh, 0.65rem);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .services-section__scroll-float-text {
+      font-size: min(3.25rem, max(1.45rem, 12.75cqi));
+      letter-spacing: -0.045em;
+    }
+
+    .services-section__hero-copy {
+      font-size: clamp(0.9375rem, 3.6vw, 1.0625rem);
+    }
+
+    .services-section__index {
+      font-size: 0.6875rem;
+    }
+
+    .services-section__title {
+      font-size: clamp(1.25rem, 4.8vw, 1.85rem);
+    }
+
+    .services-section__body {
+      font-size: clamp(0.8125rem, 2.8vw, 0.9375rem);
+      min-width: 7.5rem;
+      max-width: clamp(9rem, 28vw, 13rem);
+    }
+
+    .services-section__detail-stack {
+      gap: clamp(0.5rem, 1.8vw, 0.85rem);
     }
   }
 
@@ -847,7 +960,8 @@ body {
   .contact-section {
     position: relative;
     overflow: hidden;
-    padding-block: var(--section-y);
+    padding-top: clamp(14rem, 38vh, 30rem);
+    padding-bottom: var(--section-y);
   }
 
   .contact-section__backdrop {
