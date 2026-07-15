@@ -1,7 +1,8 @@
 import type { Project } from '@/lib/projects'
 import { GlassChip, GlassChipList } from '@/components/ui/glass-chip'
-import { LoopingVideo } from '@/components/ui/looping-video'
+import { LazyLoopingVideo } from '@/components/ui/lazy-looping-video'
 import { GLASS_CHIP_VARIANTS } from '@/lib/glass-chips'
+import { getDeliverableVideoUrl } from '@/lib/video-delivery'
 
 interface CaseStudyHeroProps {
   project: Project
@@ -44,11 +45,11 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
           {project.heroVideo || project.heroImage ? (
             <div className="relative aspect-[16/8] bg-[var(--cs-ink)]">
               {project.heroVideo ? (
-                <LoopingVideo
-                  src={project.heroVideo}
+                <LazyLoopingVideo
+                  src={getDeliverableVideoUrl(project.heroVideo)}
                   poster={project.heroImage}
                   className="h-full w-full object-cover"
-                  preload="auto"
+                  preload="metadata"
                 />
               ) : (
                 <img

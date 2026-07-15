@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { LazyLoopingVideo } from '@/components/ui/lazy-looping-video'
 import { getProjectGrainientColors } from '@/lib/grainient-palettes'
 import { PROJECTS, type Project } from '@/lib/projects'
+import { getDeliverableVideoUrl } from '@/lib/video-delivery'
 
 const AUTO_PLAY_MS = 5000
 const CHEVRON_SIZE = 28
@@ -37,23 +39,19 @@ function ChevronIcon({
   )
 }
 
-function ProjectCardMedia({ project }: { project: Project }) {
-  const useVideo = Boolean(project.heroVideo) && project.cardMedia !== 'image'
+function ProjectCardMedia({ project, isActive }: { project: Project; isActive: boolean }) {
   const poster = project.heroImage ?? project.thumbnail
   const imageSrc = project.thumbnail ?? project.heroImage
+  const showVideo = isActive && Boolean(project.heroVideo) && project.cardMedia !== 'image'
 
-  if (useVideo && project.heroVideo) {
+  if (showVideo && project.heroVideo) {
     return (
-      <video
-        src={project.heroVideo}
+      <LazyLoopingVideo
+        src={getDeliverableVideoUrl(project.heroVideo)}
         poster={poster}
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-        muted
-        loop
-        playsInline
-        autoPlay
+        active
         preload="metadata"
-        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
       />
     )
   }
@@ -217,9 +215,9 @@ export function Projects() {
         <ul ref={scrollRef} className="projects-scroll" role="list">
           {PROJECTS.map((project, index) => {
             const hasVisual =
-              (project.heroVideo && project.cardMedia !== 'image') ||
               project.thumbnail ||
-              project.heroImage
+              project.heroImage ||
+              Boolean(project.heroVideo)
             const isCenter = index === activeIndex
             const grainient = getProjectGrainientColors(project)
 
@@ -248,7 +246,7 @@ export function Projects() {
                               }
                         }
                       >
-                        <ProjectCardMedia project={project} />
+                        <ProjectCardMedia project={project} isActive={isCenter} />
                         <div className="projects-scroll__overlay">
                           <p className="projects-scroll__overlay-client">{project.client}</p>
                           <h3 className="projects-scroll__overlay-title">{project.title}</h3>

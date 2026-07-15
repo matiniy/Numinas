@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { HERO_MEDIA } from '../../lib/hero-media'
+import { getDeliverableVideoUrl } from '@/lib/video-delivery'
 
 export function HeroVideo() {
   const [ready, setReady] = useState(false)
   const [failed, setFailed] = useState(false)
 
-  const videoSrc = encodeURI(HERO_MEDIA.video.mp4)
+  const videoSrc = getDeliverableVideoUrl(HERO_MEDIA.video.mp4)
 
   if (failed) {
     return (
@@ -34,14 +35,13 @@ export function HeroVideo() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         poster={HERO_MEDIA.poster}
         aria-hidden="true"
         onCanPlay={() => setReady(true)}
         onError={() => setFailed(true)}
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
+        src={videoSrc}
+      />
     </>
   )
 }

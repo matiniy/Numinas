@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { HomePage } from '@/pages/HomePage'
 import { CaseStudyPage } from '@/pages/CaseStudyPage'
@@ -8,5 +9,10 @@ const router = createBrowserRouter([
 ])
 
 export default function App() {
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Analytics />
+    </>
+  )
 }

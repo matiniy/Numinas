@@ -65,6 +65,8 @@ git push
 ### Tips
 
 - Keep each MP4 **under ~50 MB** when possible (compress for web) — GitHub still accepts larger LFS files but smaller uploads are faster.
+- Run **`npm run encode-videos`** (requires ffmpeg) to create `*-web.mp4` siblings with faststart + 1080p cap. Then set `VITE_VIDEO_USE_WEB_VARIANT=true`.
+- Optional: set **`VITE_VIDEO_CDN_URL`** to a CDN origin (Bunny, Cloudflare R2, etc.) so the site streams from edge instead of the app host.
 - Do **not** commit multiple large MP4s in a single push if you can split them.
 - **Do not commit raw `.mov` masters** (often 300MB+) — export a compressed `.mp4` for the site first.
 - After clone, run `git lfs pull` if videos look missing (most clients fetch LFS automatically).
