@@ -1,8 +1,37 @@
 import { FormEvent, useState } from 'react'
+import type { COBEOptions } from 'cobe'
 import Aurora from '@/components/ui/Aurora'
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
+import { Globe } from '@/components/ui/globe'
 
 const CONTACT_AURORA_COLORS = ['#EC4899', '#B497CF', '#5227FF'] as const
+
+const CONTACT_GLOBE_CONFIG: COBEOptions = {
+  width: 800,
+  height: 800,
+  onRender: () => {},
+  devicePixelRatio: 2,
+  phi: 0,
+  theta: 0.26,
+  dark: 1,
+  diffuse: 0.82,
+  mapSamples: 20000,
+  mapBrightness: 0.78,
+  baseColor: [0.14, 0.12, 0.16],
+  markerColor: [0.82, 0.72, 0.86],
+  glowColor: [0.34, 0.3, 0.38],
+  markers: [
+    { location: [49.2827, -123.1207], size: 0.07 },
+    { location: [43.6532, -79.3832], size: 0.07 },
+    { location: [40.7128, -74.006], size: 0.05 },
+    { location: [51.5072, -0.1276], size: 0.04 },
+    { location: [35.6762, 139.6503], size: 0.04 },
+    { location: [1.3521, 103.8198], size: 0.04 },
+  ],
+}
+
+/** ~55s per full rotation */
+const CONTACT_GLOBE_ROTATION_SPEED = (Math.PI * 2) / 55
 
 function MailIcon() {
   return (
@@ -32,13 +61,26 @@ export function Contact() {
 
   return (
     <section id="contact" className="contact-section" aria-labelledby="contact-heading">
-      <div className="contact-section__aurora" aria-hidden="true">
-        <Aurora
-          colorStops={CONTACT_AURORA_COLORS}
-          blend={0.5}
-          amplitude={1.0}
-          speed={0.5}
-        />
+      <div className="contact-section__backdrop" aria-hidden="true">
+        <div className="contact-section__aurora">
+          <Aurora
+            colorStops={CONTACT_AURORA_COLORS}
+            blend={0.5}
+            amplitude={1.0}
+            speed={0.5}
+          />
+        </div>
+
+        <div className="contact-section__globe">
+          <div className="contact-section__globe-stage">
+            <Globe
+              className="contact-section__globe-visual"
+              config={CONTACT_GLOBE_CONFIG}
+              rotationSpeed={CONTACT_GLOBE_ROTATION_SPEED}
+            />
+            <div className="contact-section__globe-vignette" />
+          </div>
+        </div>
       </div>
 
       <div className="wire-container contact-section__container">

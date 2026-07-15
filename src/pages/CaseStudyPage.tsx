@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { CaseStudyHero } from '@/components/case-study/CaseStudyHero'
 import { CaseStudyNext } from '@/components/case-study/CaseStudyNext'
 import { CaseStudyStory } from '@/components/case-study/CaseStudyStory'
 import { ParallaxMediaGrid } from '@/components/case-study/ParallaxMediaGrid'
 import { Nav } from '@/components/layout/Nav'
+import { PageSeo } from '@/components/seo/PageSeo'
+import { buildNotFoundSeo, buildProjectSeo } from '@/lib/seo'
 import { getAdjacentProjects, getProjectBySlug } from '@/lib/projects'
 import '@/styles/case-study.css'
 
@@ -12,6 +14,10 @@ export function CaseStudyPage() {
   const { slug } = useParams<{ slug: string }>()
   const project = slug ? getProjectBySlug(slug) : undefined
   const { next } = project ? getAdjacentProjects(project.slug) : { next: undefined }
+  const seo = useMemo(
+    () => (project ? buildProjectSeo(project) : buildNotFoundSeo(slug ? `/work/${slug}` : '/404')),
+    [project, slug],
+  )
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -20,6 +26,7 @@ export function CaseStudyPage() {
   if (!project) {
     return (
       <div className="case-study flex min-h-screen flex-col overflow-x-clip">
+        <PageSeo {...seo} />
         <Nav surface="light" />
         <div className="case-study__main flex flex-1 items-center justify-center px-6">
           <div className="text-center">
@@ -40,6 +47,7 @@ export function CaseStudyPage() {
 
   return (
     <div className="case-study overflow-x-clip">
+      <PageSeo {...seo} />
       <Nav surface="light" />
       <main className="case-study__main">
         <CaseStudyHero project={project} />

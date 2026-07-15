@@ -7,10 +7,15 @@ import { Projects } from '@/components/sections/Projects'
 import { Testimonials } from '@/components/sections/Testimonials'
 import { Services } from '@/components/sections/Services'
 import { Contact } from '@/components/sections/Contact'
+import { PageSeo } from '@/components/seo/PageSeo'
+import { buildHomeSeo } from '@/lib/seo'
+
+const homeSeo = buildHomeSeo()
 
 export function HomePage() {
   return (
     <div className="min-h-screen overflow-x-clip">
+      <PageSeo {...homeSeo} />
       <Nav />
       <main>
         <Hero />
