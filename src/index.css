@@ -261,12 +261,21 @@ body {
   }
 
   .projects-scroll__cta {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
     margin-top: 0.45rem;
+  }
+
+  .projects-scroll__cta-text {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
+  }
+
+  .projects-scroll__cta-icon {
+    flex-shrink: 0;
   }
 
   .projects-scroll__control {
@@ -284,8 +293,6 @@ body {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: var(--n-paper);
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
     cursor: pointer;
     transform: translateY(-50%);
     transition:
@@ -304,6 +311,10 @@ body {
   .projects-scroll__control:hover {
     border-color: var(--n-paper);
     background: rgb(10 10 11 / 0.92);
+  }
+
+  .projects-scroll__control-icon {
+    flex-shrink: 0;
   }
 
   @media (max-width: 767px) {

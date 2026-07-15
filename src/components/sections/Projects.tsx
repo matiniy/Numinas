@@ -4,6 +4,52 @@ import { getProjectGrainientColors } from '@/lib/grainient-palettes'
 import { PROJECTS, type Project } from '@/lib/projects'
 
 const AUTO_PLAY_MS = 5000
+const CHEVRON_SIZE = 28
+
+type ChevronDirection = 'left' | 'right'
+
+function ChevronIcon({
+  direction,
+  className,
+  size = CHEVRON_SIZE,
+  gradient,
+  gradientId,
+}: {
+  direction: ChevronDirection
+  className?: string
+  size?: number
+  gradient?: { color1: string; color2: string; color3: string }
+  gradientId?: string
+}) {
+  const points = direction === 'left' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'
+  const stroke = gradient && gradientId ? `url(#${gradientId})` : 'currentColor'
+
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={stroke}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {gradient && gradientId ? (
+        <defs>
+          <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={gradient.color1} />
+            <stop offset="52%" stopColor={gradient.color2} />
+            <stop offset="100%" stopColor={gradient.color3} />
+          </linearGradient>
+        </defs>
+      ) : null}
+      <polyline points={points} />
+    </svg>
+  )
+}
 
 function ProjectCardMedia({ project }: { project: Project }) {
   const useVideo = Boolean(project.heroVideo) && project.cardMedia !== 'image'
@@ -179,7 +225,7 @@ export function Projects() {
           aria-label="Previous project"
           onClick={() => goBy(-1)}
         >
-          ←
+          <ChevronIcon direction="left" className="projects-scroll__control-icon" />
         </button>
 
         <ul ref={scrollRef} className="projects-scroll" role="list">
@@ -220,13 +266,21 @@ export function Projects() {
                         <div className="projects-scroll__overlay">
                           <p className="projects-scroll__overlay-client">{project.client}</p>
                           <h3 className="projects-scroll__overlay-title">{project.title}</h3>
-                          <p
-                            className="projects-scroll__cta type-small"
-                            style={{
-                              backgroundImage: `linear-gradient(120deg, ${grainient.color1} 0%, ${grainient.color2} 52%, ${grainient.color3} 100%)`,
-                            }}
-                          >
-                            View case study →
+                          <p className="projects-scroll__cta type-small">
+                            <span
+                              className="projects-scroll__cta-text"
+                              style={{
+                                backgroundImage: `linear-gradient(120deg, ${grainient.color1} 0%, ${grainient.color2} 52%, ${grainient.color3} 100%)`,
+                              }}
+                            >
+                              View project
+                            </span>
+                            <ChevronIcon
+                              direction="right"
+                              className="projects-scroll__cta-icon"
+                              gradient={grainient}
+                              gradientId={`projects-cta-chevron-${project.slug}`}
+                            />
                           </p>
                         </div>
                       </div>
@@ -244,7 +298,7 @@ export function Projects() {
           aria-label="Next project"
           onClick={() => goBy(1)}
         >
-          →
+          <ChevronIcon direction="right" className="projects-scroll__control-icon" />
         </button>
       </div>
     </section>
