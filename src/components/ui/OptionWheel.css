@@ -38,6 +38,28 @@
   transform-origin: right center;
 }
 
+.option-wheel--horizontal {
+  touch-action: pan-x;
+  overflow: visible;
+}
+
+.option-wheel--horizontal.option-wheel--overflow-visible,
+.services-section__wheel .option-wheel {
+  overflow: visible;
+}
+
+.option-wheel--horizontal .option-wheel__item {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform-origin: center center;
+}
+
+.option-wheel--horizontal.option-wheel--align-inner .option-wheel__item {
+  transform-origin: center bottom;
+}
+
 .option-wheel__item--selected {
   font-weight: 500;
 }

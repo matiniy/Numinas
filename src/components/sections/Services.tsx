@@ -7,18 +7,38 @@ import { getGrainientPaletteByIndex } from '@/lib/grainient-palettes'
 
 gsap.registerPlugin(ScrollTrigger)
 
+function WheelChevron({ direction }: { direction: 'left' | 'right' }) {
+  const points = direction === 'left' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'
+
+  return (
+    <svg
+      width={14}
+      height={14}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points={points} />
+    </svg>
+  )
+}
+
 function useServicesWheelScale() {
-  const [scale, setScale] = useState({ fontSize: 2.95, inset: 12 })
+  const [scale, setScale] = useState({ fontSize: 1.85, inset: 4 })
 
   useEffect(() => {
     const update = () => {
       const width = window.innerWidth
       if (width < 640) {
-        setScale({ fontSize: 1.5, inset: 14 })
+        setScale({ fontSize: 1.05, inset: 8 })
       } else if (width < 1024) {
-        setScale({ fontSize: 2.35, inset: 6 })
+        setScale({ fontSize: 1.45, inset: 4 })
       } else {
-        setScale({ fontSize: 2.95, inset: 8 })
+        setScale({ fontSize: 1.85, inset: 4 })
       }
     }
 
@@ -124,45 +144,63 @@ export function Services() {
 
       <div ref={stageRef} className="services-section__stage">
         <div className="wire-container services-section__inner">
-          <div className="services-section__detail" aria-live="polite">
-            <p className="services-section__index">{selected.n}</p>
-            <div className="services-section__detail-stack">
-              <div className="services-section__title-wrap">
-                <h3
-                  className="services-section__title"
-                  style={{
-                    backgroundImage: `linear-gradient(120deg, ${grainient.color1} 0%, ${grainient.color2} 52%, ${grainient.color3} 100%)`,
-                  }}
+          <div className="services-section__hub">
+            <div className="services-section__wheel">
+              <div className="services-section__wheel-hints" aria-hidden="true">
+                <span
+                  className={`services-section__wheel-hint services-section__wheel-hint--left${selectedIndex === 0 ? ' services-section__wheel-hint--dim' : ''}`}
                 >
-                  {selected.title}
-                </h3>
+                  <WheelChevron direction="left" />
+                </span>
+                <span
+                  className={`services-section__wheel-hint services-section__wheel-hint--right${selectedIndex === services.length - 1 ? ' services-section__wheel-hint--dim' : ''}`}
+                >
+                  <WheelChevron direction="right" />
+                </span>
               </div>
-              <p className="services-section__body">{selected.body}</p>
+              <OptionWheel
+                items={services.map((service) => service.title)}
+                value={selectedIndex}
+                defaultSelected={0}
+                onChange={(index) => setSelectedIndex(index)}
+                textColor="#8a8a93"
+                activeColor="#ffffff"
+                orientation="horizontal"
+                side="top"
+                labelRotate={-90}
+                itemAlign="inner"
+                fontSize={wheelScale.fontSize}
+                spacing={1.95}
+                curve={1.1}
+                tilt={5}
+                blur={0}
+                fade={0.16}
+                minOpacity={0.42}
+                smoothing={200}
+                inset={wheelScale.inset}
+                loop={false}
+                draggable
+                soundUrl="/sounds/click-soft.mp3"
+                soundVolume={0.5}
+              />
             </div>
-          </div>
 
-          <div className="services-section__wheel">
-            <OptionWheel
-              items={services.map((service) => service.title)}
-              defaultSelected={0}
-              onChange={(index) => setSelectedIndex(index)}
-              textColor="#8a8a93"
-              activeColor="#ffffff"
-              side="right"
-              fontSize={wheelScale.fontSize}
-              spacing={1.45}
-              curve={1}
-              tilt={7}
-              blur={1.5}
-              fade={0.2}
-              minOpacity={0.12}
-              smoothing={200}
-              inset={wheelScale.inset}
-              loop={false}
-              draggable
-              soundUrl="/sounds/click-soft.mp3"
-              soundVolume={0.5}
-            />
+            <div className="services-section__detail" aria-live="polite">
+              <p className="services-section__index">{selected.n}</p>
+              <div className="services-section__detail-stack">
+                <div className="services-section__title-wrap">
+                  <h3
+                    className="services-section__title"
+                    style={{
+                      backgroundImage: `linear-gradient(120deg, ${grainient.color1} 0%, ${grainient.color2} 52%, ${grainient.color3} 100%)`,
+                    }}
+                  >
+                    {selected.title}
+                  </h3>
+                </div>
+                <p className="services-section__body">{selected.body}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -26,7 +26,10 @@ type WheelConfig = {
   blur: number
   fade: number
   minOpacity: number
-  side: 'left' | 'right'
+  side: 'left' | 'right' | 'top' | 'bottom'
+  orientation: 'vertical' | 'horizontal'
+  labelRotate: number
+  itemAlign: 'center' | 'inner'
   loop: boolean
   smoothing: number
   draggable: boolean
@@ -37,10 +40,14 @@ type WheelConfig = {
 export interface OptionWheelProps {
   items?: string[]
   defaultSelected?: number
+  value?: number
   onChange?: (index: number, item: string) => void
   textColor?: string
   activeColor?: string
-  side?: 'left' | 'right'
+  side?: 'left' | 'right' | 'top' | 'bottom'
+  orientation?: 'vertical' | 'horizontal'
+  labelRotate?: number
+  itemAlign?: 'center' | 'inner'
   fontSize?: number
   spacing?: number
   curve?: number
@@ -60,10 +67,14 @@ export interface OptionWheelProps {
 export function OptionWheel({
   items = DEFAULT_ITEMS,
   defaultSelected = 3,
+  value,
   onChange,
   textColor = '#a6a6a6',
   activeColor = '#ffffff',
   side = 'left',
+  orientation = 'vertical',
+  labelRotate = 0,
+  itemAlign = 'center',
   fontSize = 3,
   spacing = 1.4,
   curve = 1,
@@ -89,7 +100,7 @@ export function OptionWheel({
   const onChangeRef = useRef(onChange)
   const selectedRef = useRef(defaultSelected)
   const wheelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const dragRef = useRef<{ y: number; start: number; id: number } | null>(null)
+  const dragRef = useRef<{ x: number; y: number; start: number; id: number } | null>(null)
   const dragMovedRef = useRef(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const audioUrlRef = useRef('')
@@ -111,6 +122,9 @@ export function OptionWheel({
     fade,
     minOpacity,
     side,
+    orientation,
+    labelRotate,
+    itemAlign,
     loop,
     smoothing,
     draggable,
@@ -134,7 +148,14 @@ export function OptionWheel({
 
     const els = itemRefs.current
     const n = cfg.count
-    const mirror = cfg.side === 'right' ? -1 : 1
+    const horizontal = cfg.orientation === 'horizontal'
+    const mirror = horizontal
+      ? cfg.side === 'top'
+        ? -1
+        : 1
+      : cfg.side === 'right'
+        ? -1
+        : 1
     const tiltRad = (cfg.tilt * Math.PI) / 180
     const R = tiltRad > 0.0005 ? cfg.rowH / tiltRad : 0
 
@@ -150,17 +171,37 @@ export function OptionWheel({
 
       const dist = Math.abs(d)
       let x = 0
-      let y = d * cfg.rowH
+      let y = 0
       let rot = 0
 
-      if (R > 0) {
-        const ang = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, d * tiltRad))
-        y = R * Math.sin(ang)
-        x = -mirror * R * (1 - Math.cos(ang)) * cfg.curve
-        rot = (mirror * ang * 180) / Math.PI
-      }
+      if (horizontal) {
+        if (R > 0) {
+          const ang = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, d * tiltRad))
+          x = R * Math.sin(ang)
+          y = mirror * R * (1 - Math.cos(ang)) * cfg.curve
+          rot = (mirror * ang * 180) / Math.PI
+        } else {
+          x = d * cfg.rowH
+        }
 
-      el.style.transform = `translate(${x.toFixed(2)}px, calc(${y.toFixed(2)}px - 50%)) rotate(${rot.toFixed(3)}deg)`
+        rot += cfg.labelRotate
+        const alignInner = cfg.itemAlign === 'inner'
+        el.style.transform = alignInner
+          ? `translate(calc(${x.toFixed(2)}px - 50%), calc(${y.toFixed(2)}px - 100%)) rotate(${rot.toFixed(3)}deg)`
+          : `translate(calc(${x.toFixed(2)}px - 50%), calc(${y.toFixed(2)}px - 50%)) rotate(${rot.toFixed(3)}deg)`
+      } else {
+        if (R > 0) {
+          const ang = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, d * tiltRad))
+          y = R * Math.sin(ang)
+          x = -mirror * R * (1 - Math.cos(ang)) * cfg.curve
+          rot = (mirror * ang * 180) / Math.PI
+        } else {
+          y = d * cfg.rowH
+        }
+
+        rot += cfg.labelRotate
+        el.style.transform = `translate(${x.toFixed(2)}px, calc(${y.toFixed(2)}px - 50%)) rotate(${rot.toFixed(3)}deg)`
+      }
       el.style.opacity = String(Math.max(cfg.minOpacity, 1 - dist * cfg.fade))
       el.style.filter = cfg.blur > 0 ? `blur(${(dist * cfg.blur).toFixed(2)}px)` : 'none'
       el.style.setProperty('--ow-p', Math.max(0, 1 - Math.min(dist, 1)).toFixed(4))
@@ -228,7 +269,13 @@ export function OptionWheel({
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
       const cfg = cfgRef.current
-      const delta = e.deltaMode === 1 ? e.deltaY * 24 : e.deltaY
+      const horizontal = cfg.orientation === 'horizontal'
+      const raw = horizontal
+        ? Math.abs(e.deltaX) > Math.abs(e.deltaY)
+          ? e.deltaX
+          : e.deltaY
+        : e.deltaY
+      const delta = e.deltaMode === 1 ? raw * 24 : raw
       const step = Math.max(-1, Math.min(1, delta / cfg.rowH))
       applyTarget(targetRef.current + step, false)
 
@@ -246,7 +293,7 @@ export function OptionWheel({
 
   const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!cfgRef.current.draggable) return
-    dragRef.current = { y: e.clientY, start: targetRef.current, id: e.pointerId }
+    dragRef.current = { x: e.clientX, y: e.clientY, start: targetRef.current, id: e.pointerId }
     dragMovedRef.current = false
     setIsDragging(true)
   }, [])
@@ -256,14 +303,15 @@ export function OptionWheel({
       const drag = dragRef.current
       if (!drag) return
 
-      const dy = e.clientY - drag.y
-      if (!dragMovedRef.current && Math.abs(dy) > 4) {
+      const horizontal = cfgRef.current.orientation === 'horizontal'
+      const delta = horizontal ? e.clientX - drag.x : e.clientY - drag.y
+      if (!dragMovedRef.current && Math.abs(delta) > 4) {
         dragMovedRef.current = true
         rootRef.current?.setPointerCapture(drag.id)
       }
 
       if (dragMovedRef.current) {
-        applyTarget(drag.start - dy / cfgRef.current.rowH, false)
+        applyTarget(drag.start - delta / cfgRef.current.rowH, false)
       }
     },
     [applyTarget],
@@ -309,11 +357,24 @@ export function OptionWheel({
 
   useLayoutEffect(() => {
     layoutItems()
-  }, [layoutItems, items, fontSize, spacing, curve, tilt, blur, fade, minOpacity, side, loop])
+  }, [layoutItems, items, fontSize, spacing, curve, tilt, blur, fade, minOpacity, side, orientation, labelRotate, itemAlign, loop])
 
   useEffect(() => {
     applyTarget(targetRef.current, false)
-  }, [items, fontSize, spacing, curve, tilt, blur, fade, minOpacity, side, loop, smoothing, applyTarget])
+  }, [items, fontSize, spacing, curve, tilt, blur, fade, minOpacity, side, orientation, labelRotate, itemAlign, loop, smoothing, applyTarget])
+
+  useEffect(() => {
+    if (value == null) return
+
+    const clamped = Math.min(Math.max(value, 0), Math.max(items.length - 1, 0))
+    if (clamped === selectedRef.current && Math.abs(targetRef.current - clamped) < 0.001) return
+
+    selectedRef.current = clamped
+    setSelectedIndex(clamped)
+    targetRef.current = clamped
+    posRef.current = clamped
+    layoutItems()
+  }, [value, items.length, layoutItems])
 
   useEffect(
     () => () => {
@@ -331,7 +392,12 @@ export function OptionWheel({
       aria-label="Option wheel"
       className={cn(
         'option-wheel',
-        side === 'right' && 'option-wheel--right',
+        orientation === 'horizontal' && 'option-wheel--horizontal',
+        orientation === 'horizontal' && 'option-wheel--overflow-visible',
+        orientation === 'horizontal' && side === 'bottom' && 'option-wheel--bottom',
+        orientation === 'horizontal' && side === 'top' && 'option-wheel--top',
+        orientation === 'horizontal' && itemAlign === 'inner' && 'option-wheel--align-inner',
+        orientation === 'vertical' && side === 'right' && 'option-wheel--right',
         isDragging && 'option-wheel--dragging',
         className,
       )}
