@@ -8,23 +8,23 @@ Drop client logo files here for the **Trusted by global brands and agencies** se
 public/media/trusted-by/logos/
 ```
 
-## Expected files
+## Files (current)
 
 | Brand | Filename |
 |-------|----------|
-| American Express | `american-express.svg` |
-| Air Canada | `air-canada.svg` |
-| Hootsuite | `hootsuite.svg` |
-| Secret | `secret.svg` |
-| Excel | `excel.svg` |
-| Urban Decay | `urban-decay.svg` |
-| Dolby | `dolby.svg` |
-| Olay | `olay.svg` |
+| American Express | `amex.png` |
+| Air Canada | `aircanada.png` |
+| Hootsuite | `hootsuit.png` |
+| Secret | `secret.png` |
+| Excel | `excel.png` |
+| Urban Decay | `urbandecay.png` |
+| Dolby | `dolby.png` |
+| Olay | `olay.png` |
 
 ## Format
 
-- **Preferred:** SVG (single-color / white artwork on transparent background)
-- **Also supported:** PNG or WebP — update the extension in `src/lib/trusted-by-logos.ts` if not using SVG
+- **Current:** PNG in this folder (paths in `src/lib/trusted-by-logos.ts`)
+- **Also supported:** SVG or WebP — update filenames in `src/lib/trusted-by-logos.ts` if you swap formats
 
 ## Sizing
 

@@ -1,8 +1,22 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { TRUSTED_BY_LOGOS } from '@/lib/trusted-by-logos'
+import { cn } from '@/lib/utils'
 
-function TrustedByLogo({ name, src, alt }: { name: string; src: string; alt: string }) {
+function TrustedByLogo({
+  name,
+  src,
+  alt,
+  scale = 1,
+  offsetY = 0,
+}: {
+  name: string
+  src: string
+  alt: string
+  scale?: number
+  offsetY?: number
+}) {
   const [missing, setMissing] = useState(false)
+  const hasAdjust = scale !== 1 || offsetY !== 0
 
   if (missing) {
     return (
@@ -18,7 +32,15 @@ function TrustedByLogo({ name, src, alt }: { name: string; src: string; alt: str
       alt={alt}
       loading="lazy"
       decoding="async"
-      className="trusted-by-marquee__logo"
+      className={cn('trusted-by-marquee__logo', hasAdjust && 'trusted-by-marquee__logo--adjusted')}
+      style={
+        hasAdjust
+          ? ({
+              '--logo-scale': scale,
+              '--logo-offset-y': `${offsetY}px`,
+            } as CSSProperties)
+          : undefined
+      }
       onError={() => setMissing(true)}
     />
   )
@@ -26,9 +48,8 @@ function TrustedByLogo({ name, src, alt }: { name: string; src: string; alt: str
 
 export function TrustedBy() {
   return (
-    <section id="trusted" className="wire-section trusted-by-section" aria-labelledby="trusted-heading">
+    <section id="trusted" className="trusted-by-section wire-section" aria-labelledby="trusted-heading">
       <div className="wire-container">
-        <p className="wire-label">02 · Trusted by</p>
         <h2 id="trusted-heading" className="type-h3 mb-8 md:mb-10">
           Trusted by global brands and agencies
         </h2>
@@ -45,7 +66,13 @@ export function TrustedBy() {
               >
                 {TRUSTED_BY_LOGOS.map((logo) => (
                   <li key={`${copy}-${logo.slug}`} className="trusted-by-marquee__item">
-                    <TrustedByLogo name={logo.name} src={logo.src} alt={logo.alt} />
+                    <TrustedByLogo
+                      name={logo.name}
+                      src={logo.src}
+                      alt={logo.alt}
+                      scale={logo.scale}
+                      offsetY={logo.offsetY}
+                    />
                   </li>
                 ))}
               </ul>
