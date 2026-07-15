@@ -1273,7 +1273,7 @@ body {
   .contact-section {
     position: relative;
     overflow: hidden;
-    padding-top: 4.375rem;
+    padding-top: 8.125rem;
     padding-bottom: var(--section-y);
   }
 
