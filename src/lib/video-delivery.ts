@@ -10,9 +10,40 @@ function stripTrailingSlash(value: string) {
   return value.replace(/\/$/, '')
 }
 
+function decodePathSegment(segment: string) {
+  try {
+    return decodeURIComponent(segment)
+  } catch {
+    return segment
+  }
+}
+
+/** Encode each path segment once (paths in projects.ts may already be partially encoded). */
+export function encodeMediaPath(path: string) {
+  const normalized = path.startsWith('/') ? path.slice(1) : path
+
+  return (
+    '/' +
+    normalized
+      .split('/')
+      .map(decodePathSegment)
+      .map((segment) => encodeURIComponent(segment))
+      .join('/')
+  )
+}
+
 export function toWebVideoPath(localPath: string) {
   if (/\-web\.mp4$/i.test(localPath)) return localPath
-  return localPath.replace(/\.mp4$/i, '-web.mp4')
+
+  const parts = localPath.split('/')
+  const filename = parts.pop()
+  if (!filename) return localPath
+
+  const decoded = decodePathSegment(filename)
+  if (!/\.mp4$/i.test(decoded)) return localPath
+
+  parts.push(decoded.replace(/\.mp4$/i, '-web.mp4'))
+  return parts.join('/')
 }
 
 export function getVideoCdnBase() {
@@ -26,15 +57,10 @@ export function useWebVideoVariant() {
 /** Resolve a `/media/...` path to CDN or local URL, optionally swapping in `-web.mp4`. */
 export function getDeliverableVideoUrl(localPath: string) {
   const path = useWebVideoVariant() ? toWebVideoPath(localPath) : localPath
+  const encodedPath = encodeMediaPath(path)
   const cdnBase = getVideoCdnBase()
 
-  if (!cdnBase) return encodeURI(path)
+  if (!cdnBase) return encodedPath
 
-  const normalizedPath = path.startsWith('/') ? path.slice(1) : path
-  const encodedPath = normalizedPath
-    .split('/')
-    .map((segment) => encodeURIComponent(segment))
-    .join('/')
-
-  return `${stripTrailingSlash(cdnBase)}/${encodedPath}`
+  return `${stripTrailingSlash(cdnBase)}${encodedPath}`
 }
