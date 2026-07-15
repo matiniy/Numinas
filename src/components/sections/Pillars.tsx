@@ -1,40 +1,78 @@
-import { FlowingMenu, type FlowingMenuItem } from '@/components/ui/FlowingMenu'
+interface Pillar {
+  index: string
+  title: string
+  body: string
+  image?: string
+}
 
-const pillars: FlowingMenuItem[] = [
+const pillars: Pillar[] = [
   {
     index: '01',
-    text: 'Communicate',
-    subtext:
-      'Deliver clarity fast. Ambitious campaigns become cinematic visuals audiences instantly understand.',
+    title: 'Communicate',
+    body: 'Deliver clarity fast. Ambitious campaigns become cinematic visuals audiences instantly understand.',
     image: '/media/pillars/communicate.jpg',
   },
   {
     index: '02',
-    text: 'Captivate',
-    subtext:
-      'Win attention in seconds. Explainers, ads, and animations built to cut through noise.',
+    title: 'Captivate',
+    body: 'Win attention in seconds. Explainers, ads, and animations built to cut through noise.',
     image: '/media/pillars/captivate.jpg',
   },
   {
     index: '03',
-    text: 'Connect',
-    subtext:
-      'Build trust and buy-in. Story-driven motion that resonates with customers, teams, and investors.',
+    title: 'Connect',
+    body: 'Build trust and buy-in. Story-driven motion that resonates with customers, teams, and investors.',
     image: '/media/pillars/connect.jpg',
   },
 ]
 
-export function Pillars() {
+function PillarVisual({ pillar }: { pillar: Pillar }) {
   return (
-    <section id="pillars" className="wire-section" aria-labelledby="pillars-heading">
-      <div className="wire-container mb-8 md:mb-10">
-        <h2 id="pillars-heading" className="wire-label">
-          Our services
-        </h2>
-      </div>
+    <div className="pillars-grid__cell pillars-grid__cell--visual">
+      {pillar.image ? (
+        <img
+          src={pillar.image}
+          alt=""
+          className="pillars-grid__image"
+          loading="lazy"
+          onError={(event) => {
+            event.currentTarget.style.display = 'none'
+          }}
+        />
+      ) : null}
+      <span className="sr-only">{pillar.title} visual</span>
+    </div>
+  )
+}
 
-      <div className="h-[min(58vh,520px)] min-h-[min(360px,50svh)] w-full">
-        <FlowingMenu items={pillars} />
+function PillarCopy({ pillar }: { pillar: Pillar }) {
+  return (
+    <article className="pillars-grid__cell pillars-grid__cell--copy" aria-labelledby={`pillar-${pillar.index}`}>
+      <p className="pillars-grid__index">{pillar.index}</p>
+      <h3 id={`pillar-${pillar.index}`} className="pillars-grid__title">
+        {pillar.title}
+      </h3>
+      <p className="pillars-grid__body">{pillar.body}</p>
+    </article>
+  )
+}
+
+export function Pillars() {
+  const [communicate, captivate, connect] = pillars
+
+  return (
+    <section
+      id="pillars"
+      className="pillars-section wire-section"
+      aria-label="Communicate, Captivate, Connect"
+    >
+      <div className="pillars-grid">
+        <PillarVisual pillar={communicate} />
+        <PillarCopy pillar={communicate} />
+        <PillarVisual pillar={captivate} />
+        <PillarCopy pillar={captivate} />
+        <PillarVisual pillar={connect} />
+        <PillarCopy pillar={connect} />
       </div>
     </section>
   )

@@ -35,7 +35,9 @@ export function CreativeCallButton({
   children = 'Book a creative call',
   showArrow = true,
 }: CreativeCallButtonProps) {
-  const sizeClassName = compact ? 'px-3.5 py-2 text-sm' : 'px-4 py-2.5 text-sm md:px-5 md:py-2.5'
+  const sizeClassName = compact
+    ? 'min-h-11 px-3.5 py-2 text-sm'
+    : 'min-h-11 px-4 py-2.5 text-sm md:px-5 md:py-2.5'
   const label = (
     <>
       {children}

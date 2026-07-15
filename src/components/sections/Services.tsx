@@ -14,7 +14,7 @@ function useServicesWheelScale() {
     const update = () => {
       const width = window.innerWidth
       if (width < 640) {
-        setScale({ fontSize: 1.85, inset: 4 })
+        setScale({ fontSize: 1.5, inset: 14 })
       } else if (width < 1024) {
         setScale({ fontSize: 2.35, inset: 6 })
       } else {

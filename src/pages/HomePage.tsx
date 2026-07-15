@@ -6,6 +6,7 @@ import { Pillars } from '@/components/sections/Pillars'
 import { Projects } from '@/components/sections/Projects'
 import { Testimonials } from '@/components/sections/Testimonials'
 import { Services } from '@/components/sections/Services'
+import { ContactMarquee } from '@/components/sections/ContactMarquee'
 import { Contact } from '@/components/sections/Contact'
 import { PageSeo } from '@/components/seo/PageSeo'
 import { buildHomeSeo } from '@/lib/seo'
@@ -24,6 +25,7 @@ export function HomePage() {
         <Pillars />
         <Projects />
         <Services />
+        <ContactMarquee />
         <Contact />
       </main>
       <Footer />

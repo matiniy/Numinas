@@ -83,7 +83,7 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
   const shrunkWidth = isDesktop ? 50 : 100
 
   const headerStyle = {
-    paddingTop: isFloating ? undefined : 'env(safe-area-inset-top)',
+    paddingTop: 'env(safe-area-inset-top, 0px)',
     paddingLeft: `${sideInset}px`,
     paddingRight: `${sideInset}px`,
     marginTop: `${floatInset}px`,

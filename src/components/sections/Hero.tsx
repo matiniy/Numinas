@@ -15,7 +15,7 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <div className="wire-container relative z-10 flex min-h-[100svh] flex-col justify-end pb-16 pt-24 md:pb-20 md:pt-28 lg:pb-24">
+      <div className="wire-container relative z-10 flex min-h-[100svh] flex-col justify-end pb-12 pt-20 sm:pb-16 sm:pt-24 md:pb-20 md:pt-28 lg:pb-24">
         <GlassChipList className="mb-5 md:mb-6" aria-label="Core offerings">
           {HERO_OFFERINGS.map((item) => (
             <li key={item.label}>
