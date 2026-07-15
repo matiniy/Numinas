@@ -1,8 +1,7 @@
 import { FormEvent, useState } from 'react'
 import Aurora from '@/components/ui/Aurora'
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
-
-const CONTACT_AURORA_COLORS = ['#EC4899', '#B497CF', '#5227FF'] as const
+import { CONTACT_AURORA_COLORS } from '@/lib/glass-chips'
 
 function MailIcon() {
   return (

@@ -1,3 +1,14 @@
+export const BRAND_ACCENT_MIST = '#120F17'
+export const BRAND_ACCENT_SIGNAL = '#FA6019'
+export const BRAND_ACCENT_ROSE = '#EE2E5A'
+
+/** Contact section Aurora background — mist → signal → rose */
+export const CONTACT_AURORA_COLORS = [
+  BRAND_ACCENT_MIST,
+  BRAND_ACCENT_SIGNAL,
+  BRAND_ACCENT_ROSE,
+] as const
+
 export const GLASS_CHIP_VARIANTS = ['lavender', 'peach', 'mint', 'sky', 'rose'] as const
 
 export type GlassChipVariant = (typeof GLASS_CHIP_VARIANTS)[number]
