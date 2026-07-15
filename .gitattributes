@@ -1,5 +1,7 @@
-# Case study videos — stored via Git LFS (keeps main git history lean).
+# Case study masters — Git LFS (keeps main git history lean).
 public/media/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
 public/media/**/*.MP4 filter=lfs diff=lfs merge=lfs -text
 public/media/**/*.mov filter=lfs diff=lfs merge=lfs -text
 public/media/**/*.MOV filter=lfs diff=lfs merge=lfs -text
+# Web-optimized encodes — regular git (Vercel does not fetch Git LFS).
+*-web.mp4 -filter -diff -merge

@@ -1,0 +1,3 @@
+# Production serves *-web.mp4 only (VITE_VIDEO_USE_WEB_VARIANT). Skip LFS master pointers.
+public/media/**/*.mp4
+!public/media/**/*-web.mp4

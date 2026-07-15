@@ -31,3 +31,5 @@ public/media/**/*.mov
 public/media/**/*.MOV
 **/*design-system*.md
 **/*user-flow*.md
+
+.vercel
