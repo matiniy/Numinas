@@ -8,6 +8,29 @@ import { getDeliverableVideoUrl } from '@/lib/video-delivery'
 const AUTO_PLAY_MS = 8000
 const MIN_SLIDE_MS = 4000
 const CHEVRON_SIZE = 28
+const DEFAULT_SCROLL_FOCUS = 0.5
+
+function getScrollFocusRatio(container: HTMLElement) {
+  const raw = getComputedStyle(container).getPropertyValue('--project-scroll-focus').trim()
+  const parsed = Number.parseFloat(raw)
+  return Number.isFinite(parsed) ? parsed : DEFAULT_SCROLL_FOCUS
+}
+
+function getScrollTarget(container: HTMLElement, item: HTMLElement) {
+  const focus = getScrollFocusRatio(container)
+  const raw = item.offsetLeft + item.offsetWidth / 2 - container.offsetWidth * focus
+  const maxScroll = container.scrollWidth - container.offsetWidth
+  return Math.max(0, Math.min(maxScroll, raw))
+}
+
+function setActiveIndexState(
+  index: number,
+  activeIndexRef: { current: number },
+  setActiveIndex: (index: number) => void,
+) {
+  activeIndexRef.current = index
+  setActiveIndex(index)
+}
 
 type ChevronDirection = 'left' | 'right'
 
@@ -117,22 +140,37 @@ export function Projects() {
     const item = itemRefs.current[index]
     if (!container || !item) return
 
-    const target = item.offsetLeft - (container.offsetWidth - item.offsetWidth) / 2
+    const target = getScrollTarget(container, item)
     container.scrollTo({ left: target, behavior })
+    setActiveIndexState(index, activeIndexRef, setActiveIndex)
   }, [])
 
   const syncActiveIndexFromScroll = useCallback(() => {
     const container = scrollRef.current
     if (!container) return
 
-    const center = container.scrollLeft + container.offsetWidth / 2
+    const maxScroll = container.scrollWidth - container.offsetWidth
+    const scrollLeft = container.scrollLeft
+
+    if (scrollLeft <= 2) {
+      setActiveIndexState(0, activeIndexRef, setActiveIndex)
+      return
+    }
+
+    if (scrollLeft >= maxScroll - 2) {
+      setActiveIndexState(PROJECTS.length - 1, activeIndexRef, setActiveIndex)
+      return
+    }
+
+    const focus = getScrollFocusRatio(container)
+    const focusPoint = scrollLeft + container.offsetWidth * focus
     let closest = 0
     let minDist = Infinity
 
     itemRefs.current.forEach((item, i) => {
       if (!item) return
       const itemCenter = item.offsetLeft + item.offsetWidth / 2
-      const dist = Math.abs(itemCenter - center)
+      const dist = Math.abs(itemCenter - focusPoint)
       if (dist < minDist) {
         minDist = dist
         closest = i
@@ -141,7 +179,7 @@ export function Projects() {
 
     activeIndexRef.current = closest
     setActiveIndex(closest)
-  }, [])
+  }, [setActiveIndex])
 
   useEffect(() => {
     markSlidePending()
@@ -269,6 +307,7 @@ export function Projects() {
         </button>
 
         <ul ref={scrollRef} className="projects-scroll" role="list">
+          <li className="projects-scroll__spacer projects-scroll__spacer--lead" aria-hidden="true" />
           {PROJECTS.map((project, index) => {
             const hasVisual =
               project.thumbnail ||
@@ -327,6 +366,7 @@ export function Projects() {
               </li>
             )
           })}
+          <li className="projects-scroll__spacer projects-scroll__spacer--trail" aria-hidden="true" />
         </ul>
 
         <button

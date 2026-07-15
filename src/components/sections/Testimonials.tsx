@@ -1,18 +1,24 @@
 import { useEffect, useState } from 'react'
 import { AppearText } from '@/components/ui/appear-text'
 import { GLASS_CHIP_GRADIENTS } from '@/lib/glass-chips'
-import { TESTIMONIAL_INDICATOR_VARIANTS, TESTIMONIALS } from '@/lib/testimonials'
+import { TESTIMONIAL_INDICATOR_VARIANTS, TESTIMONIAL_QUOTE_COLORS, TESTIMONIALS } from '@/lib/testimonials'
 
 const ROTATE_MS = 4000
 
-function TestimonialSlide({ name, text }: { name: string; text: string }) {
+function TestimonialSlide({ name, text, quoteColor }: { name: string; text: string; quoteColor: string }) {
   return (
     <figure className="testimonial-rotator__slide">
       <figcaption className="type-h3 mb-4">
         <AppearText text={name} />
       </figcaption>
-      <blockquote className="type-body text-balance leading-relaxed text-[var(--n-mist)]">
-        <AppearText text={`“${text}”`} />
+      <blockquote className="testimonial-quote type-body text-balance leading-relaxed text-[var(--n-mist)]">
+        <span className="testimonial-quote__mark" style={{ color: quoteColor }} aria-hidden="true">
+          “
+        </span>
+        <AppearText text={text} />
+        <span className="testimonial-quote__mark" style={{ color: quoteColor }} aria-hidden="true">
+          ”
+        </span>
       </blockquote>
     </figure>
   )
@@ -108,9 +114,9 @@ export function Testimonials() {
                 id="testimonials-heading"
                 className="type-h2 testimonials-heading text-balance"
               >
-                <span className="testimonials-heading__accent">Trusted</span>
+                <span className="testimonials-heading__accent">What They Say</span>
                 <br />
-                by Teams Like Yours
+                About the Work
               </h2>
 
               <TestimonialTimers index={index} paused={paused} onSelect={setIndex} />
@@ -118,7 +124,12 @@ export function Testimonials() {
 
             <div className="testimonial-rotator">
               <div className="testimonial-rotator__viewport" aria-live="polite" aria-atomic="true">
-                <TestimonialSlide key={quote.name} name={quote.name} text={quote.text} />
+                <TestimonialSlide
+                  key={quote.name}
+                  name={quote.name}
+                  text={quote.text}
+                  quoteColor={TESTIMONIAL_QUOTE_COLORS[index % TESTIMONIAL_QUOTE_COLORS.length]}
+                />
               </div>
             </div>
           </div>

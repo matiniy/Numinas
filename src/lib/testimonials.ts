@@ -7,6 +7,9 @@ export type Testimonial = {
 
 export const TESTIMONIAL_INDICATOR_VARIANTS: GlassChipVariant[] = ['lavender', 'peach', 'mint']
 
+/** Pastel quote-mark colors — one per testimonial, aligned with timer chip palette. */
+export const TESTIMONIAL_QUOTE_COLORS = ['#c4b5fd', '#fdba74', '#6ee7b7', '#7dd3fc', '#f9a8d4', '#fda4af'] as const
+
 export const TESTIMONIALS: Testimonial[] = [
   {
     name: 'Kania Lou',
