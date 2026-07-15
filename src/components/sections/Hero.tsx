@@ -19,7 +19,9 @@ export function Hero() {
         <GlassChipList className="mb-5 md:mb-6" aria-label="Core offerings">
           {HERO_OFFERINGS.map((item) => (
             <li key={item.label}>
-              <GlassChip variant={item.variant}>{item.label}</GlassChip>
+              <GlassChip variant={item.variant} glass>
+                {item.label}
+              </GlassChip>
             </li>
           ))}
         </GlassChipList>
