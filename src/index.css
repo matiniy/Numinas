@@ -329,9 +329,9 @@ body {
   }
 
   #pillars.pillars-section {
-    background: #ffffff;
-    color: #0a0a0b;
-    border-bottom-color: #d6d6dc;
+    background: var(--n-void);
+    color: var(--n-paper);
+    border-bottom: none;
     padding-block: 0;
   }
 
@@ -339,6 +339,7 @@ body {
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
+    --pillar-visual-inset: 0px;
   }
 
   .pillars-grid__cell {
@@ -348,7 +349,18 @@ body {
   }
 
   .pillars-grid__cell--visual {
+    position: relative;
+    padding: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .pillars-grid__visual-frame {
+    position: absolute;
+    inset: var(--pillar-visual-inset);
+    overflow: hidden;
     background: #e9e9ec;
+    will-change: border-radius, transform, clip-path;
   }
 
   .pillars-grid__cell--copy {
@@ -405,21 +417,6 @@ body {
     .pillars-grid__cell {
       aspect-ratio: 1;
       min-height: 0;
-    }
-
-    .pillars-grid__cell--02-copy {
-      grid-column: 1;
-      grid-row: 2;
-    }
-
-    .pillars-grid__cell--03-copy {
-      grid-column: 2;
-      grid-row: 2;
-    }
-
-    .pillars-grid__cell--03-visual {
-      grid-column: 3;
-      grid-row: 2;
     }
   }
 
@@ -1469,20 +1466,14 @@ body {
 
     .contact-marquee {
       --contact-marquee-gap: clamp(1rem, 3vw, 1.5rem);
-    }
-
-    .contact-marquee__text {
-      font-size: clamp(1.35rem, 6.5vw, 2rem);
-    }
-
-    .contact-marquee__logo img {
-      height: clamp(1rem, 2.4vw, 1.5rem);
+      --contact-marquee-text-size: clamp(1.35rem, 6.5vw, 2rem);
     }
   }
 
   .contact-marquee {
     --contact-marquee-duration: 36s;
     --contact-marquee-gap: clamp(1.75rem, 4vw, 3.5rem);
+    --contact-marquee-text-size: clamp(2.25rem, 7.5vw, 5.5rem);
     overflow: hidden;
   }
 
@@ -1528,6 +1519,7 @@ body {
     align-items: center;
     gap: var(--contact-marquee-gap);
     flex-shrink: 0;
+    font-size: var(--contact-marquee-text-size);
   }
 
   .contact-marquee__segment {
@@ -1540,7 +1532,7 @@ body {
   .contact-marquee__text {
     font-family: var(--font-title);
     font-weight: var(--font-weight-title);
-    font-size: clamp(2.25rem, 7.5vw, 5.5rem);
+    font-size: inherit;
     line-height: 0.95;
     letter-spacing: -0.035em;
     white-space: nowrap;
@@ -1556,7 +1548,7 @@ body {
   .contact-marquee__logo img {
     display: block;
     width: auto;
-    height: clamp(1.35rem, 2.8vw, 2.35rem);
+    height: 1.4em;
     opacity: 0.9;
     filter: brightness(0) invert(1);
   }
@@ -1643,21 +1635,8 @@ body {
     align-items: flex-start;
   }
 
-  .contact-section__badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 0.75rem;
-    border: 1px solid rgb(255 255 255 / 0.08);
-    background: rgb(20 20 24);
-    color: #7dd3fc;
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
-  }
-
   .contact-section__label {
-    margin: 1rem 0 0;
+    margin: 0;
     font-family: var(--font-body);
     font-size: 0.9375rem;
     font-weight: var(--font-weight-body);

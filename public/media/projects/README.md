@@ -14,7 +14,6 @@ Drop visuals for each case study in its own folder.
 | `excel-get-chewing` | Excel · Get Chewing |
 | `secret-aluminum-free` | Secret · Aluminum Free |
 | `readcoin` | Readcoin · Readcoin |
-| `pellican-cushion` | Pellican · Cushion |
 
 ## Recommended files per project
 

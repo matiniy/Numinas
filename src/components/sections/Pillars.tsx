@@ -1,3 +1,10 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
 interface Pillar {
   index: string
   title: string
@@ -28,20 +35,20 @@ const pillars: Pillar[] = [
 
 function PillarVisual({ pillar }: { pillar: Pillar }) {
   return (
-    <div
-      className={`pillars-grid__cell pillars-grid__cell--visual pillars-grid__cell--${pillar.index}-visual`}
-    >
-      {pillar.image ? (
-        <img
-          src={pillar.image}
-          alt=""
-          className="pillars-grid__image"
-          loading="lazy"
-          onError={(event) => {
-            event.currentTarget.style.display = 'none'
-          }}
-        />
-      ) : null}
+    <div className="pillars-grid__cell pillars-grid__cell--visual">
+      <div className="pillars-grid__visual-frame">
+        {pillar.image ? (
+          <img
+            src={pillar.image}
+            alt=""
+            className="pillars-grid__image"
+            loading="lazy"
+            onError={(event) => {
+              event.currentTarget.style.display = 'none'
+            }}
+          />
+        ) : null}
+      </div>
       <span className="sr-only">{pillar.title} visual</span>
     </div>
   )
@@ -49,10 +56,7 @@ function PillarVisual({ pillar }: { pillar: Pillar }) {
 
 function PillarCopy({ pillar }: { pillar: Pillar }) {
   return (
-    <article
-      className={`pillars-grid__cell pillars-grid__cell--copy pillars-grid__cell--${pillar.index}-copy`}
-      aria-labelledby={`pillar-${pillar.index}`}
-    >
+    <article className="pillars-grid__cell pillars-grid__cell--copy" aria-labelledby={`pillar-${pillar.index}`}>
       <p className="pillars-grid__index">{pillar.index}</p>
       <h3 id={`pillar-${pillar.index}`} className="pillars-grid__title">
         {pillar.title}
@@ -64,9 +68,88 @@ function PillarCopy({ pillar }: { pillar: Pillar }) {
 
 export function Pillars() {
   const [communicate, captivate, connect] = pillars
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current
+      if (!section) return
+
+      const frames = gsap.utils.toArray<HTMLElement>('.pillars-grid__visual-frame', section)
+      if (!frames.length) return
+
+      const grid = section.querySelector<HTMLElement>('.pillars-grid')
+      const startInset = Math.round(Math.min(16, Math.max(10, window.innerWidth * 0.02)))
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (reducedMotion) {
+        gsap.set(frames, {
+          borderRadius: '0%',
+          scale: 1,
+          clipPath: 'inset(0% round 0px)',
+        })
+        if (grid) gsap.set(grid, { '--pillar-visual-inset': '0px' })
+        return
+      }
+
+      if (grid) {
+        gsap.set(grid, { '--pillar-visual-inset': `${startInset}px` })
+      }
+
+      gsap.set(frames, {
+        borderRadius: '50%',
+        scale: 0.78,
+        clipPath: 'ellipse(52% 48% at 50% 50%)',
+        transformOrigin: '50% 50%',
+        force3D: true,
+      })
+
+      const tween = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 90%',
+          end: 'top 30%',
+          scrub: 0.75,
+        },
+      })
+
+      tween.to(
+        frames,
+        {
+          borderRadius: '0%',
+          scale: 1,
+          clipPath: 'inset(0% round 0px)',
+          ease: 'none',
+          stagger: {
+            each: 0.12,
+            from: 'start',
+          },
+        },
+        0,
+      )
+
+      if (grid) {
+        tween.to(
+          grid,
+          {
+            '--pillar-visual-inset': '0px',
+            ease: 'none',
+          },
+          0,
+        )
+      }
+
+      return () => {
+        tween.scrollTrigger?.kill()
+        tween.kill()
+      }
+    },
+    { scope: sectionRef },
+  )
 
   return (
     <section
+      ref={sectionRef}
       id="pillars"
       className="pillars-section wire-section"
       aria-label="Communicate, Captivate, Connect"

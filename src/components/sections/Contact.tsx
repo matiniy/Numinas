@@ -3,24 +3,6 @@ import Aurora from '@/components/ui/Aurora'
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
 import { CONTACT_AURORA_COLORS } from '@/lib/glass-chips'
 
-function MailIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M4 7.2C4 6.08 4 5.52 4.218 5.092c.192-.336.498-.642.834-.834C5.28 4 5.84 4 6.96 4h10.08c1.12 0 1.68 0 1.908.258.336.192.642.498.834.834C20 5.52 20 6.08 20 7.2v9.6c0 1.12 0 1.68-.218 2.108a1.6 1.6 0 0 1-.834.834C18.72 20 18.16 20 17.04 20H6.96c-1.12 0-1.68 0-1.908-.258a1.6 1.6 0 0 1-.834-.834C4 18.48 4 17.92 4 16.8V7.2Z"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
-      <path
-        d="m4 7 7.447 4.966a2 2 0 0 0 2.106 0L21 7"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
-
 export function Contact() {
   const [submitted, setSubmitted] = useState(false)
 
@@ -45,10 +27,6 @@ export function Contact() {
       <div className="wire-container contact-section__container">
         <div className="contact-section__grid">
           <div className="contact-section__content">
-            <div className="contact-section__badge">
-              <MailIcon />
-            </div>
-
             <p className="contact-section__label">Contact</p>
 
             <h2 id="contact-heading" className="type-h2 contact-section__title">

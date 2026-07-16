@@ -738,50 +738,6 @@ export const PROJECTS: Project[] = [
     heroImage: projectMediaFile(READCOIN_MEDIA, 'vlcsnap-2025-10-28-08h03m21s185.png'),
     thumbnail: projectMediaFile(READCOIN_MEDIA, 'vlcsnap-2025-10-28-08h03m21s185.png'),
   },
-  {
-    slug: 'pellican-cushion',
-    client: 'Pellican',
-    title: 'Cushion',
-    tagline: 'Product beauty with tactile materials and precise macro motion.',
-    year: '2022',
-    services: ['Product Film', 'CGI', 'Finishing'],
-    accent: '#00c2d7',
-    accentSoft: '#d7f7fb',
-    overview:
-      'A tactile product story highlighting cushion engineering through macro detail and soft specular light.',
-    challenge:
-      'Show technical comfort features in a premium way without feeling like a spec sheet.',
-    approach:
-      'Material studies, slow-motion compressions, and cross-section reveals build understanding through feel.',
-    outcome:
-      'A hero film and image suite for ecommerce, packaging, and trade presentations.',
-    story: [
-      {
-        id: 'material',
-        eyebrow: 'Material',
-        title: 'Touch translated to motion',
-        body: 'Foam rebound, fabric weave, and edge detail are shot and enhanced with subtle CG support.',
-      },
-      {
-        id: 'reveal',
-        eyebrow: 'Reveal',
-        title: 'Inside the cushion',
-        body: 'Layered reveals explain support zones with color-coded motion rather than dense copy.',
-      },
-    ],
-    media: [
-      { id: 'hero', type: 'video', label: 'Hero film', span: 'wide', parallax: 0.2 },
-      { id: 'macro', type: 'image', label: 'Macro weave', span: 'tall', parallax: 0.32 },
-      { id: 'section', type: 'image', label: 'Cross section', span: 'square', parallax: 0.28 },
-      { id: 'spin', type: 'video', label: 'Product spin', span: 'square', parallax: 0.4 },
-      { id: 'lifestyle', type: 'image', label: 'Lifestyle still', span: 'wide', parallax: 0.22 },
-      { id: 'detail', type: 'image', label: 'Edge detail', span: 'tall', parallax: 0.36 },
-    ],
-    heroVideo: `${PROJECT_MEDIA}/pellican-cushion/hero.mp4`,
-    heroImage: `${PROJECT_MEDIA}/pellican-cushion/hero.jpg`,
-    thumbnail: `${PROJECT_MEDIA}/pellican-cushion/thumb.jpg`,
-    cardMedia: 'image',
-  },
 ]
 
 export function getProjectBySlug(slug: string) {
