@@ -95,9 +95,9 @@ export function Pillars() {
       }
 
       gsap.set(frames, {
-        borderRadius: '50%',
-        scale: 0.78,
-        clipPath: 'ellipse(52% 48% at 50% 50%)',
+        borderRadius: '22%',
+        scale: 0.9,
+        clipPath: 'inset(4% round 22%)',
         transformOrigin: '50% 50%',
         force3D: true,
       })

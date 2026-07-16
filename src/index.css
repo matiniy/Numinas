@@ -1481,6 +1481,7 @@ body {
 
   .contact-marquee__viewport {
     overflow: hidden;
+    padding-block: 0.12em;
     -webkit-mask-image: linear-gradient(
       to right,
       transparent 0%,
@@ -1535,7 +1536,7 @@ body {
     font-family: var(--font-title);
     font-weight: var(--font-weight-title);
     font-size: inherit;
-    line-height: 0.95;
+    line-height: 1.12;
     letter-spacing: -0.035em;
     white-space: nowrap;
     color: var(--n-paper);
@@ -1550,7 +1551,7 @@ body {
   .contact-marquee__logo img {
     display: block;
     width: auto;
-    height: 1.4em;
+    height: 0.9em;
     opacity: 0.9;
     filter: brightness(0) invert(1);
   }
@@ -1781,6 +1782,97 @@ body {
   .contact-form__action {
     justify-self: start;
     margin-top: 0.35rem;
+  }
+
+  .site-footer {
+    background: #e9e9ec;
+    color: #0a0a0b;
+    padding-block: clamp(3rem, 8vw, 5rem);
+    border-bottom: none;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 1.75rem);
+    text-align: center;
+  }
+
+  .site-footer__logo {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  .site-footer__logo img {
+    display: block;
+    width: auto;
+    height: clamp(4.5rem, 14vw, 7rem);
+  }
+
+  .site-footer__social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .site-footer__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background: #0a0a0b;
+    color: #ffffff;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .site-footer__social-link:hover,
+  .site-footer__social-link:focus-visible {
+    opacity: 0.86;
+    transform: translateY(-1px);
+  }
+
+  .site-footer__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: clamp(0.5rem, 2vw, 1rem);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: #4a4a52;
+  }
+
+  .site-footer__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem 1.25rem;
+  }
+
+  .site-footer__nav a,
+  .site-footer__email {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .site-footer__nav a:hover,
+  .site-footer__nav a:focus-visible,
+  .site-footer__email:hover,
+  .site-footer__email:focus-visible {
+    color: #0a0a0b;
+  }
+
+  .site-footer__copyright {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: #6b6b73;
   }
 }
 
