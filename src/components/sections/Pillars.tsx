@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollReveal } from '@/components/ui/scroll-reveal'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -55,11 +56,31 @@ function PillarVisual({ pillar }: { pillar: Pillar }) {
 function PillarCopy({ pillar }: { pillar: Pillar }) {
   return (
     <article className="pillars-grid__cell pillars-grid__cell--copy" aria-labelledby={`pillar-${pillar.index}`}>
-      <p className="pillars-grid__index">{pillar.index}</p>
-      <h3 id={`pillar-${pillar.index}`} className="pillars-grid__title">
+      <ScrollReveal
+        as="h3"
+        id={`pillar-${pillar.index}`}
+        containerClassName="pillars-grid__title"
+        baseOpacity={0}
+        enableBlur
+        baseRotation={4}
+        blurStrength={8}
+        rotationEnd="top 45%"
+        wordAnimationEnd="top 45%"
+      >
         {pillar.title}
-      </h3>
-      <p className="pillars-grid__body">{pillar.body}</p>
+      </ScrollReveal>
+      <ScrollReveal
+        as="p"
+        containerClassName="pillars-grid__body"
+        baseOpacity={0.1}
+        enableBlur
+        baseRotation={2}
+        blurStrength={5}
+        rotationEnd="top 40%"
+        wordAnimationEnd="top 40%"
+      >
+        {pillar.body}
+      </ScrollReveal>
     </article>
   )
 }
