@@ -17,19 +17,19 @@ const pillars: Pillar[] = [
     index: '01',
     title: 'Communicate',
     body: 'Deliver clarity fast. Ambitious campaigns become cinematic visuals audiences instantly understand.',
-    image: '/media/pillars/communicate.jpg',
+    image: '/media/pillars/pillar1.png',
   },
   {
     index: '02',
     title: 'Captivate',
     body: 'Win attention in seconds. Explainers, ads, and animations built to cut through noise.',
-    image: '/media/pillars/captivate.jpg',
+    image: '/media/pillars/pillar2.png',
   },
   {
     index: '03',
     title: 'Connect',
     body: 'Build trust and buy-in. Story-driven motion that resonates with customers, teams, and investors.',
-    image: '/media/pillars/connect.jpg',
+    image: '/media/pillars/pillar3.png',
   },
 ]
 
@@ -42,10 +42,8 @@ function PillarVisual({ pillar }: { pillar: Pillar }) {
             src={pillar.image}
             alt=""
             className="pillars-grid__image"
-            loading="lazy"
-            onError={(event) => {
-              event.currentTarget.style.display = 'none'
-            }}
+            loading="eager"
+            decoding="async"
           />
         ) : null}
       </div>
