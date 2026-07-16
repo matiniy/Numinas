@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { TRUSTED_BY_LOGOS } from '@/lib/trusted-by-logos'
 import { cn } from '@/lib/utils'
 
@@ -46,10 +46,43 @@ function TrustedByLogo({
   )
 }
 
+const TRUSTED_FADE_WIDTH_PX = 24
+
 export function TrustedBy() {
+  const stripRef = useRef<HTMLDivElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
+
+  useEffect(() => {
+    const strip = stripRef.current
+    const heading = headingRef.current
+    if (!strip || !heading) return
+
+    const syncFade = () => {
+      const stripLeft = strip.getBoundingClientRect().left
+      const headingRight = heading.getBoundingClientRect().right
+      const fadeStart = Math.max(0, headingRight - stripLeft)
+      const fadeEnd = fadeStart + TRUSTED_FADE_WIDTH_PX
+
+      strip.style.setProperty('--trusted-fade-start', `${fadeStart}px`)
+      strip.style.setProperty('--trusted-fade-end', `${fadeEnd}px`)
+    }
+
+    syncFade()
+
+    const observer = new ResizeObserver(syncFade)
+    observer.observe(heading)
+    observer.observe(strip)
+    window.addEventListener('resize', syncFade)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', syncFade)
+    }
+  }, [])
+
   return (
     <section id="trusted" className="trusted-by-section wire-section" aria-labelledby="trusted-heading">
-      <div className="trusted-by-strip">
+      <div ref={stripRef} className="trusted-by-strip">
         <div className="trusted-by-marquee">
           <div className="trusted-by-marquee__viewport">
             <div className="trusted-by-marquee__track">
@@ -77,8 +110,8 @@ export function TrustedBy() {
         </div>
 
         <div className="trusted-by-strip__title">
-          <h2 id="trusted-heading" className="trusted-by-strip__heading">
-            Worked on campaigns for brands like:
+          <h2 id="trusted-heading" ref={headingRef} className="trusted-by-strip__heading">
+            Worked on campaigns for brands like
           </h2>
         </div>
       </div>

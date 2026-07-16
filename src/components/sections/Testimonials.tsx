@@ -112,11 +112,14 @@ export function Testimonials() {
             <div className="testimonials-section__heading">
               <h2
                 id="testimonials-heading"
-                className="type-h2 testimonials-heading text-balance"
+                className="type-h2 testimonials-heading"
               >
-                <span className="testimonials-heading__accent">What They Say</span>
-                <br />
-                About the Work
+                <span className="testimonials-heading__line">
+                  <span className="testimonials-heading__accent">What They Say</span>
+                </span>
+                <span className="testimonials-heading__line testimonials-heading__line--primary">
+                  About the Work
+                </span>
               </h2>
 
               <TestimonialTimers index={index} paused={paused} onSelect={setIndex} />

@@ -28,7 +28,9 @@ const pillars: Pillar[] = [
 
 function PillarVisual({ pillar }: { pillar: Pillar }) {
   return (
-    <div className="pillars-grid__cell pillars-grid__cell--visual">
+    <div
+      className={`pillars-grid__cell pillars-grid__cell--visual pillars-grid__cell--${pillar.index}-visual`}
+    >
       {pillar.image ? (
         <img
           src={pillar.image}
@@ -47,7 +49,10 @@ function PillarVisual({ pillar }: { pillar: Pillar }) {
 
 function PillarCopy({ pillar }: { pillar: Pillar }) {
   return (
-    <article className="pillars-grid__cell pillars-grid__cell--copy" aria-labelledby={`pillar-${pillar.index}`}>
+    <article
+      className={`pillars-grid__cell pillars-grid__cell--copy pillars-grid__cell--${pillar.index}-copy`}
+      aria-labelledby={`pillar-${pillar.index}`}
+    >
       <p className="pillars-grid__index">{pillar.index}</p>
       <h3 id={`pillar-${pillar.index}`} className="pillars-grid__title">
         {pillar.title}

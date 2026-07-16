@@ -91,7 +91,7 @@ export function Hero() {
       />
 
       <div className="wire-container relative z-10 flex min-h-[100svh] flex-col justify-end pb-12 pt-20 sm:pb-16 sm:pt-24 md:pb-20 md:pt-28 lg:pb-24">
-        <GlassChipList ref={chipsRef} className="mb-5 md:mb-6" aria-label="Core offerings">
+        <GlassChipList ref={chipsRef} className="hero-chip-list mb-5 md:mb-6" aria-label="Core offerings">
           {HERO_OFFERINGS.map((item) => (
             <li key={item.label} className="hero-extra hero-extra--chip">
               <GlassChip variant={item.variant} glass>

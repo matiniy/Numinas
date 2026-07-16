@@ -117,7 +117,7 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
     gap: `${lerp(16, 8, p)}px`,
   }
 
-  const logoHeight = lerp(28, 20, p)
+  const logoHeight = isDesktop ? lerp(28, 20, p) : lerp(20, 16, p)
   const linkColor = isLightSurface
     ? `rgb(${Math.round(lerp(18, 255, p))} ${Math.round(lerp(18, 255, p))} ${Math.round(lerp(22, 255, p))})`
     : undefined
@@ -161,18 +161,23 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
             type="button"
             className={cn(
               'site-nav__menu-btn flex min-h-11 min-w-11 items-center justify-center lg:hidden',
-              isFloating
-                ? 'rounded-xl border border-white/[0.08] bg-white/[0.04]'
-                : isLightSurface
-                  ? 'rounded-xl border border-[var(--cs-line)] bg-white/70 text-[var(--cs-ink)]'
-                  : 'wire-box',
+              isLightSurface ? 'text-[var(--cs-ink)]' : 'text-[var(--n-paper)]',
             )}
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? 'Close menu' : 'Open menu'}
             onClick={() => setOpen((v) => !v)}
           >
-            <span className="font-mono text-xs">{open ? '✕' : '☰'}</span>
+            {open ? (
+              <span className="site-nav__menu-close" aria-hidden="true">
+                ✕
+              </span>
+            ) : (
+              <span className="site-nav__menu-icon" aria-hidden="true">
+                <span className="site-nav__menu-line" />
+                <span className="site-nav__menu-line" />
+              </span>
+            )}
           </button>
         </div>
 
@@ -206,7 +211,7 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
                 </a>
               ))}
               <CreativeCallButton
-                className="mt-2 w-full"
+                className="site-nav__cta mt-2"
                 compact
                 href="/#contact"
                 onClick={() => setOpen(false)}
