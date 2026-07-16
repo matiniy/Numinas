@@ -78,7 +78,7 @@ export function TrustedBy() {
 
         <div className="trusted-by-strip__title">
           <h2 id="trusted-heading" className="trusted-by-strip__heading">
-            Trusted by global brands
+            Worked on campaigns for brands like:
           </h2>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react'
+import { forwardRef, type CSSProperties, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import {
   GLASS_CHIP_GRADIENTS,
@@ -32,10 +32,13 @@ interface GlassChipListProps {
   'aria-label'?: string
 }
 
-export function GlassChipList({ children, className, 'aria-label': ariaLabel }: GlassChipListProps) {
+export const GlassChipList = forwardRef<HTMLUListElement, GlassChipListProps>(function GlassChipList(
+  { children, className, 'aria-label': ariaLabel },
+  ref,
+) {
   return (
-    <ul className={cn('glass-chip-list', className)} aria-label={ariaLabel}>
+    <ul ref={ref} className={cn('glass-chip-list', className)} aria-label={ariaLabel}>
       {children}
     </ul>
   )
-}
+})

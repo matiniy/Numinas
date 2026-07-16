@@ -1,0 +1,17 @@
+.split-parent .split-char,
+.split-parent .split-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.split-parent--lines .split-line {
+  display: block;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.split-parent .split-word.type-display-accent {
+  font-family: var(--font-service);
+  font-weight: var(--font-weight-service);
+  font-style: italic;
+}

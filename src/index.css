@@ -1153,6 +1153,26 @@ body {
     list-style: none;
   }
 
+  .hero-extra {
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+
+  .hero-extra--chip {
+    transform: translateY(9px);
+  }
+
+  .hero-extra--cta {
+    transform: translateY(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-extra {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   .glass-chip-list > li {
     display: flex;
   }
