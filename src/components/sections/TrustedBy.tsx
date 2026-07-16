@@ -111,7 +111,7 @@ export function TrustedBy() {
 
         <div className="trusted-by-strip__title">
           <h2 id="trusted-heading" ref={headingRef} className="trusted-by-strip__heading">
-            Worked on campaigns for brands like
+            As seen in campaigns for
           </h2>
         </div>
       </div>
