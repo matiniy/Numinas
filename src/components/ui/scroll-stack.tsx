@@ -135,19 +135,38 @@ export function ScrollStack({
     const cards = Array.from(scroller.querySelectorAll<HTMLElement>('.scroll-stack-card'))
     cardsRef.current = cards
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const coarsePointerQuery = window.matchMedia('(pointer: coarse), (hover: none)')
+    const mobileWidthQuery = window.matchMedia('(max-width: 767px)')
 
-    cards.forEach((card, i) => {
-      if (i < cards.length - 1) {
-        card.style.marginBottom = `${itemDistance}px`
-      }
+    const isTouchLayout = () => coarsePointerQuery.matches || mobileWidthQuery.matches
+
+    const getResponsiveDistance = () => (isTouchLayout() ? Math.min(itemDistance, 120) : itemDistance)
+
+    const getResponsiveStackPosition = () => {
+      const { stackPosition: stackPos } = configRef.current
+      if (!isTouchLayout()) return stackPos
+      // Keep cards clearer of the mobile top chrome.
+      return '28%'
+    }
+
+    const applyCardSpacing = () => {
+      const gap = getResponsiveDistance()
+      cards.forEach((card, i) => {
+        card.style.marginBottom = i < cards.length - 1 ? `${gap}px` : '0px'
+      })
+    }
+
+    cards.forEach((card) => {
       card.style.willChange = 'transform'
       card.style.transformOrigin = 'top center'
       card.style.backfaceVisibility = 'hidden'
       card.style.transform = 'translate3d(0, 0, 0) scale(1)'
       card.style.filter = 'none'
     })
+    applyCardSpacing()
 
     const measureOffsets = () => {
+      applyCardSpacing()
       cardOffsetsRef.current = cards.map((card) =>
         useWindowScroll ? getDocumentOffsetTop(card) : card.offsetTop,
       )
@@ -165,8 +184,8 @@ export function ScrollStack({
       useWindowScroll ? window.innerHeight : scroller.clientHeight
 
     const getSnapPoints = () => {
-      const { stackPosition: stackPos, itemStackDistance: stackGap } = configRef.current
-      const stackPositionPx = parsePercentage(stackPos, getContainerHeight())
+      const { itemStackDistance: stackGap } = configRef.current
+      const stackPositionPx = parsePercentage(getResponsiveStackPosition(), getContainerHeight())
       const softStackGap = stackGap * 0.55
       return cardOffsetsRef.current.map(
         (cardTop, i) => cardTop - stackPositionPx - softStackGap * i,
@@ -177,7 +196,6 @@ export function ScrollStack({
       const {
         itemScale: scaleStep,
         itemStackDistance: stackGap,
-        stackPosition: stackPos,
         scaleEndPosition: scaleEndPos,
         baseScale: minScale,
         rotationAmount: rotAmount,
@@ -186,8 +204,11 @@ export function ScrollStack({
       } = configRef.current
 
       const containerHeight = getContainerHeight()
-      const stackPositionPx = parsePercentage(stackPos, containerHeight)
-      const scaleEndPositionPx = parsePercentage(scaleEndPos, containerHeight)
+      const stackPositionPx = parsePercentage(getResponsiveStackPosition(), containerHeight)
+      const scaleEndPositionPx = parsePercentage(
+        isTouchLayout() ? '18%' : scaleEndPos,
+        containerHeight,
+      )
       const endElementTop = endOffsetRef.current
       const softStackGap = stackGap * 0.55
 
@@ -320,7 +341,12 @@ export function ScrollStack({
       }
 
       const onWheel = (event: WheelEvent) => {
-        if (!configRef.current.snapOnWheel || !isInSnapZone()) {
+        // Touch / phone layouts keep native free scrolling — no wheel hijack.
+        if (
+          !configRef.current.snapOnWheel ||
+          isTouchLayout() ||
+          !isInSnapZone()
+        ) {
           wheelAccum = 0
           return
         }
@@ -351,15 +377,24 @@ export function ScrollStack({
         requestTick()
       }
 
+      const onMediaChange = () => {
+        measureOffsets()
+        requestTick()
+      }
+
       window.addEventListener('scroll', onScroll, { passive: true })
       window.addEventListener('wheel', onWheel, { passive: false })
       window.addEventListener('resize', onResize)
+      coarsePointerQuery.addEventListener('change', onMediaChange)
+      mobileWidthQuery.addEventListener('change', onMediaChange)
       requestTick()
 
       return () => {
         window.removeEventListener('scroll', onScroll)
         window.removeEventListener('wheel', onWheel)
         window.removeEventListener('resize', onResize)
+        coarsePointerQuery.removeEventListener('change', onMediaChange)
+        mobileWidthQuery.removeEventListener('change', onMediaChange)
         if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current)
         if (snapRaf != null) cancelAnimationFrame(snapRaf)
         stackCompletedRef.current = false

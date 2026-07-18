@@ -30,6 +30,12 @@
   transition: none;
 }
 
+@media (max-width: 767px) {
+  .scroll-stack-scroller--window .scroll-stack-inner {
+    padding: 8vh 0 28vh;
+  }
+}
+
 .scroll-stack-card {
   transform-origin: top center;
   will-change: transform, filter;
