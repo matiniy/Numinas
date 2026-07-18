@@ -61,6 +61,7 @@ export function Services() {
           <ScrollStack
             className="services-section__stack"
             useWindowScroll
+            snapOnWheel
             itemDistance={220}
             itemStackDistance={10}
             itemScale={0.015}
