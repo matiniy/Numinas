@@ -45,6 +45,7 @@ const OLAY_STEM_MEDIA = `${PROJECT_MEDIA}/olay-stem`
 const AMEX_MEDIA = `${PROJECT_MEDIA}/american-express-play-it`
 const SECRET_MEDIA = `${PROJECT_MEDIA}/secret-aluminum-free`
 const READCOIN_MEDIA = `${PROJECT_MEDIA}/readcoin`
+const PLANET_MEDIA = `${PROJECT_MEDIA}/planet`
 
 function projectMediaFile(base: string, filename: string) {
   return `${base}/${encodeURIComponent(filename)}`
@@ -737,6 +738,76 @@ export const PROJECTS: Project[] = [
     heroVideo: projectMediaFile(READCOIN_MEDIA, 'READCOIN (1).mp4'),
     heroImage: projectMediaFile(READCOIN_MEDIA, 'vlcsnap-2025-10-28-08h03m21s185.png'),
     thumbnail: projectMediaFile(READCOIN_MEDIA, 'vlcsnap-2025-10-28-08h03m21s185.png'),
+  },
+  {
+    slug: 'planet',
+    client: 'Planet Toon',
+    title: 'Broadcast Package',
+    tagline: 'Playful broadcast motion that makes a kids network feel bigger, louder, and unforgettable.',
+    year: '2024',
+    services: ['Broadcast Design', '2D Motion', 'Brand Film'],
+    accent: '#22d3ee',
+    accentSoft: '#a5f3fc',
+    overview:
+      'A broadcast package for Planet Toon — openers, transitions, and channel branding built to cut through kids TV clutter with bold shape language and buoyant timing.',
+    challenge:
+      'Give a toon network instant recognition in linear and digital bumpers without feeling dated or over-busy.',
+    approach:
+      'Graphic character energy, saturated color fields, and snappy edit rhythms keep every ID feeling like an event — short enough for air, rich enough for social cutdowns.',
+    outcome:
+      'Hero package film and key stills ready for on-air, promos, and platform thumbnails.',
+    story: [
+      {
+        id: 'identity',
+        eyebrow: 'Identity',
+        title: 'Channel in a flash',
+        body: 'Logo moments and network color land early so the brand reads before the next program beat.',
+      },
+      {
+        id: 'energy',
+        eyebrow: 'Energy',
+        title: 'Built for young eyes',
+        body: 'Bounce, squash, and graphic punches keep the package playful while staying broadcast-clean.',
+      },
+    ],
+    media: [
+      {
+        id: 'hero',
+        type: 'video',
+        label: 'Broadcast package',
+        span: 'wide',
+        parallax: 0.18,
+        src: projectMediaFile(PLANET_MEDIA, '01 - Planet Toon - Broadcast Package2.mp4'),
+        poster: projectMediaFile(PLANET_MEDIA, 'Planet Toon - Broadcast Package_00170.jpg'),
+      },
+      {
+        id: 'still-01',
+        type: 'image',
+        label: 'Key still',
+        span: 'tall',
+        parallax: 0.3,
+        src: projectMediaFile(PLANET_MEDIA, 'Planet Toon - Broadcast Package_00170.jpg'),
+      },
+      {
+        id: 'still-02',
+        type: 'image',
+        label: 'Package frame',
+        span: 'square',
+        parallax: 0.24,
+        src: projectMediaFile(PLANET_MEDIA, 'Planet Toon - Broadcast Package_00170.jpg'),
+      },
+      {
+        id: 'still-03',
+        type: 'image',
+        label: 'Brand moment',
+        span: 'wide',
+        parallax: 0.28,
+        src: projectMediaFile(PLANET_MEDIA, 'Planet Toon - Broadcast Package_00170.jpg'),
+      },
+    ],
+    heroVideo: projectMediaFile(PLANET_MEDIA, '01 - Planet Toon - Broadcast Package2.mp4'),
+    heroImage: projectMediaFile(PLANET_MEDIA, 'Planet Toon - Broadcast Package_00170.jpg'),
+    thumbnail: projectMediaFile(PLANET_MEDIA, 'Planet Toon - Broadcast Package_00170.jpg'),
   },
 ]
 

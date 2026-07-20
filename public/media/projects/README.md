@@ -14,6 +14,7 @@ Drop visuals for each case study in its own folder.
 | `excel-get-chewing` | Excel · Get Chewing |
 | `secret-aluminum-free` | Secret · Aluminum Free |
 | `readcoin` | Readcoin · Readcoin |
+| `planet` | Planet Toon · Broadcast Package |
 
 ## Recommended files per project
 
