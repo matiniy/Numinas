@@ -1,5 +1,4 @@
 import { ScrollFloat } from '@/components/ui/scroll-float'
-import { ScrollStack, ScrollStackItem } from '@/components/ui/scroll-stack'
 import { getGrainientPaletteByIndex } from '@/lib/grainient-palettes'
 
 const services = [
@@ -58,23 +57,12 @@ export function Services() {
 
       <div className="services-section__stage">
         <div className="wire-container services-section__inner">
-          <ScrollStack
-            className="services-section__stack"
-            useWindowScroll
-            snapOnWheel
-            itemDistance={220}
-            itemStackDistance={10}
-            itemScale={0.015}
-            baseScale={0.93}
-            stackPosition="34%"
-            scaleEndPosition="14%"
-            blurAmount={0}
-          >
+          <ul className="services-section__grid">
             {services.map((service, index) => {
               const grainient = getGrainientPaletteByIndex(index)
 
               return (
-                <ScrollStackItem key={service.n} itemClassName="services-section__card">
+                <li key={service.n} className="services-section__item">
                   <p className="services-section__index">{service.n}</p>
                   <h3
                     className="services-section__title"
@@ -85,10 +73,10 @@ export function Services() {
                     {service.title}
                   </h3>
                   <p className="services-section__body">{service.body}</p>
-                </ScrollStackItem>
+                </li>
               )
             })}
-          </ScrollStack>
+          </ul>
         </div>
       </div>
     </section>
