@@ -1427,28 +1427,17 @@ body {
   .contact-section {
     position: relative;
     overflow: hidden;
+    background: #e9e9ec;
+    color: #0a0a0b;
     padding-top: 8.125rem;
     padding-bottom: var(--section-y);
   }
 
-  .contact-section__backdrop {
+  .contact-section__waves {
     position: absolute;
     inset: 0;
     z-index: 0;
-    overflow: hidden;
     pointer-events: none;
-  }
-
-  .contact-section__aurora {
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    z-index: 0;
-    height: min(78vh, 40rem);
-    opacity: 1;
-    pointer-events: none;
-    -webkit-mask-image: linear-gradient(to top, black 62%, transparent 100%);
-    mask-image: linear-gradient(to top, black 62%, transparent 100%);
   }
 
   .contact-section__container {
@@ -1481,18 +1470,19 @@ body {
     font-family: var(--font-body);
     font-size: 0.9375rem;
     font-weight: var(--font-weight-body);
-    color: var(--n-paper);
+    color: #4a4a52;
   }
 
   .contact-section__title {
     margin-top: 0.35rem;
     margin-bottom: 0;
+    color: #0a0a0b;
   }
 
   .contact-section__subtitle {
     margin-top: 1rem;
     max-width: 30rem;
-    color: var(--n-mist);
+    color: #4a4a52;
     line-height: 1.65;
   }
 
@@ -1500,12 +1490,12 @@ body {
     margin-top: 1.25rem;
     font-family: var(--font-body);
     font-size: 0.9375rem;
-    color: rgb(244 244 245 / 0.72);
+    color: #4a4a52;
     transition: color 0.2s ease;
   }
 
   .contact-section__email:hover {
-    color: var(--n-paper);
+    color: #0a0a0b;
   }
 
   .contact-form {
@@ -1515,49 +1505,18 @@ body {
     gap: 1.1rem;
     padding: clamp(1.25rem, 3vw, 2rem);
     border-radius: 1rem;
-    border: 1px solid rgb(255 255 255 / 0.14);
-    background: rgb(10 10 11 / 0.38);
-    backdrop-filter: blur(22px) saturate(150%);
-    -webkit-backdrop-filter: blur(22px) saturate(150%);
-    box-shadow:
-      0 24px 60px rgb(0 0 0 / 0.28),
-      inset 0 1px 0 rgb(255 255 255 / 0.1);
+    border: 1px solid rgb(10 10 11 / 0.08);
+    background: #ffffff;
+    box-shadow: 0 18px 48px rgb(10 10 11 / 0.08);
     overflow: hidden;
   }
 
-  .contact-form::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(
-      180deg,
-      rgb(255 255 255 / 0.06) 0%,
-      rgb(255 255 255 / 0.02) 28%,
-      transparent 55%
-    );
-    pointer-events: none;
+  .contact-form__success-title {
+    color: #0a0a0b;
   }
 
-  .contact-form::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 0;
-    width: min(58%, 18rem);
-    height: min(52%, 12rem);
-    background-image:
-      linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px);
-    background-size: 1.35rem 1.35rem;
-    mask-image: radial-gradient(ellipse at top right, black 10%, transparent 72%);
-    pointer-events: none;
-  }
-
-  .contact-form > * {
-    position: relative;
-    z-index: 1;
+  .contact-form__success-note {
+    color: #6b6b73;
   }
 
   .contact-form--success {
@@ -1574,22 +1533,20 @@ body {
     font-family: var(--font-body);
     font-size: 0.8125rem;
     font-weight: var(--font-weight-body);
-    color: rgb(244 244 245 / 0.88);
+    color: #4a4a52;
   }
 
   .contact-field__input {
     width: 100%;
     min-height: 2.75rem;
     padding: 0.7rem 0.9rem;
-    border: 1px solid rgb(255 255 255 / 0.1);
+    border: 1px solid rgb(10 10 11 / 0.1);
     border-radius: 0.55rem;
-    background: rgb(10 10 11 / 0.32);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: #f4f4f6;
     font-family: var(--font-body);
     font-size: 1rem;
     font-weight: var(--font-weight-body);
-    color: var(--n-paper);
+    color: #0a0a0b;
     outline: none;
     transition:
       border-color 0.2s ease,
@@ -1603,12 +1560,12 @@ body {
   }
 
   .contact-field__input::placeholder {
-    color: rgb(138 138 147 / 0.72);
+    color: #8a8a93;
   }
 
   .contact-field__input:focus {
-    border-color: rgb(255 255 255 / 0.22);
-    background: rgb(10 10 11 / 0.45);
+    border-color: rgb(10 10 11 / 0.28);
+    background: #ffffff;
   }
 
   .contact-field__input--textarea {

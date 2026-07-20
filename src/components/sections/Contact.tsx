@@ -1,7 +1,6 @@
 import { FormEvent, useState } from 'react'
-import Aurora from '@/components/ui/Aurora'
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
-import { CONTACT_AURORA_COLORS } from '@/lib/glass-chips'
+import { Waves } from '@/components/ui/waves'
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false)
@@ -13,15 +12,20 @@ export function Contact() {
 
   return (
     <section id="contact" className="contact-section" aria-labelledby="contact-heading">
-      <div className="contact-section__backdrop" aria-hidden="true">
-        <div className="contact-section__aurora">
-          <Aurora
-            colorStops={CONTACT_AURORA_COLORS}
-            blend={0.5}
-            amplitude={1.0}
-            speed={0.5}
-          />
-        </div>
+      <div className="contact-section__waves" aria-hidden="true">
+        <Waves
+          lineColor="#d8d8db"
+          backgroundColor="#e9e9ec"
+          waveSpeedX={0.02}
+          waveSpeedY={0.015}
+          waveAmpX={40}
+          waveAmpY={20}
+          friction={0.77}
+          tension={0.01}
+          maxCursorMove={120}
+          xGap={12}
+          yGap={36}
+        />
       </div>
 
       <div className="wire-container contact-section__container">
@@ -46,8 +50,8 @@ export function Contact() {
           <div className="contact-section__form-wrap">
             {submitted ? (
               <div className="contact-form contact-form--success">
-                <p className="type-h3">Thanks — we’ll be in touch.</p>
-                <p className="type-small mt-2 text-[var(--n-mist)]">
+                <p className="type-h3 contact-form__success-title">Thanks — we’ll be in touch.</p>
+                <p className="type-small mt-2 contact-form__success-note">
                   Form is wireframe-only (no backend yet).
                 </p>
                 <CreativeCallButton
