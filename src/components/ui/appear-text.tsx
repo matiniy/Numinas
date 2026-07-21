@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { cn } from '@/lib/utils'
+
+gsap.registerPlugin(ScrollTrigger)
 
 function splitWords(text: string) {
   return text.split(/(\s+)/).filter((part) => part.length > 0)
@@ -10,11 +13,23 @@ interface AppearTextProps {
   text: string
   className?: string
   as?: 'span' | 'p'
-  /** Wait until the text enters the viewport before animating. */
+  /** Wait until the text enters the viewport before animating once. */
   onView?: boolean
+  /** Tie progress to scroll so the animation reverses when scrolling up/down. */
+  scrub?: boolean
+  scrubStart?: string
+  scrubEnd?: string
 }
 
-export function AppearText({ text, className, as: Tag = 'span', onView = false }: AppearTextProps) {
+export function AppearText({
+  text,
+  className,
+  as: Tag = 'span',
+  onView = false,
+  scrub = false,
+  scrubStart = 'top bottom-=15%',
+  scrubEnd = 'top 45%',
+}: AppearTextProps) {
   const rootRef = useRef<HTMLSpanElement | HTMLParagraphElement>(null)
 
   useEffect(() => {
@@ -45,7 +60,24 @@ export function AppearText({ text, className, as: Tag = 'span', onView = false }
       })
     }
 
-    if (!onView) {
+    if (scrub) {
+      tween = gsap.fromTo(
+        words,
+        { y: '110%', opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: 'none',
+          stagger: 0.05,
+          scrollTrigger: {
+            trigger: root,
+            start: scrubStart,
+            end: scrubEnd,
+            scrub: true,
+          },
+        },
+      )
+    } else if (!onView) {
       play()
     } else {
       observer = new IntersectionObserver(
@@ -62,9 +94,10 @@ export function AppearText({ text, className, as: Tag = 'span', onView = false }
 
     return () => {
       observer?.disconnect()
+      tween?.scrollTrigger?.kill()
       tween?.kill()
     }
-  }, [text, onView])
+  }, [text, onView, scrub, scrubStart, scrubEnd])
 
   const parts = splitWords(text)
 
