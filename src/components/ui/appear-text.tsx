@@ -10,9 +10,11 @@ interface AppearTextProps {
   text: string
   className?: string
   as?: 'span' | 'p'
+  /** Wait until the text enters the viewport before animating. */
+  onView?: boolean
 }
 
-export function AppearText({ text, className, as: Tag = 'span' }: AppearTextProps) {
+export function AppearText({ text, className, as: Tag = 'span', onView = false }: AppearTextProps) {
   const rootRef = useRef<HTMLSpanElement | HTMLParagraphElement>(null)
 
   useEffect(() => {
@@ -29,18 +31,40 @@ export function AppearText({ text, className, as: Tag = 'span' }: AppearTextProp
     }
 
     gsap.set(words, { y: '110%', opacity: 0 })
-    const tween = gsap.to(words, {
-      y: 0,
-      opacity: 1,
-      duration: 0.65,
-      ease: 'power3.out',
-      stagger: 0.04,
-    })
+
+    let tween: gsap.core.Tween | null = null
+    let observer: IntersectionObserver | null = null
+
+    const play = () => {
+      tween = gsap.to(words, {
+        y: 0,
+        opacity: 1,
+        duration: 0.65,
+        ease: 'power3.out',
+        stagger: 0.04,
+      })
+    }
+
+    if (!onView) {
+      play()
+    } else {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return
+          observer?.disconnect()
+          observer = null
+          play()
+        },
+        { threshold: 0.35, rootMargin: '0px 0px -8% 0px' },
+      )
+      observer.observe(root)
+    }
 
     return () => {
-      tween.kill()
+      observer?.disconnect()
+      tween?.kill()
     }
-  }, [text])
+  }, [text, onView])
 
   const parts = splitWords(text)
 

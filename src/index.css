@@ -1295,13 +1295,14 @@ body {
 
   .contact-marquee-section {
     overflow: hidden;
-    padding-top: calc(clamp(2.5rem, 6vh, 4rem) + 18.75rem);
-    padding-bottom: 0;
+    padding-top: clamp(2.5rem, 6vh, 4rem);
+    padding-bottom: clamp(2.5rem, 6vh, 4rem);
   }
 
   @media (max-width: 767px) {
     .contact-marquee-section {
-      padding-top: calc(1.5rem + clamp(6rem, 24vh, 10rem));
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
     }
 
     .contact-marquee {
