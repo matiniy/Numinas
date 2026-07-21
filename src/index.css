@@ -1432,14 +1432,14 @@ body {
 
   .contact-marquee-section {
     overflow: hidden;
-    padding-top: clamp(3rem, 8vh, 5.5rem);
-    padding-bottom: 0;
+    padding-top: clamp(4rem, 10vh, 7rem);
+    padding-bottom: clamp(3rem, 8vh, 5.5rem);
   }
 
   @media (max-width: 767px) {
     .contact-marquee-section {
-      padding-top: 2rem;
-      padding-bottom: 0;
+      padding-top: 2.75rem;
+      padding-bottom: 2.5rem;
     }
 
     .contact-marquee {
@@ -1567,7 +1567,7 @@ body {
     overflow: hidden;
     background: #e9e9ec;
     color: #0a0a0b;
-    padding-top: 8.125rem;
+    padding-top: clamp(5rem, 12vh, 9rem);
     padding-bottom: var(--section-y);
   }
 

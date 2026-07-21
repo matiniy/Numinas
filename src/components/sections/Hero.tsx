@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { HeroVideo } from './HeroVideo'
 
 /** Wheel/touch delta that must accumulate before hero copy begins loading. */
-const INTRO_SCROLL_THRESHOLD = 520
+const INTRO_SCROLL_THRESHOLD = 260
 
 export function Hero() {
   const [contentVisible, setContentVisible] = useState(false)
@@ -37,7 +37,9 @@ export function Hero() {
     if (contentVisibleRef.current) return
     contentVisibleRef.current = true
     setContentVisible(true)
-  }, [])
+    // Unlock page scroll once copy starts loading — don't wait out the full intro animation.
+    finishIntro()
+  }, [finishIntro])
 
   useLayoutEffect(() => {
     if (!contentVisible) return
@@ -61,54 +63,47 @@ export function Hero() {
 
     if (reducedMotion) {
       gsap.set([...chipItems, cta].filter(Boolean), { clearProps: 'opacity,transform' })
-      finishIntro()
       return
     }
 
-    const timeline = gsap.timeline({
-      delay: 0.12,
-      onComplete: finishIntro,
-    })
+    const timeline = gsap.timeline()
 
     if (chipItems.length) {
       timeline.fromTo(
         chipItems,
-        { opacity: 0, y: 9 },
+        { opacity: 0, y: 8 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
+          duration: 0.4,
           ease: 'power2.out',
-          stagger: 0.08,
+          stagger: 0.04,
         },
+        0,
       )
     }
 
     if (cta) {
       timeline.fromTo(
         cta,
-        { opacity: 0, y: 4 },
+        { opacity: 0, y: 6 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
+          duration: 0.4,
           ease: 'power2.out',
         },
-        chipItems.length ? '+=0.25' : 0,
+        chipItems.length ? 0.12 : 0,
       )
     }
-
-    if (!chipItems.length && !cta) {
-      finishIntro()
-    }
-  }, [finishIntro, getChipTargets])
+  }, [getChipTargets])
 
   useEffect(() => {
     if (!contentVisible) return
 
     const timer = window.setTimeout(() => {
       animateHeroExtras()
-    }, 1400)
+    }, 180)
 
     return () => window.clearTimeout(timer)
   }, [animateHeroExtras, contentVisible])
@@ -227,16 +222,15 @@ export function Hero() {
               className="type-display max-w-4xl text-balance"
               accentWords={['Clarifies', 'Converts']}
               accentClassName="type-display-accent"
-              duration={0.7}
-              delay={80}
-              startDelay={0.15}
+              duration={0.45}
+              delay={45}
+              startDelay={0}
               ease="power3.out"
               splitType="words"
-              from={{ opacity: 0, y: 40 }}
+              from={{ opacity: 0, y: 24 }}
               to={{ opacity: 1, y: 0 }}
               textAlign="left"
               playOnMount
-              onLetterAnimationComplete={animateHeroExtras}
             />
 
             <SplitText
@@ -244,11 +238,11 @@ export function Hero() {
               tag="p"
               className="type-body mt-5 max-w-2xl text-[var(--n-mist)] md:max-w-3xl"
               splitType="lines"
-              duration={0.7}
-              delay={120}
-              startDelay={0.85}
+              duration={0.45}
+              delay={60}
+              startDelay={0.2}
               ease="power3.out"
-              from={{ opacity: 0, y: 28 }}
+              from={{ opacity: 0, y: 16 }}
               to={{ opacity: 1, y: 0 }}
               textAlign="left"
               playOnMount
