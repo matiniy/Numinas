@@ -24,8 +24,8 @@ export function HomePage() {
         <Testimonials />
         <Pillars />
         <Projects />
-        <ContactMarquee />
         <Services />
+        <ContactMarquee />
         <Contact />
       </main>
       <Footer />

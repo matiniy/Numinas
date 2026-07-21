@@ -371,6 +371,7 @@ body {
     padding: clamp(1.5rem, 4vw, 3rem);
     background: var(--n-void);
     color: var(--n-paper);
+    overflow: visible;
   }
 
   .pillars-grid__image {
@@ -395,9 +396,10 @@ body {
     font-family: var(--font-service);
     font-weight: var(--font-weight-service);
     font-size: clamp(2rem, 5.5vw, 3.5rem);
-    line-height: 1.02;
+    line-height: 1.15;
     letter-spacing: -0.02em;
     color: var(--n-paper);
+    overflow: visible;
   }
 
   .pillars-grid__body {
@@ -408,6 +410,7 @@ body {
     font-size: clamp(0.8125rem, 1.1vw, 0.9375rem);
     line-height: 1.55;
     color: var(--n-mist);
+    overflow: visible;
   }
 
   @media (min-width: 768px) {
@@ -1097,6 +1100,11 @@ body {
     vertical-align: top;
   }
 
+  .appear-text__mask--open {
+    overflow: visible;
+    vertical-align: baseline;
+  }
+
   .appear-text__word {
     display: inline-block;
     will-change: transform, opacity;
@@ -1295,14 +1303,14 @@ body {
 
   .contact-marquee-section {
     overflow: hidden;
-    padding-top: clamp(2.5rem, 6vh, 4rem);
-    padding-bottom: clamp(2.5rem, 6vh, 4rem);
+    padding-top: clamp(3rem, 8vh, 5.5rem);
+    padding-bottom: 0;
   }
 
   @media (max-width: 767px) {
     .contact-marquee-section {
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
+      padding-top: 2rem;
+      padding-bottom: 0;
     }
 
     .contact-marquee {

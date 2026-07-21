@@ -19,6 +19,11 @@ interface AppearTextProps {
   scrub?: boolean
   scrubStart?: string
   scrubEnd?: string
+  /**
+   * When false, words rise from below the line without a clipping mask
+   * (full glyphs stay visible the whole time).
+   */
+  clip?: boolean
 }
 
 export function AppearText({
@@ -29,6 +34,7 @@ export function AppearText({
   scrub = false,
   scrubStart = 'top bottom-=15%',
   scrubEnd = 'top 45%',
+  clip = true,
 }: AppearTextProps) {
   const rootRef = useRef<HTMLSpanElement | HTMLParagraphElement>(null)
 
@@ -45,7 +51,9 @@ export function AppearText({
       return
     }
 
-    gsap.set(words, { y: '110%', opacity: 0 })
+    const fromY = clip ? '110%' : '0.75em'
+
+    gsap.set(words, { y: fromY, opacity: 0 })
 
     let tween: gsap.core.Tween | null = null
     let observer: IntersectionObserver | null = null
@@ -63,7 +71,7 @@ export function AppearText({
     if (scrub) {
       tween = gsap.fromTo(
         words,
-        { y: '110%', opacity: 0 },
+        { y: fromY, opacity: 0 },
         {
           y: 0,
           opacity: 1,
@@ -97,7 +105,7 @@ export function AppearText({
       tween?.scrollTrigger?.kill()
       tween?.kill()
     }
-  }, [text, onView, scrub, scrubStart, scrubEnd])
+  }, [text, onView, scrub, scrubStart, scrubEnd, clip])
 
   const parts = splitWords(text)
 
@@ -107,7 +115,10 @@ export function AppearText({
         /^\s+$/.test(part) ? (
           <span key={`space-${index}`}>{part}</span>
         ) : (
-          <span key={`${part}-${index}`} className="appear-text__mask">
+          <span
+            key={`${part}-${index}`}
+            className={cn('appear-text__mask', !clip && 'appear-text__mask--open')}
+          >
             <span data-appear-word className="appear-text__word">
               {part}
             </span>

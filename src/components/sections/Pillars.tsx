@@ -57,10 +57,22 @@ function PillarCopy({ pillar }: { pillar: Pillar }) {
   return (
     <article className="pillars-grid__cell pillars-grid__cell--copy" aria-labelledby={`pillar-${pillar.index}`}>
       <h3 id={`pillar-${pillar.index}`} className="pillars-grid__title">
-        <AppearText text={pillar.title} scrub scrubStart="top bottom-=10%" scrubEnd="top 50%" />
+        <AppearText
+          text={pillar.title}
+          scrub
+          clip={false}
+          scrubStart="top bottom-=10%"
+          scrubEnd="top 50%"
+        />
       </h3>
       <p className="pillars-grid__body">
-        <AppearText text={pillar.body} scrub scrubStart="top bottom-=5%" scrubEnd="top 42%" />
+        <AppearText
+          text={pillar.body}
+          scrub
+          clip={false}
+          scrubStart="top bottom-=5%"
+          scrubEnd="top 42%"
+        />
       </p>
     </article>
   )
