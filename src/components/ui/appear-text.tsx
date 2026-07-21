@@ -9,6 +9,10 @@ function splitWords(text: string) {
   return text.split(/(\s+)/).filter((part) => part.length > 0)
 }
 
+function splitChars(text: string) {
+  return Array.from(text)
+}
+
 interface AppearTextProps {
   text: string
   className?: string
@@ -20,10 +24,13 @@ interface AppearTextProps {
   scrubStart?: string
   scrubEnd?: string
   /**
-   * When false, words rise from below the line without a clipping mask
+   * When false, units rise from below the line without a clipping mask
    * (full glyphs stay visible the whole time).
    */
   clip?: boolean
+  /** Animate by words (default) or individual characters. */
+  by?: 'words' | 'chars'
+  stagger?: number
 }
 
 export function AppearText({
@@ -35,6 +42,8 @@ export function AppearText({
   scrubStart = 'top bottom-=15%',
   scrubEnd = 'top 45%',
   clip = true,
+  by = 'words',
+  stagger = 0.04,
 }: AppearTextProps) {
   const rootRef = useRef<HTMLSpanElement | HTMLParagraphElement>(null)
 
@@ -42,41 +51,42 @@ export function AppearText({
     const root = rootRef.current
     if (!root) return
 
-    const words = root.querySelectorAll<HTMLElement>('[data-appear-word]')
-    if (!words.length) return
+    const units = root.querySelectorAll<HTMLElement>('[data-appear-word]')
+    if (!units.length) return
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reducedMotion) {
-      gsap.set(words, { y: 0, opacity: 1 })
+      gsap.set(units, { y: 0, opacity: 1 })
       return
     }
 
     const fromY = clip ? '110%' : '0.75em'
+    const scrubStagger = by === 'chars' ? Math.max(stagger, 0.03) : Math.max(stagger, 0.05)
 
-    gsap.set(words, { y: fromY, opacity: 0 })
+    gsap.set(units, { y: fromY, opacity: 0 })
 
     let tween: gsap.core.Tween | null = null
     let observer: IntersectionObserver | null = null
 
     const play = () => {
-      tween = gsap.to(words, {
+      tween = gsap.to(units, {
         y: 0,
         opacity: 1,
         duration: 0.65,
         ease: 'power3.out',
-        stagger: 0.04,
+        stagger,
       })
     }
 
     if (scrub) {
       tween = gsap.fromTo(
-        words,
+        units,
         { y: fromY, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           ease: 'none',
-          stagger: 0.05,
+          stagger: scrubStagger,
           scrollTrigger: {
             trigger: root,
             start: scrubStart,
@@ -105,26 +115,32 @@ export function AppearText({
       tween?.scrollTrigger?.kill()
       tween?.kill()
     }
-  }, [text, onView, scrub, scrubStart, scrubEnd, clip])
+  }, [text, onView, scrub, scrubStart, scrubEnd, clip, by, stagger])
 
-  const parts = splitWords(text)
+  const parts = by === 'chars' ? splitChars(text) : splitWords(text)
 
   return (
-    <Tag ref={rootRef as never} className={cn('appear-text', className)}>
-      {parts.map((part, index) =>
-        /^\s+$/.test(part) ? (
-          <span key={`space-${index}`}>{part}</span>
-        ) : (
+    <Tag ref={rootRef as never} className={cn('appear-text', by === 'chars' && 'appear-text--chars', className)}>
+      {parts.map((part, index) => {
+        if (by === 'words' && /^\s+$/.test(part)) {
+          return <span key={`space-${index}`}>{part}</span>
+        }
+
+        if (by === 'chars' && part === ' ') {
+          return <span key={`space-${index}`} className="appear-text__space"> </span>
+        }
+
+        return (
           <span
             key={`${part}-${index}`}
             className={cn('appear-text__mask', !clip && 'appear-text__mask--open')}
           >
             <span data-appear-word className="appear-text__word">
-              {part}
+              {part === ' ' ? '\u00A0' : part}
             </span>
           </span>
-        ),
-      )}
+        )
+      })}
     </Tag>
   )
 }

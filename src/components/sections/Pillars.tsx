@@ -59,19 +59,23 @@ function PillarCopy({ pillar }: { pillar: Pillar }) {
       <h3 id={`pillar-${pillar.index}`} className="pillars-grid__title">
         <AppearText
           text={pillar.title}
+          by="chars"
           scrub
           clip={false}
+          stagger={0.035}
           scrubStart="top bottom-=10%"
-          scrubEnd="top 50%"
+          scrubEnd="top 48%"
         />
       </h3>
       <p className="pillars-grid__body">
         <AppearText
           text={pillar.body}
+          by="words"
           scrub
           clip={false}
+          stagger={0.06}
           scrubStart="top bottom-=5%"
-          scrubEnd="top 42%"
+          scrubEnd="top 40%"
         />
       </p>
     </article>

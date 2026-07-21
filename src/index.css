@@ -1105,6 +1105,14 @@ body {
     vertical-align: baseline;
   }
 
+  .appear-text--chars .appear-text__mask {
+    white-space: pre;
+  }
+
+  .appear-text__space {
+    white-space: pre;
+  }
+
   .appear-text__word {
     display: inline-block;
     will-change: transform, opacity;
