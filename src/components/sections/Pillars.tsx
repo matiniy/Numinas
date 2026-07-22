@@ -54,9 +54,55 @@ function PillarVisual({ pillar }: { pillar: Pillar }) {
 }
 
 function PillarCopy({ pillar }: { pillar: Pillar }) {
+  const copyRef = useRef<HTMLElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const ruleRef = useRef<HTMLSpanElement>(null)
+
+  useGSAP(
+    () => {
+      const title = titleRef.current
+      const rule = ruleRef.current
+      if (!title || !rule) return
+
+      const titleText = title.querySelector<HTMLElement>('.appear-text')
+      const trigger = titleText ?? title
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (reducedMotion) {
+        gsap.set(rule, { scaleX: 1, opacity: 0.9 })
+        return
+      }
+
+      gsap.set(rule, {
+        scaleX: 0,
+        opacity: 0,
+        transformOrigin: 'left center',
+        force3D: true,
+      })
+
+      // Same scrub window as the title AppearText reveal
+      gsap.to(rule, {
+        scaleX: 1,
+        opacity: 0.9,
+        ease: 'none',
+        scrollTrigger: {
+          trigger,
+          start: 'top bottom-=10%',
+          end: 'top 48%',
+          scrub: true,
+        },
+      })
+    },
+    { scope: copyRef },
+  )
+
   return (
-    <article className="pillars-grid__cell pillars-grid__cell--copy" aria-labelledby={`pillar-${pillar.index}`}>
-      <h3 id={`pillar-${pillar.index}`} className="pillars-grid__title">
+    <article
+      ref={copyRef}
+      className="pillars-grid__cell pillars-grid__cell--copy"
+      aria-labelledby={`pillar-${pillar.index}`}
+    >
+      <h3 ref={titleRef} id={`pillar-${pillar.index}`} className="pillars-grid__title">
         <AppearText
           text={pillar.title}
           by="chars"
@@ -67,6 +113,7 @@ function PillarCopy({ pillar }: { pillar: Pillar }) {
           scrubEnd="top 48%"
         />
       </h3>
+      <span ref={ruleRef} className="pillars-grid__rule" aria-hidden="true" />
       <p className="pillars-grid__body">
         <AppearText
           text={pillar.body}

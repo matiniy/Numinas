@@ -402,6 +402,18 @@ body {
     overflow: visible;
   }
 
+  .pillars-grid__rule {
+    display: block;
+    width: clamp(2.5rem, 6vw, 3.5rem);
+    height: 1px;
+    margin-top: clamp(0.85rem, 2vw, 1.15rem);
+    background: #c6a15b;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform, opacity;
+  }
+
   .pillars-grid__body {
     margin: clamp(0.85rem, 2vw, 1.25rem) 0 0;
     max-width: 20rem;
@@ -1609,7 +1621,6 @@ body {
     width: auto;
     height: 0.9em;
     opacity: 0.9;
-    filter: brightness(0) invert(1);
   }
 
   @keyframes contact-marquee-scroll {
@@ -1823,7 +1834,7 @@ body {
   .contact-section__logo img {
     display: block;
     width: auto;
-    height: 2.5rem;
+    height: clamp(2.15rem, 5.3vw, 3rem);
   }
 
   .contact-section__social {
