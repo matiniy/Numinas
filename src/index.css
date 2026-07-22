@@ -1430,6 +1430,146 @@ body {
     white-space: nowrap;
   }
 
+  #approach.approach-section {
+    border-bottom: none;
+    background: var(--n-void);
+    color: var(--n-paper);
+    padding-block: clamp(4rem, 10vh, 7rem);
+  }
+
+  .approach-section__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) 1px minmax(0, 1.15fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .approach-section__title-col {
+    position: sticky;
+    top: clamp(5.5rem, 12vh, 7rem);
+    padding-block: 0.5rem;
+  }
+
+  .approach-section__title {
+    margin: 0;
+    max-width: 11ch;
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-title);
+    font-size: clamp(2.25rem, 4.5vw, 4.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: var(--n-paper);
+  }
+
+  .approach-section__rule {
+    width: 1px;
+    min-height: 100%;
+    align-self: stretch;
+    background: var(--n-fog);
+    opacity: 0.85;
+  }
+
+  .approach-section__phases {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .approach-section__phase-wrap {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .approach-section__phase {
+    max-width: 28rem;
+    opacity: 0.35;
+    transition:
+      opacity 0.35s ease,
+      color 0.35s ease;
+  }
+
+  .approach-section__phase--active {
+    opacity: 1;
+  }
+
+  .approach-section__index {
+    margin: 0 0 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    color: var(--n-mist);
+  }
+
+  .approach-section__phase-title {
+    margin: 0;
+    font-family: var(--font-service);
+    font-weight: var(--font-weight-service);
+    font-size: clamp(1.85rem, 3.2vw, 2.85rem);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: rgb(244 244 245 / 0.55);
+    transition: color 0.35s ease;
+  }
+
+  .approach-section__phase--active .approach-section__phase-title {
+    color: var(--n-paper);
+  }
+
+  .approach-section__phase-body {
+    margin: 0.85rem 0 0;
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-body);
+    font-size: clamp(0.9375rem, 0.8vw + 0.8rem, 1.0625rem);
+    line-height: 1.55;
+    color: rgb(138 138 147 / 0.72);
+    transition: color 0.35s ease;
+  }
+
+  .approach-section__phase--active .approach-section__phase-body {
+    color: var(--n-mist);
+  }
+
+  @media (max-width: 1023px) {
+    .approach-section__inner {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+
+    .approach-section__title-col {
+      position: static;
+      top: auto;
+    }
+
+    .approach-section__title {
+      max-width: 14ch;
+      font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .approach-section__rule {
+      display: none;
+    }
+
+    .approach-section__phase-wrap {
+      min-height: auto;
+      padding-block: clamp(1.75rem, 6vh, 3rem);
+    }
+
+    .approach-section__phase {
+      max-width: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .approach-section__phase,
+    .approach-section__phase-title,
+    .approach-section__phase-body {
+      transition: none;
+    }
+  }
+
   .contact-marquee-section {
     overflow: hidden;
     padding-top: clamp(4rem, 10vh, 7rem);
