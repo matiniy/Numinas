@@ -4,7 +4,8 @@
 
 export const HERO_MEDIA = {
   video: {
-    mp4: '/media/hero/demoreel/Numinas_Demo Reel_2.mp4',
+    // Serve the regular-git web encode on Vercel (LFS masters are not fetched there).
+    mp4: '/media/hero/demoreel/Numinas_Demo Reel_2-web.mp4',
   },
   poster: undefined,
 } as const
