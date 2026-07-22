@@ -508,50 +508,6 @@ export const PROJECTS: Project[] = [
     thumbnail: projectMediaFile(AMEX_MEDIA, 'AmericanExpress_PlanIt_ExplainerVideo_Thumbnail.jpg'),
   },
   {
-    slug: 'excel-get-chewing',
-    client: 'Excel',
-    title: 'Get Chewing',
-    tagline: 'Playful product energy with snackable motion loops.',
-    year: '2023',
-    services: ['Social Content', '3D Product', 'Animation'],
-    accent: '#00b86b',
-    accentSoft: '#d9f8ea',
-    overview:
-      'A vibrant product campaign built for scroll-stopping loops and upbeat brand personality.',
-    challenge:
-      'Make gum feel dynamic and craveable in silent feeds while keeping flavor cues crystal clear.',
-    approach:
-      'Bold color blocking, elastic easing, and macro product moments anchor a family of short-form loops.',
-    outcome:
-      'A library of vertical loops, stills, and toolkit frames for always-on social.',
-    story: [
-      {
-        id: 'loops',
-        eyebrow: 'Loops',
-        title: 'Silent-first hooks',
-        body: 'Each loop leads with shape and color contrast so the product reads before a single word appears.',
-      },
-      {
-        id: 'flavor',
-        eyebrow: 'Flavor',
-        title: 'Color as cue',
-        body: 'Flavor variants map to accent shifts across pack, background, and particle trails.',
-      },
-    ],
-    media: [
-      { id: 'hero', type: 'video', label: 'Hero loop', span: 'wide', parallax: 0.22 },
-      { id: 'pack', type: 'image', label: 'Pack shot', span: 'square', parallax: 0.26 },
-      { id: 'macro', type: 'image', label: 'Macro chew', span: 'tall', parallax: 0.36 },
-      { id: 'variant', type: 'video', label: 'Flavor variant', span: 'square', parallax: 0.4 },
-      { id: 'grid', type: 'image', label: 'Social grid', span: 'wide', parallax: 0.2 },
-      { id: 'sticker', type: 'image', label: 'Sticker frame', span: 'tall', parallax: 0.32 },
-    ],
-    heroVideo: `${PROJECT_MEDIA}/excel-get-chewing/hero.mp4`,
-    heroImage: `${PROJECT_MEDIA}/excel-get-chewing/hero.jpg`,
-    thumbnail: `${PROJECT_MEDIA}/excel-get-chewing/thumb.jpg`,
-    cardMedia: 'image',
-  },
-  {
     slug: 'secret-aluminum-free',
     client: 'Secret',
     title: 'Aluminum Free',

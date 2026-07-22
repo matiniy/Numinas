@@ -11,7 +11,6 @@ Drop visuals for each case study in its own folder.
 | `urban-decay-ride-or-die` | Urban Decay · Ride or Die |
 | `olay-stem` | Olay · STEM |
 | `american-express-play-it` | American Express · Plan It |
-| `excel-get-chewing` | Excel · Get Chewing |
 | `secret-aluminum-free` | Secret · Aluminum Free |
 | `readcoin` | Readcoin · Readcoin |
 | `planet` | Planet Toon · Broadcast Package |
