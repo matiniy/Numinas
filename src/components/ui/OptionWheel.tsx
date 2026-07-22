@@ -39,6 +39,8 @@ type WheelConfig = {
 
 export interface OptionWheelProps {
   items?: string[]
+  /** Optional per-item CSS gradients (e.g. `linear-gradient(...)`) for active text fill. */
+  itemGradients?: string[]
   defaultSelected?: number
   value?: number
   onChange?: (index: number, item: string) => void
@@ -66,6 +68,7 @@ export interface OptionWheelProps {
 
 export function OptionWheel({
   items = DEFAULT_ITEMS,
+  itemGradients,
   defaultSelected = 3,
   value,
   onChange,
@@ -415,23 +418,32 @@ export function OptionWheel({
       onPointerCancel={handlePointerEnd}
       onKeyDown={handleKeyDown}
     >
-      {items.map((label, index) => (
-        <div
-          key={`${label}-${index}`}
-          ref={(el) => {
-            itemRefs.current[index] = el
-          }}
-          role="option"
-          aria-selected={selectedIndex === index}
-          className={cn(
-            'option-wheel__item',
-            selectedIndex === index && 'option-wheel__item--selected',
-          )}
-          onClick={() => handleItemClick(index)}
-        >
-          {label}
-        </div>
-      ))}
+      {items.map((label, index) => {
+        const gradient = itemGradients?.[index]
+        return (
+          <div
+            key={`${label}-${index}`}
+            ref={(el) => {
+              itemRefs.current[index] = el
+            }}
+            role="option"
+            aria-selected={selectedIndex === index}
+            className={cn(
+              'option-wheel__item',
+              selectedIndex === index && 'option-wheel__item--selected',
+              gradient && 'option-wheel__item--gradient',
+            )}
+            style={
+              gradient
+                ? ({ '--ow-item-gradient': gradient } as React.CSSProperties)
+                : undefined
+            }
+            onClick={() => handleItemClick(index)}
+          >
+            {label}
+          </div>
+        )
+      })}
     </div>
   )
 }

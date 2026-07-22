@@ -8,7 +8,6 @@ const links = [
   { href: '/#projects', label: 'Work' },
   { href: '/#services', label: 'Services' },
   { href: '/#approach', label: 'Approach' },
-  { href: '/#contact', label: 'Contact' },
 ]
 
 const SCROLL_RANGE = 140
@@ -81,7 +80,9 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
   const isFloating = p > 0.04 || open
   const floatInset = lerp(0, isDesktop ? 16 : 10, p)
   const sideInset = lerp(0, isDesktop ? 20 : 12, p)
-  const shrunkWidth = isDesktop ? 50 : 100
+  // Wide enough for logo + links + CTA; avoid clipping the button in the floated pill
+  const shrunkWidth = isDesktop ? 72 : 100
+  const floatedMinWidth = isDesktop ? 640 : 0
 
   const headerStyle = {
     paddingTop: 'env(safe-area-inset-top, 0px)',
@@ -92,6 +93,8 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
 
   const shellStyle = {
     width: `${lerp(100, shrunkWidth, p)}%`,
+    maxWidth: '100%',
+    minWidth: p > 0.05 && floatedMinWidth ? `min(100%, ${floatedMinWidth}px)` : undefined,
     marginInline: 'auto' as const,
     borderRadius: `${lerp(0, 16, p)}px`,
     borderWidth: p > 0.05 ? 1 : 0,
@@ -110,12 +113,12 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
     paddingTop: `${lerp(12, 6, p)}px`,
     paddingBottom: `${lerp(12, 6, p)}px`,
     paddingLeft: isDesktop
-      ? `calc(var(--gutter) * ${lerp(1, 0.45, p)})`
+      ? `calc(var(--gutter) * ${lerp(1, 0.6, p)})`
       : `max(1rem, calc(var(--gutter) * ${lerp(1, 0.85, p)}))`,
     paddingRight: isDesktop
-      ? `calc(var(--gutter) * ${lerp(1, 0.45, p)})`
+      ? `calc(var(--gutter) * ${lerp(1, 0.6, p)})`
       : `max(1rem, calc(var(--gutter) * ${lerp(1, 0.85, p)}))`,
-    gap: `${lerp(16, 8, p)}px`,
+    gap: `${lerp(16, 12, p)}px`,
   }
 
   const logoHeight = isDesktop ? lerp(28, 20, p) : lerp(20, 16, p)
@@ -127,7 +130,7 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50" style={headerStyle}>
       <div style={shellStyle}>
-        <div className="flex items-center justify-between gap-4" style={rowStyle}>
+        <div className="flex min-w-0 items-center justify-between" style={rowStyle}>
         <Link to="/" className="flex shrink-0 items-center" aria-label="Numinas home">
           <img
             src={BRAND_LOGO.white}
@@ -141,21 +144,24 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
         </Link>
 
           <nav
-            className="hidden items-center lg:flex"
-            style={{ gap: `${lerp(32, 16, p)}px` }}
+            className="hidden min-w-0 items-center lg:flex"
+            style={{ gap: `${lerp(32, 14, p)}px` }}
             aria-label="Primary"
           >
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={cn('site-nav__link type-small', !isLightSurface && 'site-nav__link--on-dark')}
+                className={cn(
+                  'site-nav__link type-small shrink-0',
+                  !isLightSurface && 'site-nav__link--on-dark',
+                )}
                 style={{ fontSize: `${lerp(14, 12, p)}px`, color: linkColor }}
               >
                 {link.label}
               </a>
             ))}
-            <CreativeCallButton compact />
+            <CreativeCallButton compact className="shrink-0" />
           </nav>
 
           <button

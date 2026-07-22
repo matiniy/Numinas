@@ -36,7 +36,7 @@ export function CreativeCallButton({
   showArrow = true,
 }: CreativeCallButtonProps) {
   const sizeClassName = compact
-    ? 'min-h-11 px-3.5 py-2 text-sm'
+    ? 'min-h-9 px-3 py-1.5 text-xs sm:min-h-10 sm:px-3.5 sm:text-sm'
     : 'min-h-11 px-4 py-2.5 text-sm md:px-5 md:py-2.5'
   const label = (
     <>
@@ -47,7 +47,11 @@ export function CreativeCallButton({
 
   return (
     <NoiseBackground
-      containerClassName={cn('w-fit max-w-full rounded-full p-2', className)}
+      containerClassName={cn(
+        'w-fit max-w-full shrink-0 rounded-full',
+        compact ? 'p-1.5' : 'p-2',
+        className,
+      )}
       gradientColors={GRADIENT_COLORS}
       noiseIntensity={0.22}
     >

@@ -63,3 +63,17 @@
 .option-wheel__item--selected {
   font-weight: 500;
 }
+
+.option-wheel__item--gradient {
+  color: transparent;
+  background-image: var(--ow-item-gradient);
+  background-size: 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.option-wheel__item--gradient:not(.option-wheel__item--selected) {
+  /* Keep inactive gradient labels quieter; opacity still comes from the wheel. */
+  filter: saturate(0.55);
+}
