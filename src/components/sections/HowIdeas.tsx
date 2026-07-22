@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
-import { ScrollOrbitBurst } from '@/components/sections/ScrollOrbitBurst'
 
 type Phase = {
   index: string
@@ -38,7 +37,6 @@ const PHASES: Phase[] = [
 
 export function HowIdeas() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const sectionRef = useRef<HTMLElement>(null)
   const phaseRefs = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
@@ -74,7 +72,6 @@ export function HowIdeas() {
 
   return (
     <section
-      ref={sectionRef}
       id="approach"
       className="wire-section approach-section"
       aria-labelledby="approach-heading"
@@ -86,9 +83,7 @@ export function HowIdeas() {
           </h2>
         </div>
 
-        <div className="approach-section__axis" aria-hidden="true">
-          <ScrollOrbitBurst sectionRef={sectionRef} />
-        </div>
+        <div className="approach-section__rule" aria-hidden="true" />
 
         <ol className="approach-section__phases">
           {PHASES.map((phase, index) => {

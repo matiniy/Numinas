@@ -1,4 +1,6 @@
 .grid-motion {
+  --gm-rows: 5;
+  --gm-cols: 7;
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -32,7 +34,7 @@
   width: 150vw;
   height: 150vh;
   display: grid;
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: repeat(var(--gm-rows), 1fr);
   grid-template-columns: 100%;
   transform: rotate(-15deg);
   transform-origin: center center;
@@ -42,7 +44,7 @@
 .grid-motion__row {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(var(--gm-cols), 1fr);
   will-change: transform;
 }
 
@@ -86,4 +88,58 @@
   inset: 0;
   pointer-events: none;
   z-index: 3;
+}
+
+/* Tablet: milder tilt, fewer columns, larger tiles */
+.grid-motion--tablet .grid-motion__container {
+  width: 118vw;
+  height: 130vh;
+  gap: 0.75rem;
+  transform: rotate(-6deg);
+}
+
+.grid-motion--tablet .grid-motion__row {
+  gap: 0.75rem;
+}
+
+.grid-motion--tablet .grid-motion__item-inner {
+  min-height: 8.5rem;
+  border-radius: 12px;
+}
+
+/* Mobile: upright 2-col mosaic, readable tiles */
+.grid-motion--mobile .grid-motion__container {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  gap: 0.65rem;
+  padding: 0 0.15rem;
+  transform: none;
+  grid-template-rows: repeat(var(--gm-rows), minmax(0, 1fr));
+}
+
+.grid-motion--mobile .grid-motion__row {
+  gap: 0.65rem;
+}
+
+.grid-motion--mobile .grid-motion__item-inner {
+  min-height: 0;
+  aspect-ratio: 4 / 5;
+  height: auto;
+  border-radius: 14px;
+}
+
+@media (max-width: 479px) {
+  .grid-motion--mobile .grid-motion__container {
+    gap: 0.5rem;
+  }
+
+  .grid-motion--mobile .grid-motion__row {
+    gap: 0.5rem;
+  }
+
+  .grid-motion--mobile .grid-motion__item-inner {
+    aspect-ratio: 3 / 4;
+    border-radius: 12px;
+  }
 }

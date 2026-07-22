@@ -43,7 +43,7 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
 
         <div className="case-study__panel mt-10 overflow-hidden">
           {project.heroVideo || project.heroImage ? (
-            <div className="relative aspect-[16/8] bg-[var(--cs-ink)]">
+            <div className="relative case-study__hero-media bg-[var(--cs-ink)]">
               {project.heroVideo ? (
                 <LazyLoopingVideo
                   src={getDeliverableVideoUrl(project.heroVideo)}
@@ -61,7 +61,7 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
             </div>
           ) : (
             <div
-              className="flex aspect-[16/8] flex-col items-start justify-end gap-4 p-5 sm:flex-row sm:items-end sm:justify-between md:p-6"
+              className="case-study__hero-media flex flex-col items-start justify-end gap-4 p-5 sm:flex-row sm:items-end sm:justify-between md:p-6"
               style={{
                 background: `linear-gradient(135deg, ${project.accentSoft} 0%, ${project.accent} 48%, #ffffff 120%)`,
               }}

@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react'
 import type { MediaSlot, Project } from '@/lib/projects'
 import { GridMotion, type GridMotionItem } from '@/components/ui/GridMotion'
 
@@ -32,7 +33,37 @@ function getGridVisualSrc(slot: MediaSlot): string | undefined {
   return undefined
 }
 
-function buildGridItems(project: Project): GridMotionItem[] {
+function useIsMobileGrid() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const sync = () => setIsMobile(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
+  return isMobile
+}
+
+function buildUniqueShowcase(project: Project) {
+  const seen = new Set<string>()
+  const items: { key: string; src?: string; slot: MediaSlot }[] = []
+
+  for (const slot of project.media) {
+    const src = getGridVisualSrc(slot)
+    const key = src ?? `placeholder-${slot.id}`
+    if (seen.has(key)) continue
+    seen.add(key)
+    items.push({ key, src, slot })
+    if (items.length >= 6) break
+  }
+
+  return items
+}
+
+function buildGridItems(project: Project, count: number): GridMotionItem[] {
   const { media } = project
 
   if (media.length === 0) {
@@ -46,10 +77,10 @@ function buildGridItems(project: Project): GridMotionItem[] {
   ]
 
   if (visualSources.length > 0) {
-    return Array.from({ length: 35 }, (_, index) => visualSources[index % visualSources.length])
+    return Array.from({ length: count }, (_, index) => visualSources[index % visualSources.length])
   }
 
-  return Array.from({ length: 35 }, (_, index) => {
+  return Array.from({ length: count }, (_, index) => {
     const slot = media[index % media.length]
 
     return (
@@ -64,12 +95,44 @@ function buildGridItems(project: Project): GridMotionItem[] {
 }
 
 export function ParallaxMediaGrid({ project }: ParallaxMediaGridProps) {
-  const items = buildGridItems(project)
+  const isMobile = useIsMobileGrid()
+  const showcase = useMemo(() => buildUniqueShowcase(project), [project])
+  const gridItems = useMemo(() => buildGridItems(project, 35), [project])
+
+  if (isMobile) {
+    return (
+      <section className="case-study__media-showcase" aria-label="Project media">
+        <div className="wire-container case-study__media-showcase-inner">
+          {showcase.map((item, index) => (
+            <figure
+              key={item.key}
+              className={`case-study__media-showcase-card case-study__media-showcase-card--${index % 3 === 0 ? 'wide' : 'tall'}`}
+            >
+              {item.src ? (
+                <div
+                  className="case-study__media-showcase-img"
+                  style={{ backgroundImage: `url(${item.src})` }}
+                  role="img"
+                  aria-label={item.slot.label}
+                />
+              ) : (
+                <GridPlaceholderCell
+                  slot={item.slot}
+                  accent={project.accent}
+                  accentSoft={project.accentSoft}
+                />
+              )}
+            </figure>
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="case-study__grid-motion" aria-label="Project media">
       <div className="case-study__grid-motion-stage">
-        <GridMotion items={items} gradientColor={project.accentSoft} />
+        <GridMotion items={gridItems} gradientColor={project.accentSoft} />
       </div>
     </section>
   )
