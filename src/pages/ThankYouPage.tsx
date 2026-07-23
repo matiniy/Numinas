@@ -55,7 +55,7 @@ export function ThankYouPage() {
             <p className="type-small contact-form__success-note">
               We’ll review your project details and get back to you within 1–2 business days. We
               appreciate you considering Numinas and look forward to learning more about your
-              project.
+              project. Check your inbox (and spam folder) for a confirmation email.
             </p>
             <div className="contact-form__success-actions">
               <CreativeCallButton href="/" compact showArrow={false}>

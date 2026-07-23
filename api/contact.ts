@@ -271,17 +271,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(502).json({ error: formatSmtpUserError(messageText) })
   }
 
+  let confirmationSent = false
   try {
-    await transporter.sendMail({
+    const confirmation = await transporter.sendMail({
       from: fromEmail,
       to: email,
       replyTo: toEmail,
       subject: 'Thanks for contacting Numinas',
       html: userHtml,
+      text: `Hi ${firstName},\n\nThanks for reaching out to Numinas! We've received your inquiry and will get back to you within 1–2 business days.\n\nBest,\nNuminas\ncollab@numinas.studio\n`,
+    })
+    confirmationSent = true
+    console.info('SMTP confirmation email sent', {
+      to: email,
+      messageId: confirmation.messageId,
     })
   } catch (error) {
-    console.error('SMTP confirmation email failed', error)
+    const messageText = error instanceof Error ? error.message : 'Unknown SMTP error'
+    console.error('SMTP confirmation email failed', { message: messageText, to: email, from: fromEmail })
   }
 
-  return res.status(200).json({ ok: true })
+  return res.status(200).json({ ok: true, confirmationSent })
 }
