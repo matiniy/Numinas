@@ -9,6 +9,15 @@ type ContactPayload = {
   website?: string
 }
 
+type MailMessage = {
+  from: string
+  to: string
+  replyTo: string
+  subject: string
+  html: string
+  text?: string
+}
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function escapeHtml(value: string) {
@@ -24,10 +33,25 @@ function readString(value: unknown, max = 2000) {
   return value.trim().slice(0, max)
 }
 
+function cleanEnv(value: string | undefined) {
+  return (value || '').trim().replace(/^['"]|['"]$/g, '')
+}
+
 function getSiteUrl() {
   return (process.env.VITE_SITE_URL || process.env.SITE_URL || 'https://www.numinas.studio')
     .trim()
     .replace(/\/$/, '')
+}
+
+function parseFromAddress(from: string) {
+  const match = from.match(/^(.*)<([^>]+)>\s*$/)
+  if (match) {
+    return {
+      name: match[1].trim().replace(/^["']|["']$/g, '') || 'Numinas',
+      email: match[2].trim(),
+    }
+  }
+  return { name: 'Numinas', email: from.trim() }
 }
 
 /** Branded HTML shell — logo + PP Mori when clients allow web fonts. */
@@ -111,32 +135,114 @@ function buildEmailShell(options: {
 </html>`
 }
 
-function cleanEnv(value: string | undefined) {
-  return (value || '').trim().replace(/^['"]|['"]$/g, '')
-}
-
-function formatSmtpUserError(message: string) {
+function formatMailError(message: string) {
   const lower = message.toLowerCase()
 
   if (lower.includes('unauthorized ip') || lower.includes('525')) {
-    return 'Brevo blocked this server IP. In Brevo → SMTP & API, turn off “Authorize IPs for SMTP keys” (Vercel uses changing IPs).'
+    return 'Brevo blocked this server IP. Prefer BREVO_API_KEY (HTTPS API) instead of SMTP on Vercel.'
+  }
+
+  if (lower.includes('sender') && (lower.includes('not valid') || lower.includes('validate'))) {
+    return 'Brevo sender is not verified. Verify collab@numinas.studio under Senders, then retry.'
+  }
+
+  if (lower.includes('unauthorized') || lower.includes('api-key') || lower.includes('401')) {
+    return 'Brevo API key is missing or invalid. Set BREVO_API_KEY in Vercel (SMTP & API → API keys).'
   }
 
   if (
     lower.includes('invalid login') ||
     lower.includes('username and password') ||
     lower.includes('authentication') ||
-    lower.includes('badcredentials') ||
     lower.includes('535')
   ) {
-    return `SMTP login failed (${message.slice(0, 120)}). Confirm SMTP_HOST/USER/PASS (Brevo: smtp-relay.brevo.com, port 587, Login + SMTP key).`
+    return `Mail login failed (${message.slice(0, 120)}). On Vercel use BREVO_API_KEY instead of SMTP.`
   }
 
-  if (lower.includes('enotfound') || lower.includes('connect') || lower.includes('timeout')) {
-    return 'Could not reach the mail server. Check SMTP_HOST / SMTP_PORT in Vercel.'
+  if (lower.includes('enotfound') || lower.includes('connect') || lower.includes('timeout') || lower.includes('econn')) {
+    return 'Could not reach the mail server over SMTP. Set BREVO_API_KEY in Vercel — Vercel often blocks outbound SMTP ports.'
   }
 
-  return `Could not send your message (${message}). Please email collab@numinas.studio.`
+  return `Could not send your message (${message.slice(0, 160)}). Please email collab@numinas.studio.`
+}
+
+async function sendViaBrevoApi(apiKey: string, message: MailMessage) {
+  const sender = parseFromAddress(message.from)
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      'api-key': apiKey,
+    },
+    body: JSON.stringify({
+      sender,
+      to: [{ email: message.to }],
+      replyTo: { email: message.replyTo },
+      subject: message.subject,
+      htmlContent: message.html,
+      textContent: message.text,
+    }),
+  })
+
+  const payload = (await response.json().catch(() => null)) as
+    | { messageId?: string; message?: string; code?: string }
+    | null
+
+  if (!response.ok) {
+    throw new Error(payload?.message || `Brevo API error ${response.status}`)
+  }
+
+  return { messageId: payload?.messageId || 'brevo-api' }
+}
+
+async function sendViaSmtp(message: MailMessage) {
+  const smtpUser = cleanEnv(process.env.SMTP_USER || process.env.CONTACT_TO_EMAIL).toLowerCase()
+  const smtpPass = cleanEnv(process.env.SMTP_PASS).replace(/\s+/g, '')
+  const smtpHost = cleanEnv(process.env.SMTP_HOST || 'smtp-relay.brevo.com')
+  const defaultPort = smtpHost.includes('brevo') ? '2525' : '587'
+  const smtpPort = Number(cleanEnv(process.env.SMTP_PORT || defaultPort)) || Number(defaultPort)
+
+  if (!smtpUser || !smtpPass) {
+    throw new Error('SMTP_USER / SMTP_PASS missing. Prefer BREVO_API_KEY on Vercel.')
+  }
+
+  const transporter = nodemailer.createTransport(
+    smtpHost.includes('gmail.com')
+      ? {
+          service: 'gmail',
+          auth: { user: smtpUser, pass: smtpPass },
+        }
+      : {
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          requireTLS: smtpPort === 587 || smtpPort === 2525,
+          connectionTimeout: 15_000,
+          greetingTimeout: 15_000,
+          family: 4,
+          auth: { user: smtpUser, pass: smtpPass },
+        },
+  )
+
+  const info = await transporter.sendMail({
+    from: message.from,
+    to: message.to,
+    replyTo: message.replyTo,
+    subject: message.subject,
+    html: message.html,
+    text: message.text,
+  })
+
+  return { messageId: info.messageId || 'smtp' }
+}
+
+async function sendMail(message: MailMessage) {
+  const brevoApiKey = cleanEnv(process.env.BREVO_API_KEY)
+  if (brevoApiKey) {
+    return sendViaBrevoApi(brevoApiKey, message)
+  }
+  return sendViaSmtp(message)
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -145,17 +251,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const smtpUser = cleanEnv(process.env.SMTP_USER || process.env.CONTACT_TO_EMAIL || 'collab@numinas.studio').toLowerCase()
-  // App Passwords are often pasted with spaces ("xxxx xxxx …"); strip them.
-  const smtpPass = cleanEnv(process.env.SMTP_PASS).replace(/\s+/g, '')
   const toEmail = cleanEnv(process.env.CONTACT_TO_EMAIL || 'collab@numinas.studio')
-  const fromEmail = cleanEnv(process.env.CONTACT_FROM_EMAIL || `Numinas <${smtpUser}>`)
-  const smtpHost = cleanEnv(process.env.SMTP_HOST || 'smtp.gmail.com')
-  const smtpPort = Number(cleanEnv(process.env.SMTP_PORT || '465')) || 465
+  const fromEmail = cleanEnv(
+    process.env.CONTACT_FROM_EMAIL || 'Numinas Studio <collab@numinas.studio>',
+  )
   const siteUrl = getSiteUrl()
+  const brevoApiKey = cleanEnv(process.env.BREVO_API_KEY)
+  const smtpPass = cleanEnv(process.env.SMTP_PASS)
 
-  if (!smtpPass) {
-    return res.status(500).json({ error: 'Email service is not configured (missing SMTP_PASS).' })
+  if (!brevoApiKey && !smtpPass) {
+    return res.status(500).json({
+      error: 'Email is not configured. Set BREVO_API_KEY in Vercel (recommended on Vercel hosting).',
+    })
   }
 
   let body: ContactPayload
@@ -239,51 +346,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `,
   })
 
-  // Prefer Nodemailer's Gmail profile when targeting Google; otherwise generic SMTP (e.g. Brevo).
-  const transporter = nodemailer.createTransport(
-    smtpHost.includes('gmail.com')
-      ? {
-          service: 'gmail',
-          auth: {
-            user: smtpUser,
-            pass: smtpPass,
-          },
-        }
-      : {
-          host: smtpHost,
-          port: smtpPort,
-          secure: smtpPort === 465,
-          requireTLS: smtpPort === 587,
-          auth: {
-            user: smtpUser,
-            pass: smtpPass,
-          },
-        },
-  )
+  const transport = brevoApiKey ? 'brevo-api' : 'smtp'
 
   try {
-    const admin = await transporter.sendMail({
+    const admin = await sendMail({
       from: fromEmail,
       to: toEmail,
       replyTo: email,
       subject: `New inquiry from ${fullName}${company ? ` (${company})` : ''}`,
       html: adminHtml,
     })
-    console.info('SMTP admin email sent', {
-      to: toEmail,
-      from: fromEmail,
-      messageId: admin.messageId,
-      host: smtpHost,
-    })
+    console.info('Admin email sent', { to: toEmail, from: fromEmail, messageId: admin.messageId, transport })
   } catch (error) {
-    const messageText = error instanceof Error ? error.message : 'Unknown SMTP error'
-    console.error('SMTP admin email failed', { message: messageText, from: fromEmail, to: toEmail, host: smtpHost })
-    return res.status(502).json({ error: formatSmtpUserError(messageText) })
+    const messageText = error instanceof Error ? error.message : 'Unknown mail error'
+    console.error('Admin email failed', { message: messageText, from: fromEmail, to: toEmail, transport })
+    return res.status(502).json({ error: formatMailError(messageText) })
   }
 
   let confirmationSent = false
   try {
-    const confirmation = await transporter.sendMail({
+    const confirmation = await sendMail({
       from: fromEmail,
       to: email,
       replyTo: toEmail,
@@ -292,15 +374,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       text: `Hi ${firstName},\n\nThanks for reaching out to Numinas! We've received your inquiry and will get back to you within 1–2 business days.\n\nBest,\nNuminas\ncollab@numinas.studio\n`,
     })
     confirmationSent = true
-    console.info('SMTP confirmation email sent', {
+    console.info('Confirmation email sent', {
       to: email,
       from: fromEmail,
       messageId: confirmation.messageId,
-      host: smtpHost,
+      transport,
     })
   } catch (error) {
-    const messageText = error instanceof Error ? error.message : 'Unknown SMTP error'
-    console.error('SMTP confirmation email failed', { message: messageText, to: email, from: fromEmail, host: smtpHost })
+    const messageText = error instanceof Error ? error.message : 'Unknown mail error'
+    console.error('Confirmation email failed', { message: messageText, to: email, from: fromEmail, transport })
   }
 
   return res.status(200).json({ ok: true, confirmationSent })
