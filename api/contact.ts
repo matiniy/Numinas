@@ -262,16 +262,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   )
 
   try {
-    await transporter.sendMail({
+    const admin = await transporter.sendMail({
       from: fromEmail,
       to: toEmail,
       replyTo: email,
       subject: `New inquiry from ${fullName}${company ? ` (${company})` : ''}`,
       html: adminHtml,
     })
+    console.info('SMTP admin email sent', {
+      to: toEmail,
+      from: fromEmail,
+      messageId: admin.messageId,
+      host: smtpHost,
+    })
   } catch (error) {
     const messageText = error instanceof Error ? error.message : 'Unknown SMTP error'
-    console.error('SMTP admin email failed', { message: messageText, from: fromEmail, to: toEmail })
+    console.error('SMTP admin email failed', { message: messageText, from: fromEmail, to: toEmail, host: smtpHost })
     return res.status(502).json({ error: formatSmtpUserError(messageText) })
   }
 
@@ -288,11 +294,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     confirmationSent = true
     console.info('SMTP confirmation email sent', {
       to: email,
+      from: fromEmail,
       messageId: confirmation.messageId,
+      host: smtpHost,
     })
   } catch (error) {
     const messageText = error instanceof Error ? error.message : 'Unknown SMTP error'
-    console.error('SMTP confirmation email failed', { message: messageText, to: email, from: fromEmail })
+    console.error('SMTP confirmation email failed', { message: messageText, to: email, from: fromEmail, host: smtpHost })
   }
 
   return res.status(200).json({ ok: true, confirmationSent })
