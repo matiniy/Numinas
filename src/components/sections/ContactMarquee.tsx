@@ -6,7 +6,7 @@ const REPEAT_COUNT = 3
 function MarqueeLogoSeparator() {
   return (
     <span className="contact-marquee__logo" aria-hidden="true">
-      <img src={BRAND_LOGO.mark} alt="" width={512} height={512} loading="lazy" decoding="async" />
+      <img src={BRAND_LOGO.mark} alt="Numinas" width={512} height={512} loading="lazy" decoding="async" />
     </span>
   )
 }

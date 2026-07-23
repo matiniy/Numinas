@@ -96,7 +96,7 @@ function ProjectCardMedia({
     return (
       <img
         src={imageSrc}
-        alt=""
+        alt={`${project.title} by ${project.client}`}
         className="pointer-events-none absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         loading="lazy"
       />

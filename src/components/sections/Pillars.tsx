@@ -41,7 +41,7 @@ function PillarVisual({ pillar }: { pillar: Pillar }) {
         {pillar.image ? (
           <img
             src={pillar.image}
-            alt=""
+            alt={`${pillar.title} visual`}
             className="pillars-grid__image"
             loading="eager"
             decoding="async"

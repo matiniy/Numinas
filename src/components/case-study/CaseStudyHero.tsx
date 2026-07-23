@@ -54,7 +54,7 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
               ) : (
                 <img
                   src={project.heroImage}
-                  alt=""
+                  alt={`${project.title} by ${project.client}`}
                   className="h-full w-full object-cover"
                 />
               )}

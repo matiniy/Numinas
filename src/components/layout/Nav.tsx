@@ -168,7 +168,7 @@ export function Nav({
         <Link to="/" className="flex shrink-0 items-center" aria-label="Numinas home">
           <img
             src={BRAND_LOGO.white}
-            alt=""
+            alt="Numinas"
             width={356}
             height={50}
             className="w-auto"

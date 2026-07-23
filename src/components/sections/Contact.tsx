@@ -127,7 +127,7 @@ export function Contact() {
 
           <div className="contact-section__brand">
             <Link to="/" className="contact-section__logo" aria-label="Numinas home">
-              <img src={BRAND_LOGO.mark} alt="" width={512} height={512} decoding="async" />
+              <img src={BRAND_LOGO.mark} alt="Numinas" width={512} height={512} decoding="async" />
             </Link>
 
             <nav className="contact-section__social" aria-label="Social">
@@ -140,7 +140,7 @@ export function Contact() {
                   rel="noreferrer noopener"
                   aria-label={link.label}
                 >
-                  <img src={link.icon} alt="" width={14} height={14} decoding="async" />
+                  <img src={link.icon} alt={link.label} width={14} height={14} decoding="async" />
                 </a>
               ))}
             </nav>
