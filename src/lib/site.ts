@@ -11,9 +11,11 @@ export const SITE = {
   email: 'collab@numinas.studio',
   privacyEmail: 'info@numinas.studio',
   foundingDate: '2018',
-  /** Prefer raster for Open Graph / Twitter (many crawlers skip SVG). */
-  defaultOgImage: '/logo/Logo.png',
+  /** Prefer a 1200x630 raster for Open Graph / Discord / iMessage previews. */
+  defaultOgImage: '/logo/og-share.png',
   favicon: '/logo/favicon.svg',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
   geo: {
     placename: 'Vancouver',
     region: 'CA-BC',
@@ -37,7 +39,7 @@ export const SITE = {
 
 export function getSiteUrl() {
   const configured = import.meta.env.VITE_SITE_URL?.trim().replace(/\/$/, '')
-  return configured || 'https://www.numinas.com'
+  return configured || 'https://www.numinas.studio'
 }
 
 export function getAbsoluteUrl(path: string) {

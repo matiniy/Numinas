@@ -5,7 +5,7 @@ import { writeSeoArtifacts } from './scripts/seo-build.mjs'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const siteUrl = (env.VITE_SITE_URL || 'https://www.numinas.com').trim()
+  const siteUrl = (env.VITE_SITE_URL || 'https://www.numinas.studio').trim()
 
   return {
     plugins: [

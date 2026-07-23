@@ -99,8 +99,11 @@ export function PageSeo(config: PageSeoConfig) {
     upsertMeta('property', 'og:site_name', SITE.name)
     upsertMeta('property', 'og:locale', SITE.locale)
     upsertMeta('property', 'og:image', imageUrl)
+    upsertMeta('property', 'og:image:secure_url', imageUrl)
     upsertMeta('property', 'og:image:alt', imageAlt)
-    upsertMeta('property', 'og:image:type', imagePath.endsWith('.png') ? 'image/png' : 'image/svg+xml')
+    upsertMeta('property', 'og:image:type', 'image/png')
+    upsertMeta('property', 'og:image:width', String(SITE.ogImageWidth))
+    upsertMeta('property', 'og:image:height', String(SITE.ogImageHeight))
 
     upsertMeta('name', 'twitter:card', 'summary_large_image')
     upsertMeta('name', 'twitter:title', config.title)

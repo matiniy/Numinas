@@ -73,7 +73,7 @@ function writeSeoArtifacts({ siteUrl, publicDir, distDir }) {
   }
 }
 
-const siteUrl = (process.env.VITE_SITE_URL || 'https://www.numinas.com').trim()
+const siteUrl = (process.env.VITE_SITE_URL || 'https://www.numinas.studio').trim()
 const result = writeSeoArtifacts({
   siteUrl,
   publicDir: resolve(rootDir, 'public'),
