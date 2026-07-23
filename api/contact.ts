@@ -131,8 +131,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const smtpUser = (process.env.SMTP_USER || process.env.CONTACT_TO_EMAIL || 'collab@numinas.studio').trim()
-  const smtpPass = process.env.SMTP_PASS?.trim()
+  const smtpUser = (process.env.SMTP_USER || process.env.CONTACT_TO_EMAIL || 'collab@numinas.studio')
+    .trim()
+    .toLowerCase()
+  // App Passwords are often pasted with spaces ("xxxx xxxx …"); Gmail expects 16 chars.
+  const smtpPass = process.env.SMTP_PASS?.replace(/\s+/g, '').trim()
   const toEmail = (process.env.CONTACT_TO_EMAIL || 'collab@numinas.studio').trim()
   const fromEmail = (process.env.CONTACT_FROM_EMAIL || `Numinas <${smtpUser}>`).trim()
   const smtpHost = (process.env.SMTP_HOST || 'smtp.gmail.com').trim()
@@ -141,6 +144,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (!smtpPass) {
     return res.status(500).json({ error: 'Email service is not configured (missing SMTP_PASS).' })
+  }
+
+  if (smtpPass.length < 16) {
+    return res.status(500).json({
+      error:
+        'SMTP_PASS looks too short. Use a Google App Password (16 characters), not your normal login password.',
+    })
   }
 
   let body: ContactPayload
@@ -228,6 +238,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     host: smtpHost,
     port: smtpPort,
     secure: smtpPort === 465,
+    requireTLS: smtpPort === 587,
     auth: {
       user: smtpUser,
       pass: smtpPass,
