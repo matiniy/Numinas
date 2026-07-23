@@ -111,11 +111,21 @@ function buildEmailShell(options: {
 </html>`
 }
 
+function cleanEnv(value: string | undefined) {
+  return (value || '').trim().replace(/^['"]|['"]$/g, '')
+}
+
 function formatSmtpUserError(message: string) {
   const lower = message.toLowerCase()
 
-  if (lower.includes('invalid login') || lower.includes('username and password') || lower.includes('authentication')) {
-    return 'Email login failed. Check SMTP_USER and SMTP_PASS (Google App Password) in Vercel.'
+  if (
+    lower.includes('invalid login') ||
+    lower.includes('username and password') ||
+    lower.includes('authentication') ||
+    lower.includes('badcredentials') ||
+    lower.includes('535')
+  ) {
+    return `Google rejected the SMTP login (${message.slice(0, 120)}). For Workspace: enable 2-Step Verification + App Passwords for collab@, or use Brevo SMTP instead (no DNS).`
   }
 
   if (lower.includes('enotfound') || lower.includes('connect') || lower.includes('timeout')) {
@@ -131,26 +141,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const smtpUser = (process.env.SMTP_USER || process.env.CONTACT_TO_EMAIL || 'collab@numinas.studio')
-    .trim()
-    .toLowerCase()
-  // App Passwords are often pasted with spaces ("xxxx xxxx …"); Gmail expects 16 chars.
-  const smtpPass = process.env.SMTP_PASS?.replace(/\s+/g, '').trim()
-  const toEmail = (process.env.CONTACT_TO_EMAIL || 'collab@numinas.studio').trim()
-  const fromEmail = (process.env.CONTACT_FROM_EMAIL || `Numinas <${smtpUser}>`).trim()
-  const smtpHost = (process.env.SMTP_HOST || 'smtp.gmail.com').trim()
-  const smtpPort = Number(process.env.SMTP_PORT || '465')
+  const smtpUser = cleanEnv(process.env.SMTP_USER || process.env.CONTACT_TO_EMAIL || 'collab@numinas.studio').toLowerCase()
+  // App Passwords are often pasted with spaces ("xxxx xxxx …"); strip them.
+  const smtpPass = cleanEnv(process.env.SMTP_PASS).replace(/\s+/g, '')
+  const toEmail = cleanEnv(process.env.CONTACT_TO_EMAIL || 'collab@numinas.studio')
+  const fromEmail = cleanEnv(process.env.CONTACT_FROM_EMAIL || `Numinas <${smtpUser}>`)
+  const smtpHost = cleanEnv(process.env.SMTP_HOST || 'smtp.gmail.com')
+  const smtpPort = Number(cleanEnv(process.env.SMTP_PORT || '465')) || 465
   const siteUrl = getSiteUrl()
 
   if (!smtpPass) {
     return res.status(500).json({ error: 'Email service is not configured (missing SMTP_PASS).' })
-  }
-
-  if (smtpPass.length < 16) {
-    return res.status(500).json({
-      error:
-        'SMTP_PASS looks too short. Use a Google App Password (16 characters), not your normal login password.',
-    })
   }
 
   let body: ContactPayload
@@ -234,16 +235,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `,
   })
 
-  const transporter = nodemailer.createTransport({
-    host: smtpHost,
-    port: smtpPort,
-    secure: smtpPort === 465,
-    requireTLS: smtpPort === 587,
-    auth: {
-      user: smtpUser,
-      pass: smtpPass,
-    },
-  })
+  // Prefer Nodemailer's Gmail profile when targeting Google; otherwise generic SMTP (e.g. Brevo).
+  const transporter = nodemailer.createTransport(
+    smtpHost.includes('gmail.com')
+      ? {
+          service: 'gmail',
+          auth: {
+            user: smtpUser,
+            pass: smtpPass,
+          },
+        }
+      : {
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          requireTLS: smtpPort === 587,
+          auth: {
+            user: smtpUser,
+            pass: smtpPass,
+          },
+        },
+  )
 
   try {
     await transporter.sendMail({
