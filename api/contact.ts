@@ -125,7 +125,7 @@ function formatSmtpUserError(message: string) {
     lower.includes('badcredentials') ||
     lower.includes('535')
   ) {
-    return `Google rejected the SMTP login (${message.slice(0, 120)}). For Workspace: enable 2-Step Verification + App Passwords for collab@, or use Brevo SMTP instead (no DNS).`
+    return `Google rejected the SMTP login (${message.slice(0, 120)}). Confirm SMTP_USER matches the App Password account, or switch Vercel SMTP_* to Brevo (smtp-relay.brevo.com:587).`
   }
 
   if (lower.includes('enotfound') || lower.includes('connect') || lower.includes('timeout')) {
