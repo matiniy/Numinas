@@ -1925,19 +1925,111 @@ body {
 
   .contact-form__success-title {
     color: #0a0a0b;
-    font-size: clamp(1.125rem, 4vw, 1.5rem);
-    line-height: 1.25;
+    font-family: var(--font-title);
+    font-weight: var(--font-weight-title);
+    font-size: clamp(1.35rem, 4.2vw, 1.75rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 
   .contact-form__success-note {
     color: #6b6b73;
-    font-size: clamp(0.8125rem, 2.8vw, 0.875rem);
-    line-height: 1.5;
+    font-family: var(--font-body);
+    font-size: clamp(0.875rem, 2.8vw, 0.9375rem);
+    line-height: 1.55;
+    max-width: 28rem;
+  }
+
+  .contact-form__success-note a {
+    color: #0a0a0b;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
   }
 
   .contact-form--success {
-    min-height: 16rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.85rem;
+    min-height: 18rem;
+    background:
+      linear-gradient(180deg, #ffffff 0%, #fafafb 100%);
+  }
+
+  .contact-form__success-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .contact-form__success-mark {
+    width: 2.25rem;
+    height: 2.25rem;
+    object-fit: contain;
+    border-radius: 0.4rem;
+  }
+
+  .contact-form__success-eyebrow {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8a8a93;
+  }
+
+  .contact-form__success-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .contact-form__success-link {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: #0a0a0b;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .contact-form__success-link:hover {
+    color: #2a2a32;
+  }
+
+  .thank-you-page {
+    position: relative;
+    min-height: 100vh;
+    background: #e9e9ec;
+  }
+
+  .thank-you-page__main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: calc(6rem + env(safe-area-inset-top, 0px)) 0 calc(3rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .thank-you-page__waves {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .thank-you-page__container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .thank-you-page__card {
+    width: min(100%, 28rem);
   }
 
   .contact-field {

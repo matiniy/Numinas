@@ -265,7 +265,8 @@ export function buildNotFoundSeo(path = '/404'): PageSeoConfig {
 export function buildThankYouSeo(): PageSeoConfig {
   return {
     title: `Thanks | ${SITE.name}`,
-    description: 'Thanks for contacting Numinas. We received your message and will be in touch soon.',
+    description:
+      'Thanks! Your inquiry has been received. Numinas will review your project details and get back within 1–2 business days.',
     path: '/thank-you',
     image: SITE.defaultOgImage,
     imageAlt: `${SITE.name} logo`,

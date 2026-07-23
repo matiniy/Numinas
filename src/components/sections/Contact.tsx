@@ -1,14 +1,13 @@
 import { FormEvent, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
 import { Waves } from '@/components/ui/waves'
 import { BRAND_LOGO } from '@/lib/brand-logo'
 import { SOCIAL_LINKS } from '@/lib/social-links'
 
-type SubmitState = 'idle' | 'submitting' | 'error'
+type SubmitState = 'idle' | 'submitting' | 'success' | 'error'
 
 export function Contact() {
-  const navigate = useNavigate()
   const [status, setStatus] = useState<SubmitState>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -39,7 +38,7 @@ export function Contact() {
         throw new Error(payload?.error || 'Something went wrong. Please try again.')
       }
 
-      navigate('/thank-you')
+      setStatus('success')
     } catch (error) {
       setStatus('error')
       setErrorMessage(
@@ -88,75 +87,106 @@ export function Contact() {
           </div>
 
           <div className="contact-section__form-wrap">
-            <form className="contact-form" onSubmit={onSubmit} noValidate>
-              <label className="contact-field">
-                <span className="contact-field__label">Full name</span>
-                <input
-                  className="contact-field__input"
-                  name="fullName"
-                  autoComplete="name"
-                  placeholder="Your name"
-                  required
-                  disabled={status === 'submitting'}
-                />
-              </label>
-
-              <label className="contact-field">
-                <span className="contact-field__label">Email Address</span>
-                <input
-                  className="contact-field__input"
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  placeholder="you@company.com"
-                  required
-                  disabled={status === 'submitting'}
-                />
-              </label>
-
-              <label className="contact-field">
-                <span className="contact-field__label">Company</span>
-                <input
-                  className="contact-field__input"
-                  name="company"
-                  autoComplete="organization"
-                  placeholder="Company name"
-                  disabled={status === 'submitting'}
-                />
-              </label>
-
-              <label className="contact-field">
-                <span className="contact-field__label">Message</span>
-                <textarea
-                  className="contact-field__input contact-field__input--textarea"
-                  name="message"
-                  placeholder="Tell us about your project"
-                  required
-                  disabled={status === 'submitting'}
-                />
-              </label>
-
-              {/* Honeypot — leave empty */}
-              <label className="sr-only" aria-hidden="true">
-                Website
-                <input tabIndex={-1} autoComplete="off" name="website" />
-              </label>
-
-              {status === 'error' ? (
-                <p className="type-small contact-form__error" role="alert">
-                  {errorMessage}
+            {status === 'success' ? (
+              <div className="contact-form contact-form--success" role="status" aria-live="polite">
+                <div className="contact-form__success-brand">
+                  <img
+                    src={BRAND_LOGO.mark}
+                    alt="Numinas"
+                    width={40}
+                    height={40}
+                    className="contact-form__success-mark"
+                    decoding="async"
+                  />
+                  <p className="contact-form__success-eyebrow">Inquiry received</p>
+                </div>
+                <p className="type-h3 contact-form__success-title">
+                  Thanks! Your inquiry has been received.
                 </p>
-              ) : null}
+                <p className="type-small contact-form__success-note">
+                  We’ll review your project details and get back to you within 1–2 business days. We
+                  appreciate you considering Numinas and look forward to learning more about your
+                  project.
+                </p>
+                <div className="contact-form__success-actions">
+                  <CreativeCallButton href="/" compact showArrow={false}>
+                    Back to home
+                  </CreativeCallButton>
+                  <a href="/#projects" className="contact-form__success-link">
+                    View selected work
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <form className="contact-form" onSubmit={onSubmit} noValidate>
+                <label className="contact-field">
+                  <span className="contact-field__label">Full name</span>
+                  <input
+                    className="contact-field__input"
+                    name="fullName"
+                    autoComplete="name"
+                    placeholder="Your name"
+                    required
+                    disabled={status === 'submitting'}
+                  />
+                </label>
 
-              <CreativeCallButton
-                type="submit"
-                compact
-                className="contact-form__action"
-                disabled={status === 'submitting'}
-              >
-                {status === 'submitting' ? 'Sending…' : 'Submit'}
-              </CreativeCallButton>
-            </form>
+                <label className="contact-field">
+                  <span className="contact-field__label">Email Address</span>
+                  <input
+                    className="contact-field__input"
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    placeholder="you@company.com"
+                    required
+                    disabled={status === 'submitting'}
+                  />
+                </label>
+
+                <label className="contact-field">
+                  <span className="contact-field__label">Company</span>
+                  <input
+                    className="contact-field__input"
+                    name="company"
+                    autoComplete="organization"
+                    placeholder="Company name"
+                    disabled={status === 'submitting'}
+                  />
+                </label>
+
+                <label className="contact-field">
+                  <span className="contact-field__label">Message</span>
+                  <textarea
+                    className="contact-field__input contact-field__input--textarea"
+                    name="message"
+                    placeholder="Tell us about your project"
+                    required
+                    disabled={status === 'submitting'}
+                  />
+                </label>
+
+                <label className="sr-only" aria-hidden="true">
+                  Website
+                  <input tabIndex={-1} autoComplete="off" name="website" />
+                </label>
+
+                {status === 'error' ? (
+                  <p className="type-small contact-form__error" role="alert">
+                    {errorMessage}
+                  </p>
+                ) : null}
+
+                <CreativeCallButton
+                  type="submit"
+                  compact
+                  className="contact-form__action"
+                  disabled={status === 'submitting'}
+                >
+                  {status === 'submitting' ? 'Sending…' : 'Submit'}
+                </CreativeCallButton>
+              </form>
+            )}
           </div>
         </div>
 
