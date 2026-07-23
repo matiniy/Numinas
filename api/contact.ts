@@ -118,6 +118,10 @@ function cleanEnv(value: string | undefined) {
 function formatSmtpUserError(message: string) {
   const lower = message.toLowerCase()
 
+  if (lower.includes('unauthorized ip') || lower.includes('525')) {
+    return 'Brevo blocked this server IP. In Brevo → SMTP & API, turn off “Authorize IPs for SMTP keys” (Vercel uses changing IPs).'
+  }
+
   if (
     lower.includes('invalid login') ||
     lower.includes('username and password') ||
@@ -125,7 +129,7 @@ function formatSmtpUserError(message: string) {
     lower.includes('badcredentials') ||
     lower.includes('535')
   ) {
-    return `Google rejected the SMTP login (${message.slice(0, 120)}). Confirm SMTP_USER matches the App Password account, or switch Vercel SMTP_* to Brevo (smtp-relay.brevo.com:587).`
+    return `SMTP login failed (${message.slice(0, 120)}). Confirm SMTP_HOST/USER/PASS (Brevo: smtp-relay.brevo.com, port 587, Login + SMTP key).`
   }
 
   if (lower.includes('enotfound') || lower.includes('connect') || lower.includes('timeout')) {
