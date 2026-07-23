@@ -2,11 +2,27 @@ import { SERVICE_AREA_LABELS } from '@/lib/service-areas'
 
 export const SITE = {
   name: 'Numinas',
+  legalName: 'Numinas Canada',
   tagline: 'Motion Studio',
   description:
     'Vancouver-based motion studio creating scroll-stopping launch films, brand systems, social content, and explainers for brands in Toronto, Seattle, Los Angeles, New York, San Francisco, Tokyo, Brazil, London, Dubai, and worldwide.',
-  locale: 'en',
-  defaultOgImage: '/logo/favicon.svg',
+  locale: 'en_CA',
+  language: 'en',
+  email: 'collab@numinas.studio',
+  privacyEmail: 'info@numinas.studio',
+  foundingDate: '2018',
+  /** Prefer raster for Open Graph / Twitter (many crawlers skip SVG). */
+  defaultOgImage: '/logo/Logo.png',
+  favicon: '/logo/favicon.svg',
+  geo: {
+    placename: 'Vancouver',
+    region: 'CA-BC',
+    latitude: 49.2827,
+    longitude: -123.1207,
+    country: 'CA',
+    addressLocality: 'Vancouver',
+    addressRegion: 'BC',
+  },
   keywords: [
     'Numinas',
     'motion studio',
@@ -14,6 +30,7 @@ export const SITE = {
     'animation studio',
     'explainer videos',
     'brand films',
+    'Vancouver motion studio',
     ...SERVICE_AREA_LABELS,
   ],
 } as const

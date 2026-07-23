@@ -24,19 +24,22 @@ function generateRobotsTxt(siteUrl) {
   return `User-agent: *
 Allow: /
 
+# Primary sitemap for Numinas (Vancouver motion studio)
 Sitemap: ${siteUrl}/sitemap.xml
 `
 }
 
 function generateSitemapXml(siteUrl, paths) {
+  const lastmod = new Date().toISOString().slice(0, 10)
   const urls = paths
     .map((path) => {
       const loc = path === '/' ? `${siteUrl}/` : `${siteUrl}${path}`
-      const priority = path === '/' ? '1.0' : path === '/privacy' ? '0.4' : '0.8'
-      const changefreq = path === '/' ? 'weekly' : path === '/privacy' ? 'yearly' : 'monthly'
+      const priority = path === '/' ? '1.0' : path === '/privacy' ? '0.5' : '0.8'
+      const changefreq = path === '/' ? 'weekly' : path === '/privacy' ? 'monthly' : 'monthly'
 
       return `  <url>
     <loc>${escapeXml(loc)}</loc>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`

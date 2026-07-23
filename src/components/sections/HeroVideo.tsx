@@ -11,7 +11,7 @@ export function HeroVideo() {
   if (failed) {
     return (
       <div
-        className="absolute inset-0 wire-box flex items-center justify-center"
+        className="hero-video hero-video--failed absolute inset-0 wire-box flex items-center justify-center"
         aria-hidden="true"
       >
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-[var(--n-mist)]">
@@ -22,26 +22,20 @@ export function HeroVideo() {
   }
 
   return (
-    <>
-      {!ready ? (
-        <div
-          className="absolute inset-0 bg-[var(--n-void)]"
-          aria-hidden="true"
-        />
-      ) : null}
+    <div className="hero-video" aria-hidden="true">
+      {!ready ? <div className="hero-video__placeholder" /> : null}
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="hero-video__media"
         autoPlay
         muted
         loop
         playsInline
         preload="metadata"
         poster={HERO_MEDIA.poster}
-        aria-hidden="true"
         onCanPlay={() => setReady(true)}
         onError={() => setFailed(true)}
         src={videoSrc}
       />
-    </>
+    </div>
   )
 }

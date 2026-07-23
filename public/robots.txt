@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+# Primary sitemap for Numinas (Vancouver motion studio)
 Sitemap: https://www.numinas.com/sitemap.xml

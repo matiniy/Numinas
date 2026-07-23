@@ -59,50 +59,65 @@ function upsertJsonLd(data: PageSeoConfig['jsonLd']) {
 export function PageSeo(config: PageSeoConfig) {
   useEffect(() => {
     const canonicalUrl = getAbsoluteUrl(config.path)
-    const imageUrl = config.image ? getAbsoluteUrl(config.image) : undefined
-    const robots = config.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'
+    const imagePath = config.image || SITE.defaultOgImage
+    const imageUrl = getAbsoluteUrl(imagePath)
+    const imageAlt = config.imageAlt || `${SITE.name} - ${SITE.tagline}`
+    const robots = config.noindex
+      ? 'noindex, nofollow'
+      : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
     const keywords = config.keywords?.length ? config.keywords.join(', ') : SITE.keywords.join(', ')
 
     document.title = config.title
-    document.documentElement.lang = 'en'
+    document.documentElement.lang = SITE.language
 
     upsertMeta('name', 'description', config.description)
     upsertMeta('name', 'robots', robots)
+    upsertMeta('name', 'googlebot', robots)
     upsertMeta('name', 'keywords', keywords)
     upsertMeta('name', 'author', SITE.name)
-    upsertMeta('name', 'geo.region', 'CA-BC')
-    upsertMeta('name', 'geo.placename', 'Vancouver')
-    upsertMeta('name', 'ICBM', '49.2827, -123.1207')
+    upsertMeta('name', 'application-name', SITE.name)
+    upsertMeta('name', 'theme-color', '#0a0a0b')
+    upsertMeta('name', 'format-detection', 'telephone=no')
+
+    // Geo / local SEO signals (HQ: Vancouver, BC)
+    upsertMeta('name', 'geo.region', SITE.geo.region)
+    upsertMeta('name', 'geo.placename', SITE.geo.placename)
+    upsertMeta('name', 'geo.position', `${SITE.geo.latitude};${SITE.geo.longitude}`)
+    upsertMeta('name', 'ICBM', `${SITE.geo.latitude}, ${SITE.geo.longitude}`)
+
     upsertLink('canonical', canonicalUrl)
+    upsertLink('alternate', canonicalUrl, { hreflang: 'en' })
+    upsertLink('alternate', canonicalUrl, { hreflang: 'en-CA' })
+    upsertLink('alternate', canonicalUrl, { hreflang: 'en-US' })
+    upsertLink('alternate', canonicalUrl, { hreflang: 'en-GB' })
+    upsertLink('alternate', canonicalUrl, { hreflang: 'x-default' })
 
     upsertMeta('property', 'og:title', config.title)
     upsertMeta('property', 'og:description', config.description)
     upsertMeta('property', 'og:url', canonicalUrl)
     upsertMeta('property', 'og:type', config.type ?? 'website')
     upsertMeta('property', 'og:site_name', SITE.name)
-    upsertMeta('property', 'og:locale', 'en_CA')
+    upsertMeta('property', 'og:locale', SITE.locale)
+    upsertMeta('property', 'og:image', imageUrl)
+    upsertMeta('property', 'og:image:alt', imageAlt)
+    upsertMeta('property', 'og:image:type', imagePath.endsWith('.png') ? 'image/png' : 'image/svg+xml')
 
-    upsertLink('alternate', canonicalUrl, { hreflang: 'en' })
-    upsertLink('alternate', canonicalUrl, { hreflang: 'en-CA' })
-    upsertLink('alternate', canonicalUrl, { hreflang: 'en-US' })
-    upsertLink('alternate', canonicalUrl, { hreflang: 'x-default' })
-
-    upsertMeta('name', 'twitter:card', imageUrl ? 'summary_large_image' : 'summary')
+    upsertMeta('name', 'twitter:card', 'summary_large_image')
     upsertMeta('name', 'twitter:title', config.title)
     upsertMeta('name', 'twitter:description', config.description)
+    upsertMeta('name', 'twitter:image', imageUrl)
+    upsertMeta('name', 'twitter:image:alt', imageAlt)
 
-    if (imageUrl) {
-      upsertMeta('property', 'og:image', imageUrl)
-      upsertMeta('name', 'twitter:image', imageUrl)
-    } else {
-      removeMeta('property', 'og:image')
-      removeMeta('name', 'twitter:image')
+    if (config.noindex) {
+      removeMeta('name', 'googlebot')
+      upsertMeta('name', 'googlebot', 'noindex, nofollow')
     }
 
     upsertJsonLd(config.jsonLd)
   }, [
     config.description,
     config.image,
+    config.imageAlt,
     config.jsonLd,
     config.keywords,
     config.noindex,

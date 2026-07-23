@@ -164,7 +164,7 @@ export function Hero() {
   }, [finishIntro, showContent])
 
   return (
-    <section id="top" className="relative flex min-h-[100svh] flex-col">
+    <section id="top" className="hero-section relative flex min-h-[100svh] flex-col">
       <HeroVideo />
 
       <div
@@ -177,14 +177,14 @@ export function Hero() {
 
       <div
         className={cn(
-          'wire-container relative z-10 flex min-h-[100svh] flex-col justify-end pb-6 pt-20 sm:pb-8 sm:pt-24 md:pb-10 md:pt-28 lg:pb-12',
+          'hero-section__content wire-container relative z-10 flex min-h-[100svh] min-h-[100dvh] flex-col justify-end',
           contentVisible ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         aria-hidden={!contentVisible}
       >
         {contentVisible ? (
           <>
-            <GlassChipList ref={chipsRef} className="hero-chip-list mb-5 md:mb-6" aria-label="Core offerings">
+            <GlassChipList ref={chipsRef} className="hero-chip-list" aria-label="Core offerings">
               {HERO_OFFERINGS.map((item) => (
                 <li key={item.label} className="hero-extra hero-extra--chip">
                   <GlassChip variant={item.variant} glass>
@@ -197,7 +197,7 @@ export function Hero() {
             <SplitText
               text="Crafting Scroll-Stopping Motion That Clarifies And Converts"
               tag="h1"
-              className="type-display max-w-4xl text-balance"
+              className="hero-section__title type-display max-w-4xl text-balance"
               accentWords={['Clarifies', 'Converts']}
               accentClassName="type-display-accent"
               duration={0.45}
@@ -214,7 +214,7 @@ export function Hero() {
             <SplitText
               text="We build visuals that travel across every channel, from concept and styleframes to 2D/3D animation, sound, and delivery kits."
               tag="p"
-              className="type-body mt-5 max-w-2xl text-[var(--n-mist)] md:max-w-3xl"
+              className="hero-section__body type-body max-w-2xl text-[var(--n-mist)] md:max-w-3xl"
               splitType="lines"
               duration={0.45}
               delay={60}
