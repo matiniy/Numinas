@@ -17,7 +17,7 @@ export function HomePage() {
   return (
     <div className="min-h-screen overflow-x-clip">
       <PageSeo {...homeSeo} />
-      <Nav />
+      <Nav revealDelayMs={5000} />
       <main>
         <Hero />
         <TrustedBy />

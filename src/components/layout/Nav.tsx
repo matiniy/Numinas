@@ -21,10 +21,18 @@ function easeOutQuint(t: number) {
   return 1 - Math.pow(1 - t, 5)
 }
 
-export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
+export function Nav({
+  surface = 'dark',
+  revealDelayMs = 0,
+}: {
+  surface?: 'dark' | 'light'
+  /** Delay before the nav fades in (home hero intro). */
+  revealDelayMs?: number
+}) {
   const [open, setOpen] = useState(false)
   const [progress, setProgress] = useState(0)
   const [isDesktop, setIsDesktop] = useState(false)
+  const [revealed, setRevealed] = useState(revealDelayMs <= 0)
   const currentRef = useRef(0)
   const reducedMotionRef = useRef(false)
   const isLightSurface = surface === 'light'
@@ -32,6 +40,22 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
   useEffect(() => {
     reducedMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   }, [])
+
+  useEffect(() => {
+    if (revealDelayMs <= 0) {
+      setRevealed(true)
+      return
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setRevealed(true)
+      return
+    }
+
+    setRevealed(false)
+    const timer = window.setTimeout(() => setRevealed(true), revealDelayMs)
+    return () => window.clearTimeout(timer)
+  }, [revealDelayMs])
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)')
@@ -128,7 +152,17 @@ export function Nav({ surface = 'dark' }: { surface?: 'dark' | 'light' }) {
   const logoFilter = isLightSurface ? `brightness(${lerp(0, 1, p)})` : undefined
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50" style={headerStyle}>
+    <header
+      className="fixed inset-x-0 top-0 z-50"
+      style={{
+        ...headerStyle,
+        opacity: revealed ? 1 : 0,
+        transform: revealed ? 'translateY(0)' : 'translateY(-12px)',
+        transition: 'opacity 0.7s ease, transform 0.7s ease',
+        pointerEvents: revealed ? 'auto' : 'none',
+      }}
+      aria-hidden={!revealed}
+    >
       <div style={shellStyle}>
         <div className="flex min-w-0 items-center justify-between" style={rowStyle}>
         <Link to="/" className="flex shrink-0 items-center" aria-label="Numinas home">

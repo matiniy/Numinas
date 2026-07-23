@@ -1,10 +1,21 @@
+import { SERVICE_AREA_LABELS } from '@/lib/service-areas'
+
 export const SITE = {
   name: 'Numinas',
   tagline: 'Motion Studio',
   description:
-    'Numinas is a creative motion studio building scroll-stopping visuals that clarify, captivate, and convert across launch films, brand systems, social content, and explainers.',
+    'Vancouver-based motion studio creating scroll-stopping launch films, brand systems, social content, and explainers for brands in Toronto, Seattle, Los Angeles, New York, San Francisco, Tokyo, Brazil, London, Dubai, and worldwide.',
   locale: 'en',
   defaultOgImage: '/logo/favicon.svg',
+  keywords: [
+    'Numinas',
+    'motion studio',
+    'motion graphics',
+    'animation studio',
+    'explainer videos',
+    'brand films',
+    ...SERVICE_AREA_LABELS,
+  ],
 } as const
 
 export function getSiteUrl() {

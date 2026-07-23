@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { CreativeCallButton } from '@/components/ui/creative-call-button'
 import { GlassChip, GlassChipList } from '@/components/ui/glass-chip'
 import { SplitText } from '@/components/ui/split-text'
 import { HERO_OFFERINGS } from '@/lib/glass-chips'
@@ -19,7 +18,6 @@ export function Hero() {
   const progressRef = useRef(0)
   const touchStartYRef = useRef<number | null>(null)
   const chipsRef = useRef<HTMLUListElement>(null)
-  const ctaRef = useRef<HTMLDivElement>(null)
   const extrasAnimatedRef = useRef(false)
 
   const getChipTargets = useCallback(() => {
@@ -48,9 +46,7 @@ export function Hero() {
     if (reducedMotion) return
 
     const chipItems = getChipTargets()
-    const cta = ctaRef.current
     if (chipItems.length) gsap.set(chipItems, { opacity: 0, y: 9 })
-    if (cta) gsap.set(cta, { opacity: 0, y: 4 })
   }, [contentVisible, getChipTargets])
 
   const animateHeroExtras = useCallback(() => {
@@ -58,18 +54,15 @@ export function Hero() {
     extrasAnimatedRef.current = true
 
     const chipItems = getChipTargets()
-    const cta = ctaRef.current
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (reducedMotion) {
-      gsap.set([...chipItems, cta].filter(Boolean), { clearProps: 'opacity,transform' })
+      gsap.set(chipItems, { clearProps: 'opacity,transform' })
       return
     }
 
-    const timeline = gsap.timeline()
-
     if (chipItems.length) {
-      timeline.fromTo(
+      gsap.fromTo(
         chipItems,
         { opacity: 0, y: 8 },
         {
@@ -79,21 +72,6 @@ export function Hero() {
           ease: 'power2.out',
           stagger: 0.04,
         },
-        0,
-      )
-    }
-
-    if (cta) {
-      timeline.fromTo(
-        cta,
-        { opacity: 0, y: 6 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          ease: 'power2.out',
-        },
-        chipItems.length ? 0.12 : 0,
       )
     }
   }, [getChipTargets])
@@ -199,7 +177,7 @@ export function Hero() {
 
       <div
         className={cn(
-          'wire-container relative z-10 flex min-h-[100svh] flex-col justify-end pb-12 pt-20 sm:pb-16 sm:pt-24 md:pb-20 md:pt-28 lg:pb-24',
+          'wire-container relative z-10 flex min-h-[100svh] flex-col justify-end pb-6 pt-20 sm:pb-8 sm:pt-24 md:pb-10 md:pt-28 lg:pb-12',
           contentVisible ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         aria-hidden={!contentVisible}
@@ -247,10 +225,6 @@ export function Hero() {
               textAlign="left"
               playOnMount
             />
-
-            <div ref={ctaRef} className="hero-extra hero-extra--cta mt-8 max-w-full">
-              <CreativeCallButton className="max-w-full" />
-            </div>
           </>
         ) : (
           <h1 className="sr-only">Crafting Scroll-Stopping Motion That Clarifies And Converts</h1>

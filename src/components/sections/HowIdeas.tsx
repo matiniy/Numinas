@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { CreativeCallButton } from '@/components/ui/creative-call-button'
 import { cn } from '@/lib/utils'
 
 type Phase = {
@@ -81,6 +82,11 @@ export function HowIdeas() {
           <h2 id="approach-heading" className="approach-section__title">
             How Ideas Become Motion
           </h2>
+          <div className="approach-section__cta">
+            <CreativeCallButton href="#contact" plain tone="light" className="font-semibold">
+              Connect
+            </CreativeCallButton>
+          </div>
         </div>
 
         <div className="approach-section__rule" aria-hidden="true" />
