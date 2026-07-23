@@ -1,16 +1,53 @@
 import { FormEvent, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
 import { Waves } from '@/components/ui/waves'
 import { BRAND_LOGO } from '@/lib/brand-logo'
 import { SOCIAL_LINKS } from '@/lib/social-links'
 
-export function Contact() {
-  const [submitted, setSubmitted] = useState(false)
+type SubmitState = 'idle' | 'submitting' | 'error'
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+export function Contact() {
+  const navigate = useNavigate()
+  const [status, setStatus] = useState<SubmitState>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setSubmitted(true)
+    const form = event.currentTarget
+    const data = new FormData(form)
+
+    setStatus('submitting')
+    setErrorMessage('')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: String(data.get('fullName') || ''),
+          email: String(data.get('email') || ''),
+          company: String(data.get('company') || ''),
+          message: String(data.get('message') || ''),
+          website: String(data.get('website') || ''),
+        }),
+      })
+
+      const payload = (await response.json().catch(() => null)) as { error?: string } | null
+
+      if (!response.ok) {
+        throw new Error(payload?.error || 'Something went wrong. Please try again.')
+      }
+
+      navigate('/thank-you')
+    } catch (error) {
+      setStatus('error')
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please email collab@numinas.studio.',
+      )
+    }
   }
 
   return (
@@ -51,72 +88,75 @@ export function Contact() {
           </div>
 
           <div className="contact-section__form-wrap">
-            {submitted ? (
-              <div className="contact-form contact-form--success">
-                <p className="type-h3 contact-form__success-title">Thanks, we’ll be in touch.</p>
-                <p className="type-small mt-2 contact-form__success-note">
-                  Form is wireframe-only (no backend yet).
+            <form className="contact-form" onSubmit={onSubmit} noValidate>
+              <label className="contact-field">
+                <span className="contact-field__label">Full name</span>
+                <input
+                  className="contact-field__input"
+                  name="fullName"
+                  autoComplete="name"
+                  placeholder="Your name"
+                  required
+                  disabled={status === 'submitting'}
+                />
+              </label>
+
+              <label className="contact-field">
+                <span className="contact-field__label">Email Address</span>
+                <input
+                  className="contact-field__input"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  placeholder="you@company.com"
+                  required
+                  disabled={status === 'submitting'}
+                />
+              </label>
+
+              <label className="contact-field">
+                <span className="contact-field__label">Company</span>
+                <input
+                  className="contact-field__input"
+                  name="company"
+                  autoComplete="organization"
+                  placeholder="Company name"
+                  disabled={status === 'submitting'}
+                />
+              </label>
+
+              <label className="contact-field">
+                <span className="contact-field__label">Message</span>
+                <textarea
+                  className="contact-field__input contact-field__input--textarea"
+                  name="message"
+                  placeholder="Tell us about your project"
+                  required
+                  disabled={status === 'submitting'}
+                />
+              </label>
+
+              {/* Honeypot — leave empty */}
+              <label className="sr-only" aria-hidden="true">
+                Website
+                <input tabIndex={-1} autoComplete="off" name="website" />
+              </label>
+
+              {status === 'error' ? (
+                <p className="type-small contact-form__error" role="alert">
+                  {errorMessage}
                 </p>
-                <CreativeCallButton
-                  type="button"
-                  className="mt-6"
-                  showArrow={false}
-                  compact
-                  onClick={() => setSubmitted(false)}
-                >
-                  Reset
-                </CreativeCallButton>
-              </div>
-            ) : (
-              <form className="contact-form" onSubmit={onSubmit} noValidate>
-                <label className="contact-field">
-                  <span className="contact-field__label">Full name</span>
-                  <input
-                    className="contact-field__input"
-                    name="fullName"
-                    autoComplete="name"
-                    placeholder="Your name"
-                    required
-                  />
-                </label>
+              ) : null}
 
-                <label className="contact-field">
-                  <span className="contact-field__label">Email Address</span>
-                  <input
-                    className="contact-field__input"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    placeholder="you@company.com"
-                    required
-                  />
-                </label>
-
-                <label className="contact-field">
-                  <span className="contact-field__label">Company</span>
-                  <input
-                    className="contact-field__input"
-                    name="company"
-                    autoComplete="organization"
-                    placeholder="Company name"
-                  />
-                </label>
-
-                <label className="contact-field">
-                  <span className="contact-field__label">Message</span>
-                  <textarea
-                    className="contact-field__input contact-field__input--textarea"
-                    name="message"
-                    placeholder="Tell us about your project"
-                    required
-                  />
-                </label>
-
-                <CreativeCallButton type="submit" compact className="contact-form__action">
-                  Submit
-                </CreativeCallButton>
-              </form>
-            )}
+              <CreativeCallButton
+                type="submit"
+                compact
+                className="contact-form__action"
+                disabled={status === 'submitting'}
+              >
+                {status === 'submitting' ? 'Sending…' : 'Submit'}
+              </CreativeCallButton>
+            </form>
           </div>
         </div>
 

@@ -21,6 +21,7 @@ interface CreativeCallButtonProps {
   plain?: boolean
   /** Invert to white fill + dark text (best with `plain`). */
   tone?: 'dark' | 'light'
+  disabled?: boolean
 }
 
 export function CreativeCallButton({
@@ -34,6 +35,7 @@ export function CreativeCallButton({
   gradientColors = GRADIENT_COLORS,
   plain = false,
   tone = 'dark',
+  disabled = false,
 }: CreativeCallButtonProps) {
   const sizeClassName = compact
     ? 'min-h-9 px-3 py-1.5 text-xs sm:min-h-10 sm:px-3.5 sm:text-sm'
@@ -64,6 +66,7 @@ export function CreativeCallButton({
     'transition-all duration-200 active:scale-[0.98]',
     toneClassName,
     sizeClassName,
+    disabled && 'cursor-not-allowed opacity-60 active:scale-100',
     plain && className,
   )
   const controlStyle = {
@@ -72,7 +75,13 @@ export function CreativeCallButton({
   } as const
 
   const control = type ? (
-    <button type={type} onClick={onClick} className={controlClassName} style={controlStyle}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={controlClassName}
+      style={controlStyle}
+      disabled={disabled}
+    >
       {label}
     </button>
   ) : (

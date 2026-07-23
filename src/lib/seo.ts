@@ -262,6 +262,17 @@ export function buildNotFoundSeo(path = '/404'): PageSeoConfig {
   }
 }
 
+export function buildThankYouSeo(): PageSeoConfig {
+  return {
+    title: `Thanks | ${SITE.name}`,
+    description: 'Thanks for contacting Numinas. We received your message and will be in touch soon.',
+    path: '/thank-you',
+    image: SITE.defaultOgImage,
+    imageAlt: `${SITE.name} logo`,
+    noindex: true,
+  }
+}
+
 export function buildPrivacySeo(): PageSeoConfig {
   const description = truncateDescription(
     'Numinas Privacy Policy and FAQ covering our Vancouver motion studio services, process, and how we work with brands worldwide.',

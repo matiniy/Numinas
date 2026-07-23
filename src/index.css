@@ -2003,6 +2003,11 @@ body {
     max-width: 100%;
   }
 
+  .contact-form__error {
+    margin: 0;
+    color: #b42318;
+  }
+
   @media (max-width: 479px) {
     .contact-form__action {
       justify-self: stretch;
