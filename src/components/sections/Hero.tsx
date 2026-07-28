@@ -9,7 +9,15 @@ import { HeroVideo } from './HeroVideo'
 /** Wheel/touch delta that must accumulate before hero copy begins loading. */
 const INTRO_SCROLL_THRESHOLD = 260
 
-export function Hero() {
+export function Hero({
+  title = 'Crafting Scroll-Stopping Motion That Clarifies And Converts',
+  body = 'We build visuals that travel across every channel, from concept and styleframes to 2D/3D animation, sound, and delivery kits.',
+  accentWords = ['Clarifies', 'Converts'],
+}: {
+  title?: string
+  body?: string
+  accentWords?: string[]
+}) {
   const [contentVisible, setContentVisible] = useState(false)
   const [introComplete, setIntroComplete] = useState(false)
 
@@ -195,10 +203,10 @@ export function Hero() {
             </GlassChipList>
 
             <SplitText
-              text="Crafting Scroll-Stopping Motion That Clarifies And Converts"
+              text={title}
               tag="h1"
               className="hero-section__title type-display max-w-4xl text-balance"
-              accentWords={['Clarifies', 'Converts']}
+              accentWords={accentWords}
               accentClassName="type-display-accent"
               duration={0.45}
               delay={45}
@@ -212,7 +220,7 @@ export function Hero() {
             />
 
             <SplitText
-              text="We build visuals that travel across every channel, from concept and styleframes to 2D/3D animation, sound, and delivery kits."
+              text={body}
               tag="p"
               className="hero-section__body type-body max-w-2xl text-[var(--n-mist)] md:max-w-3xl"
               splitType="lines"
@@ -227,7 +235,7 @@ export function Hero() {
             />
           </>
         ) : (
-          <h1 className="sr-only">Crafting Scroll-Stopping Motion That Clarifies And Converts</h1>
+          <h1 className="sr-only">{title}</h1>
         )}
       </div>
 

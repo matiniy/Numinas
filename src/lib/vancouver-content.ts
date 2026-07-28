@@ -83,6 +83,12 @@ export const VANCOUVER_FAQS = [
   },
 ] as const
 
+export const VANCOUVER_HERO = {
+  title: 'Vancouver Motion Graphics Studio, Crafting Scroll-Stopping Visuals That Convert',
+  body: 'From our Vancouver studio, we create motion graphics and animation that help brands stand out, tell clear stories, and connect with their audience through visuals that convert.',
+  accentWords: ['Scroll-Stopping', 'Convert'] as string[],
+} as const
+
 export const VANCOUVER_CTA = {
   eyebrow: 'Next step',
   title: 'Tell us about your Vancouver project',

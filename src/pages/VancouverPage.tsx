@@ -11,7 +11,7 @@ import { Contact } from '@/components/sections/Contact'
 import { PageSeo } from '@/components/seo/PageSeo'
 import { CreativeCallButton } from '@/components/ui/creative-call-button'
 import { buildVancouverSeo } from '@/lib/seo'
-import { VANCOUVER_CTA } from '@/lib/vancouver-content'
+import { VANCOUVER_CTA, VANCOUVER_HERO } from '@/lib/vancouver-content'
 
 const vancouverSeo = buildVancouverSeo()
 
@@ -21,7 +21,11 @@ export function VancouverPage() {
       <PageSeo {...vancouverSeo} />
       <Nav revealDelayMs={5000} />
       <main>
-        <Hero />
+        <Hero
+          title={VANCOUVER_HERO.title}
+          body={VANCOUVER_HERO.body}
+          accentWords={[...VANCOUVER_HERO.accentWords]}
+        />
         <TrustedBy />
         <Testimonials />
         <Pillars />
