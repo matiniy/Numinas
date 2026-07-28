@@ -49,7 +49,11 @@ const SERVICE_GRADIENTS = services.map((_, index) => {
   return `linear-gradient(120deg, ${palette.color1} 0%, ${palette.color2} 52%, ${palette.color3} 100%)`
 })
 
-export function Services() {
+export function Services({
+  intro = 'Animated content that clarifies, captivates, and connects.',
+}: {
+  intro?: string
+}) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [compact, setCompact] = useState(false)
   const selected = services[selectedIndex] ?? services[0]
@@ -77,7 +81,7 @@ export function Services() {
             What We Make
           </ScrollFloat>
           <p className="type-body services-section__hero-copy max-w-xl text-[var(--n-mist)]">
-            Animated content that clarifies, captivates, and connects.
+            {intro}
           </p>
         </div>
       </div>

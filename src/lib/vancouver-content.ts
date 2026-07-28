@@ -1,6 +1,7 @@
 /**
- * Copy + FAQ for the /vancouver GEO landing page.
- * Keep unique from homepage; target local intent without keyword stuffing.
+ * SEO + schema copy for /vancouver.
+ * On-page layout mirrors the homepage; local keywords live mainly in meta/JSON-LD
+ * plus a light Vancouver mention in the services intro.
  */
 
 export const VANCOUVER_SEO = {
@@ -25,98 +26,33 @@ export const VANCOUVER_KEYWORDS = [
   'Numinas Vancouver',
 ] as const
 
-export const VANCOUVER_HERO = {
-  brand: 'Numinas',
-  headline: 'Vancouver motion studio',
-  support:
-    'Scroll-stopping brand films, explainers, and social animation — crafted in Vancouver for brands across Metro Vancouver and beyond.',
-  ctaLabel: 'Book a creative call',
-  ctaHref: '#contact',
-} as const
-
-export const VANCOUVER_INTRO = {
-  eyebrow: 'Based in Vancouver',
-  title: 'Motion that lands with West Coast brands',
-  body: [
-    'Numinas is a Vancouver-based motion studio. We design and animate launch films, product explainers, social systems, and brand motion kits for companies that need clarity on screen — not more noise.',
-    'Whether you are shipping from Downtown Vancouver, Burnaby, North Vancouver, or collaborating remotely from Toronto, Seattle, or further afield, we run a clear process from brief to final delivery.',
-  ],
-} as const
-
 export const VANCOUVER_SERVICES = {
-  eyebrow: 'What we make',
-  title: 'Animation and motion for Vancouver teams',
-  intro:
-    'The same service set we deliver globally — scoped for product launches, rebrands, and always-on social calendars.',
   items: [
     {
-      title: 'Brand films',
+      title: 'Brand Films',
       body: 'Cinematic launch and positioning films for Vancouver startups, scale-ups, and established brands.',
     },
     {
-      title: 'Explainer videos',
+      title: 'Explainer Videos',
       body: 'Story-led explainers that make complex products easy to grasp for sales, websites, and onboarding.',
     },
     {
-      title: 'Social content',
+      title: 'Social Content',
       body: 'Short-form motion for Instagram, TikTok, YouTube, and paid — built to stop the scroll and stay on-brand.',
     },
     {
-      title: 'Motion systems',
+      title: 'Motion Systems',
       body: 'Reusable templates, type, and transitions so your team can ship volume without losing the look.',
     },
-  ],
-} as const
-
-export const VANCOUVER_AREAS = {
-  eyebrow: 'Metro Vancouver',
-  title: 'Where we work locally',
-  intro:
-    'Our studio is based in Vancouver, BC. We regularly collaborate with teams across the Lower Mainland — in person when it helps, remote when speed matters.',
-  places: [
-    'Downtown Vancouver',
-    'Yaletown',
-    'Mount Pleasant',
-    'Kitsilano',
-    'Burnaby',
-    'North Vancouver',
-    'West Vancouver',
-    'Richmond',
-    'Surrey',
-    'New Westminster',
-    'Coquitlam',
-    'Port Moody',
-  ],
-} as const
-
-export const VANCOUVER_PROCESS = {
-  eyebrow: 'How we work',
-  title: 'A clear path from brief to delivery',
-  steps: [
     {
-      n: '01',
-      title: 'Discovery call',
-      body: 'We align on goals, audience, timeline, and whether motion is the right lever for the brief.',
+      title: 'Experiential & AR',
+      body: 'Motion for physical and hybrid spaces across Metro Vancouver and beyond.',
     },
     {
-      n: '02',
-      title: 'Concept & boards',
-      body: 'Narrative, look, and pacing locked before production — so everyone knows what we are making.',
-    },
-    {
-      n: '03',
-      title: 'Produce & polish',
-      body: 'Animation, sound, and revisions in a structured loop until the piece is ready to ship.',
+      title: 'Custom & R&D',
+      body: 'Experimental briefs and pipelines when the work does not fit a standard deliverable.',
     },
   ],
-} as const
-
-export const VANCOUVER_WORK = {
-  eyebrow: 'Selected work',
-  title: 'Motion for brands that demand craft',
-  intro: 'A sample of films and systems we have shipped — the same standard we bring to Vancouver briefs.',
-  ctaLabel: 'See all work',
-  ctaHref: '/#projects',
 } as const
 
 export const VANCOUVER_FAQS = [

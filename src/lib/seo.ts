@@ -307,7 +307,7 @@ export function buildVancouverSeo(): PageSeoConfig {
           primaryImageOfPage: getAbsoluteUrl(SITE.defaultOgImage),
           speakable: {
             '@type': 'SpeakableSpecification',
-            cssSelector: ['.vancouver-hero__headline', '.vancouver-section__title'],
+            cssSelector: ['.hero-section__title', '.services-section__hero-copy'],
           },
         },
         {
