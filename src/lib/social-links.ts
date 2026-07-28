@@ -10,7 +10,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   {
     id: 'instagram',
     label: 'Instagram',
-    href: 'https://www.instagram.com/_numinas',
+    href: 'https://www.instagram.com/numinas_studio',
     icon: '/footer/Instagram.svg',
   },
   {
