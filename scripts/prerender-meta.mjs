@@ -56,6 +56,14 @@ function getPages() {
       imageAlt: 'Numinas motion studio logo',
     },
     {
+      path: '/vancouver',
+      title: 'Motion Studio Vancouver | Brand Films & Animation | Numinas',
+      description:
+        'Vancouver motion studio for brand films, explainers, and social animation. Numinas works with Metro Vancouver brands and remote teams worldwide.',
+      type: 'website',
+      imageAlt: 'Numinas — Vancouver motion studio',
+    },
+    {
       path: '/privacy',
       title: 'Privacy Policy & FAQ | Numinas',
       description:

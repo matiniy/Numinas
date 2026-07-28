@@ -218,6 +218,10 @@ export function Contact() {
 
           <p className="contact-section__copyright">
             © {new Date().getFullYear()} Numinas. All rights reserved.{' '}
+            <Link to="/vancouver" className="contact-section__legal-link">
+              Vancouver
+            </Link>
+            {' · '}
             <Link to="/privacy" className="contact-section__legal-link">
               Privacy Policy
             </Link>

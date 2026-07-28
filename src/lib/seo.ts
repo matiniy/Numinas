@@ -4,6 +4,12 @@ import { SITE_FAQS } from '@/lib/privacy-faq'
 import { SERVICE_AREA_LABELS, toSchemaPlaces } from '@/lib/service-areas'
 import { getAbsoluteUrl, SITE } from '@/lib/site'
 import { SOCIAL_LINKS } from '@/lib/social-links'
+import {
+  VANCOUVER_FAQS,
+  VANCOUVER_KEYWORDS,
+  VANCOUVER_SEO,
+  VANCOUVER_SERVICES,
+} from '@/lib/vancouver-content'
 
 export type PageSeoConfig = {
   title: string
@@ -274,6 +280,138 @@ export function buildThankYouSeo(): PageSeoConfig {
   }
 }
 
+export function buildVancouverSeo(): PageSeoConfig {
+  const { path, title, description, imageAlt } = VANCOUVER_SEO
+  const pageUrl = getAbsoluteUrl(path)
+
+  return {
+    title,
+    description,
+    path,
+    image: SITE.defaultOgImage,
+    imageAlt,
+    type: 'website',
+    keywords: [...VANCOUVER_KEYWORDS, ...SITE.keywords],
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebPage',
+          '@id': `${pageUrl}#webpage`,
+          name: title,
+          description,
+          url: pageUrl,
+          inLanguage: SITE.language,
+          isPartOf: { '@id': `${getAbsoluteUrl('/')}#website` },
+          about: { '@id': `${getAbsoluteUrl('/')}#organization` },
+          primaryImageOfPage: getAbsoluteUrl(SITE.defaultOgImage),
+          speakable: {
+            '@type': 'SpeakableSpecification',
+            cssSelector: ['.vancouver-hero__headline', '.vancouver-section__title'],
+          },
+        },
+        {
+          '@type': ['LocalBusiness', 'ProfessionalService'],
+          '@id': `${pageUrl}#localbusiness`,
+          name: `${SITE.name} Vancouver`,
+          alternateName: 'Numinas Motion Studio Vancouver',
+          url: pageUrl,
+          image: getAbsoluteUrl(SITE.defaultOgImage),
+          email: SITE.email,
+          description,
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: SITE.geo.addressLocality,
+            addressRegion: SITE.geo.addressRegion,
+            addressCountry: SITE.geo.country,
+          },
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: SITE.geo.latitude,
+            longitude: SITE.geo.longitude,
+          },
+          areaServed: [
+            {
+              '@type': 'City',
+              name: 'Vancouver',
+              containedInPlace: {
+                '@type': 'AdministrativeArea',
+                name: 'British Columbia',
+              },
+            },
+            {
+              '@type': 'AdministrativeArea',
+              name: 'Metro Vancouver',
+            },
+            ...toSchemaPlaces(),
+          ],
+          priceRange: '$$',
+          sameAs: SOCIAL_LINKS.map((link) => link.href),
+          parentOrganization: { '@id': `${getAbsoluteUrl('/')}#organization` },
+        },
+        {
+          '@type': 'Service',
+          '@id': `${pageUrl}#service`,
+          name: 'Vancouver motion design and animation',
+          serviceType: 'Motion studio',
+          provider: { '@id': `${pageUrl}#localbusiness` },
+          areaServed: {
+            '@type': 'City',
+            name: 'Vancouver',
+          },
+          description,
+          url: pageUrl,
+          hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: 'Numinas Vancouver motion services',
+            itemListElement: VANCOUVER_SERVICES.items.map((item, index) => ({
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: item.title,
+                description: item.body,
+                position: index + 1,
+              },
+            })),
+          },
+        },
+        {
+          '@type': 'FAQPage',
+          '@id': `${pageUrl}#faq`,
+          url: `${pageUrl}#faq`,
+          mainEntity: VANCOUVER_FAQS.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer,
+            },
+          })),
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: getAbsoluteUrl('/'),
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Vancouver',
+              item: pageUrl,
+            },
+          ],
+        },
+        buildOrganizationJsonLd(),
+        buildWebsiteJsonLd(),
+      ],
+    },
+  }
+}
+
 export function buildPrivacySeo(): PageSeoConfig {
   const description = truncateDescription(
     'Numinas Privacy Policy and FAQ covering our Vancouver motion studio services, process, and how we work with brands worldwide.',
@@ -348,5 +486,5 @@ export function buildPrivacySeo(): PageSeoConfig {
 }
 
 export function getIndexablePaths() {
-  return ['/', '/privacy', ...PROJECTS.map((project) => `/work/${project.slug}`)]
+  return ['/', '/vancouver', '/privacy', ...PROJECTS.map((project) => `/work/${project.slug}`)]
 }

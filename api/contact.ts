@@ -119,7 +119,7 @@ function buildEmailShell(options: {
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid rgba(10,10,11,0.08);padding-top:20px;">
                 <tr>
                   <td style="padding-top:20px;">
-                    <img src="${markUrl}" width="28" height="28" alt="" style="display:block;border:0;border-radius:6px;" />
+                    <img src="${markUrl}" width="34" height="28" alt="" style="display:block;border:0;width:34px;height:28px;" />
                     <p style="margin:12px 0 0;font-size:12px;line-height:1.5;color:#8a8a93;">
                       Numinas · Vancouver motion studio<br />
                       <a href="mailto:collab@numinas.studio" style="color:#0a0a0b;text-decoration:none;">collab@numinas.studio</a>

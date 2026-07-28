@@ -17,7 +17,7 @@ function escapeXml(value) {
 function getProjectPaths() {
   const projectsSource = readFileSync(resolve(rootDir, 'src/lib/projects.ts'), 'utf8')
   const slugs = [...projectsSource.matchAll(/slug:\s*'([^']+)'/g)].map((match) => match[1])
-  return ['/', '/privacy', ...slugs.map((slug) => `/work/${slug}`)]
+  return ['/', '/vancouver', '/privacy', ...slugs.map((slug) => `/work/${slug}`)]
 }
 
 function generateRobotsTxt(siteUrl) {
@@ -34,8 +34,10 @@ function generateSitemapXml(siteUrl, paths) {
   const urls = paths
     .map((path) => {
       const loc = path === '/' ? `${siteUrl}/` : `${siteUrl}${path}`
-      const priority = path === '/' ? '1.0' : path === '/privacy' ? '0.5' : '0.8'
-      const changefreq = path === '/' ? 'weekly' : path === '/privacy' ? 'monthly' : 'monthly'
+      const priority =
+        path === '/' ? '1.0' : path === '/vancouver' ? '0.9' : path === '/privacy' ? '0.5' : '0.8'
+      const changefreq =
+        path === '/' || path === '/vancouver' ? 'weekly' : path === '/privacy' ? 'monthly' : 'monthly'
 
       return `  <url>
     <loc>${escapeXml(loc)}</loc>

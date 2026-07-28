@@ -1,0 +1,402 @@
+/* /vancouver GEO landing — dark Numinas brand, Pacific fog atmosphere */
+
+.vancouver-page {
+  --yv-fog: rgba(180, 200, 220, 0.06);
+  --yv-line: rgba(244, 244, 245, 0.12);
+  --yv-muted: #8a8a93;
+  min-height: 100vh;
+  background: var(--n-void);
+  color: var(--n-paper);
+}
+
+.vancouver-page__main {
+  position: relative;
+}
+
+/* —— Hero —— */
+.vancouver-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.vancouver-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.vancouver-hero__media .hero-video,
+.vancouver-hero__media .hero-video__media,
+.vancouver-hero__media .hero-video__placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vancouver-hero__media .hero-video__media {
+  object-fit: cover;
+}
+
+.vancouver-hero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 11, 0.35) 0%, rgba(10, 10, 11, 0.55) 42%, rgba(10, 10, 11, 0.92) 100%),
+    radial-gradient(ellipse 90% 60% at 70% 20%, var(--yv-fog), transparent 55%);
+}
+
+.vancouver-hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-block: clamp(5.5rem, 14vw, 8rem) clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.vancouver-hero__brand {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-title);
+  font-size: clamp(2.75rem, 9vw, 5.5rem);
+  font-weight: 450;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--n-snow, #fff);
+}
+
+.vancouver-hero__headline {
+  margin: 0 0 1rem;
+  max-width: 14ch;
+  font-family: var(--font-service);
+  font-size: clamp(1.65rem, 4.2vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--n-paper);
+}
+
+.vancouver-hero__support {
+  margin: 0 0 1.75rem;
+  max-width: 36rem;
+  color: var(--yv-muted);
+}
+
+.vancouver-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+}
+
+.vancouver-hero__secondary {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--n-paper);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.vancouver-hero__secondary:hover {
+  border-bottom-color: var(--n-paper);
+}
+
+.vancouver-hero__brand,
+.vancouver-hero__headline,
+.vancouver-hero__support,
+.vancouver-hero__actions {
+  animation: vancouver-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.vancouver-hero__headline {
+  animation-delay: 0.12s;
+}
+
+.vancouver-hero__support {
+  animation-delay: 0.22s;
+}
+
+.vancouver-hero__actions {
+  animation-delay: 0.32s;
+}
+
+@keyframes vancouver-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vancouver-hero__brand,
+  .vancouver-hero__headline,
+  .vancouver-hero__support,
+  .vancouver-hero__actions {
+    animation: none;
+  }
+}
+
+/* —— Shared sections —— */
+.vancouver-section {
+  padding-block: var(--section-y);
+  border-top: 1px solid var(--yv-line);
+}
+
+.vancouver-section__eyebrow {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--yv-muted);
+}
+
+.vancouver-section__title {
+  margin: 0 0 1rem;
+  max-width: 18ch;
+  font-family: var(--font-title);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 450;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.vancouver-section__intro,
+.vancouver-section__body p {
+  margin: 0 0 1rem;
+  max-width: 40rem;
+  color: var(--yv-muted);
+}
+
+.vancouver-section__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* —— Services list (not cards) —— */
+.vancouver-services {
+  display: grid;
+  gap: 0;
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--yv-line);
+}
+
+.vancouver-services__item {
+  display: grid;
+  gap: 0.5rem;
+  padding-block: 1.35rem;
+  border-bottom: 1px solid var(--yv-line);
+}
+
+@media (min-width: 768px) {
+  .vancouver-services__item {
+    grid-template-columns: minmax(10rem, 14rem) 1fr;
+    gap: 2rem;
+    align-items: baseline;
+  }
+}
+
+.vancouver-services__name {
+  margin: 0;
+  font-family: var(--font-service);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--n-paper);
+}
+
+.vancouver-services__body {
+  margin: 0;
+  color: var(--yv-muted);
+}
+
+/* —— Areas —— */
+.vancouver-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1.15rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vancouver-areas li {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--n-paper);
+  opacity: 0.85;
+}
+
+.vancouver-areas li::after {
+  content: '·';
+  margin-left: 1.15rem;
+  color: var(--yv-muted);
+}
+
+.vancouver-areas li:last-child::after {
+  content: none;
+}
+
+/* —— Process —— */
+.vancouver-process {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 2.25rem;
+}
+
+@media (min-width: 900px) {
+  .vancouver-process {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+.vancouver-process__n {
+  display: block;
+  margin-bottom: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  color: var(--yv-muted);
+}
+
+.vancouver-process__title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 450;
+}
+
+.vancouver-process__body {
+  margin: 0;
+  color: var(--yv-muted);
+}
+
+/* —— Work —— */
+.vancouver-work {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+  .vancouver-work {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+.vancouver-work__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
+
+.vancouver-work__media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: var(--n-fog);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+}
+
+.vancouver-work__link:hover .vancouver-work__media,
+.vancouver-work__link:focus-visible .vancouver-work__media {
+  transform: scale(1.03);
+}
+
+.vancouver-work__meta {
+  margin-top: 0.75rem;
+}
+
+.vancouver-work__client {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--yv-muted);
+}
+
+.vancouver-work__title {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-title);
+  font-size: 1.125rem;
+  font-weight: 450;
+}
+
+.vancouver-work__cta {
+  margin-top: 1.75rem;
+}
+
+/* —— FAQ —— */
+.vancouver-faq__list {
+  margin-top: 2rem;
+  border-top: 1px solid var(--yv-line);
+}
+
+.vancouver-faq__item {
+  border-bottom: 1px solid var(--yv-line);
+}
+
+.vancouver-faq__trigger {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--n-paper);
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-title);
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-weight: 450;
+  line-height: 1.35;
+}
+
+.vancouver-faq__icon {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  color: var(--yv-muted);
+}
+
+.vancouver-faq__panel {
+  padding: 0 0 1.25rem;
+  max-width: 40rem;
+}
+
+.vancouver-faq__panel p {
+  margin: 0;
+  color: var(--yv-muted);
+}
+
+/* —— CTA band —— */
+.vancouver-cta {
+  padding-block: calc(var(--section-y) * 1.15);
+  border-top: 1px solid var(--yv-line);
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 100%, rgba(250, 96, 25, 0.12), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 0%, rgba(238, 46, 90, 0.08), transparent 50%),
+    var(--n-void);
+}
+
+.vancouver-cta__inner {
+  max-width: 36rem;
+}
+
+.vancouver-page .contact-section {
+  border-top: 1px solid var(--yv-line);
+}
