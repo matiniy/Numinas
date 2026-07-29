@@ -58,6 +58,13 @@ export function TrustedBy() {
     if (!strip || !heading) return
 
     const syncFade = () => {
+      // Mobile stacks the heading above the logos — use edge fades only.
+      if (window.matchMedia('(max-width: 767px)').matches) {
+        strip.style.removeProperty('--trusted-fade-start')
+        strip.style.removeProperty('--trusted-fade-end')
+        return
+      }
+
       const stripLeft = strip.getBoundingClientRect().left
       const headingRight = heading.getBoundingClientRect().right
       const fadeStart = Math.max(0, headingRight - stripLeft)

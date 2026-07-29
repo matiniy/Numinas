@@ -102,8 +102,8 @@ export function Nav({
 
   const p = easeOutQuint(progress)
   const isFloating = p > 0.04 || open
-  const floatInset = lerp(0, isDesktop ? 16 : 10, p)
-  const sideInset = lerp(0, isDesktop ? 20 : 12, p)
+  const floatInset = lerp(0, isDesktop ? 16 : 12, p)
+  const sideInset = lerp(0, isDesktop ? 20 : 14, p)
   // Wide enough for logo + links + CTA; avoid clipping the button in the floated pill
   const shrunkWidth = isDesktop ? 72 : 100
   const floatedMinWidth = isDesktop ? 640 : 0
@@ -133,19 +133,19 @@ export function Nav({
   }
 
   const rowStyle = {
-    minHeight: `${lerp(56, 44, p)}px`,
-    paddingTop: `${lerp(12, 6, p)}px`,
-    paddingBottom: `${lerp(12, 6, p)}px`,
+    minHeight: `${lerp(isDesktop ? 56 : 48, isDesktop ? 44 : 40, p)}px`,
+    paddingTop: `${lerp(isDesktop ? 12 : 10, isDesktop ? 6 : 8, p)}px`,
+    paddingBottom: `${lerp(isDesktop ? 12 : 10, isDesktop ? 6 : 8, p)}px`,
     paddingLeft: isDesktop
       ? `calc(var(--gutter) * ${lerp(1, 0.6, p)})`
-      : `max(1rem, calc(var(--gutter) * ${lerp(1, 0.85, p)}))`,
+      : `max(1.125rem, calc(var(--gutter) * ${lerp(1, 0.9, p)}))`,
     paddingRight: isDesktop
       ? `calc(var(--gutter) * ${lerp(1, 0.6, p)})`
-      : `max(1rem, calc(var(--gutter) * ${lerp(1, 0.85, p)}))`,
+      : `max(0.85rem, calc(var(--gutter) * ${lerp(0.85, 0.75, p)}))`,
     gap: `${lerp(16, 12, p)}px`,
   }
 
-  const logoHeight = isDesktop ? lerp(28, 20, p) : lerp(20, 16, p)
+  const logoHeight = isDesktop ? lerp(28, 20, p) : lerp(14, 12, p)
   const linkColor = isLightSurface
     ? `rgb(${Math.round(lerp(18, 255, p))} ${Math.round(lerp(18, 255, p))} ${Math.round(lerp(22, 255, p))})`
     : undefined
