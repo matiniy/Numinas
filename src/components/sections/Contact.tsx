@@ -7,7 +7,17 @@ import { SOCIAL_LINKS } from '@/lib/social-links'
 
 type SubmitState = 'idle' | 'submitting' | 'success' | 'error'
 
-export function Contact() {
+export function Contact({
+  label = 'Contact',
+  title = 'Tailored for You',
+  subtitle = 'Timelines and deliverables designed around your launch. We scope fast, share a clear plan, and deliver buttoned-up files for every channel.',
+  messagePlaceholder = 'Tell us about your project',
+}: {
+  label?: string
+  title?: string
+  subtitle?: string
+  messagePlaceholder?: string
+} = {}) {
   const [status, setStatus] = useState<SubmitState>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -70,16 +80,13 @@ export function Contact() {
       <div className="wire-container contact-section__container">
         <div className="contact-section__grid">
           <div className="contact-section__content">
-            <p className="contact-section__label">Contact</p>
+            <p className="contact-section__label">{label}</p>
 
             <h2 id="contact-heading" className="type-h2 contact-section__title">
-              Tailored for You
+              {title}
             </h2>
 
-            <p className="type-body contact-section__subtitle">
-              Timelines and deliverables designed around your launch. We scope fast, share a clear
-              plan, and deliver buttoned-up files for every channel.
-            </p>
+            <p className="type-body contact-section__subtitle">{subtitle}</p>
 
             <a href="mailto:collab@numinas.studio" className="contact-section__email">
               collab@numinas.studio
@@ -160,7 +167,7 @@ export function Contact() {
                   <textarea
                     className="contact-field__input contact-field__input--textarea"
                     name="message"
-                    placeholder="Tell us about your project"
+                    placeholder={messagePlaceholder}
                     required
                     disabled={status === 'submitting'}
                   />
@@ -220,6 +227,14 @@ export function Contact() {
             © {new Date().getFullYear()} Numinas. All rights reserved.{' '}
             <Link to="/vancouver" className="contact-section__legal-link">
               Vancouver
+            </Link>
+            {' · '}
+            <Link to="/motion-graphics" className="contact-section__legal-link">
+              Motion Graphics
+            </Link>
+            {' · '}
+            <Link to="/industrial-animation-vancouver" className="contact-section__legal-link">
+              Industrial
             </Link>
             {' · '}
             <Link to="/privacy" className="contact-section__legal-link">

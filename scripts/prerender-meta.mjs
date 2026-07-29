@@ -57,11 +57,27 @@ function getPages() {
     },
     {
       path: '/vancouver',
-      title: 'Motion Studio Vancouver | Brand Films & Animation | Numinas',
+      title: 'Motion Graphics Vancouver | Animation Studio | Numinas',
       description:
-        'Vancouver motion studio for brand films, explainers, and social animation. Numinas works with Metro Vancouver brands and remote teams worldwide.',
+        'Motion graphics Vancouver studio for brand films, explainers, and animation. Numinas is a Vancouver animation company serving Metro Vancouver brands.',
       type: 'website',
-      imageAlt: 'Numinas — Vancouver motion studio',
+      imageAlt: 'Numinas — motion graphics Vancouver studio',
+    },
+    {
+      path: '/motion-graphics',
+      title: 'Motion Graphics Services, Studio & Agency | Numinas',
+      description:
+        'Motion graphics services from a Vancouver studio: brand films, explainers, social systems, and campaign kits. Hire Numinas as your motion graphics agency partner.',
+      type: 'website',
+      imageAlt: 'Numinas motion graphics studio',
+    },
+    {
+      path: '/industrial-animation-vancouver',
+      title: 'Industrial Animation Vancouver | Technical Motion | Numinas',
+      description:
+        'Industrial animation Vancouver for products, processes, and technical stories. Numinas turns complex industrial systems into clear motion graphics.',
+      type: 'website',
+      imageAlt: 'Numinas industrial animation Vancouver',
     },
     {
       path: '/privacy',

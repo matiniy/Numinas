@@ -698,7 +698,7 @@ export const PROJECTS: Project[] = [
   {
     slug: 'planet',
     client: 'Planet Toon',
-    title: 'Broadcast Package',
+    title: 'Planet Toon',
     tagline: 'Playful broadcast motion that makes a kids network feel bigger, louder, and unforgettable.',
     year: '2024',
     services: ['Broadcast Design', '2D Motion', 'Brand Film'],

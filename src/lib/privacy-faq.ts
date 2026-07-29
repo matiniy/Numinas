@@ -6,14 +6,29 @@ export type SiteFaqItem = {
 /** Business / services FAQ shown with the privacy page and emitted as FAQPage JSON-LD. */
 export const SITE_FAQS: SiteFaqItem[] = [
   {
+    question: 'What is Numinas?',
+    answer:
+      'Numinas is a Vancouver-based motion graphics studio. We create brand films, explainers, social animation, and motion systems for brands and agencies worldwide.',
+  },
+  {
     question: 'What does Numinas do?',
     answer:
       'Numinas is a creative motion studio. We craft scroll-stopping visuals that clarify ideas and convert audiences: launch films, brand motion systems, social loops, explainers, and delivery kits for web, paid, and experiential channels.',
   },
   {
+    question: 'What motion graphics services can we hire you for?',
+    answer:
+      'Brand films, explainer videos, social content, motion systems, experiential and AR, plus custom R&D. Search terms like motion graphics services, motion graphics studio, and motion graphics agency all map to this work — scoped clearly and delivered for every channel.',
+  },
+  {
     question: 'What services can we hire you for?',
     answer:
       'Brand films, explainer videos, social content, motion systems, experiential and AR, plus custom R&D when the brief needs new techniques or formats. Engagements range from a single hero film to ongoing motion kits and campaign packs.',
+  },
+  {
+    question: 'Did Numinas work on Planet Toon / Planet of Toon?',
+    answer:
+      'Yes. Numinas created the Planet Toon broadcast package — openers, transitions, and channel branding. See the case study at numinas.studio/work/planet.',
   },
   {
     question: 'How do ideas become motion at Numinas?',
@@ -28,7 +43,7 @@ export const SITE_FAQS: SiteFaqItem[] = [
   {
     question: 'Where does Numinas work with clients?',
     answer:
-      'Numinas is a Vancouver-based motion studio serving Vancouver, Toronto, Seattle, Los Angeles, California, New York, San Francisco, Tokyo, Brazil, London, Dubai, and clients worldwide.',
+      'Numinas is a Vancouver-based motion studio serving Vancouver, Toronto, Seattle, Los Angeles, California, New York, San Francisco, Tokyo, Brazil, London, Dubai, and clients worldwide. For local searches see our Vancouver page at numinas.studio/vancouver.',
   },
   {
     question: 'What makes Numinas different?',

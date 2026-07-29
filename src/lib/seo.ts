@@ -5,11 +5,10 @@ import { SERVICE_AREA_LABELS, toSchemaPlaces } from '@/lib/service-areas'
 import { getAbsoluteUrl, SITE } from '@/lib/site'
 import { SOCIAL_LINKS } from '@/lib/social-links'
 import {
-  VANCOUVER_FAQS,
-  VANCOUVER_KEYWORDS,
-  VANCOUVER_SEO,
-  VANCOUVER_SERVICES,
-} from '@/lib/vancouver-content'
+  KEYWORD_LANDING_PATHS,
+  getKeywordLandingByPath,
+  type KeywordLandingConfig,
+} from '@/lib/keyword-landings'
 
 export type PageSeoConfig = {
   title: string
@@ -25,6 +24,14 @@ export type PageSeoConfig = {
 
 const GEO_KEYWORDS = [
   'motion studio Vancouver',
+  'motion graphics vancouver',
+  'motion graphics services',
+  'motion graphics agency',
+  'motion graphics studio',
+  'animation studios vancouver',
+  'animation companies vancouver',
+  'industrial animation vancouver',
+  'illustration agency vancouver',
   'motion graphics Toronto',
   'animation studio Seattle',
   'explainer video Los Angeles',
@@ -194,6 +201,7 @@ export function buildProjectSeo(project: Project): PageSeoConfig {
       'motion graphics case study',
       'Numinas',
       'Vancouver motion studio',
+      ...(project.slug === 'planet' ? ['planet of toon', 'Planet of Toon', 'Planet Toon'] : []),
       ...GEO_KEYWORDS.slice(0, 4),
       ...project.services,
     ],
@@ -280,8 +288,11 @@ export function buildThankYouSeo(): PageSeoConfig {
   }
 }
 
-export function buildVancouverSeo(): PageSeoConfig {
-  const { path, title, description, imageAlt } = VANCOUVER_SEO
+export function buildKeywordLandingSeo(config: KeywordLandingConfig): PageSeoConfig {
+  const { path, title, description, imageAlt, keywords } = {
+    path: config.path,
+    ...config.seo,
+  }
   const pageUrl = getAbsoluteUrl(path)
 
   return {
@@ -291,7 +302,7 @@ export function buildVancouverSeo(): PageSeoConfig {
     image: SITE.defaultOgImage,
     imageAlt,
     type: 'website',
-    keywords: [...VANCOUVER_KEYWORDS, ...SITE.keywords],
+    keywords: [...keywords, ...SITE.keywords],
     jsonLd: {
       '@context': 'https://schema.org',
       '@graph': [
@@ -307,64 +318,22 @@ export function buildVancouverSeo(): PageSeoConfig {
           primaryImageOfPage: getAbsoluteUrl(SITE.defaultOgImage),
           speakable: {
             '@type': 'SpeakableSpecification',
-            cssSelector: ['.hero-section__title', '.services-section__hero-copy'],
+            cssSelector: ['.hero-section__title', '.keyword-landing__mid .type-h2'],
           },
-        },
-        {
-          '@type': ['LocalBusiness', 'ProfessionalService'],
-          '@id': `${pageUrl}#localbusiness`,
-          name: `${SITE.name} Vancouver`,
-          alternateName: 'Numinas Motion Studio Vancouver',
-          url: pageUrl,
-          image: getAbsoluteUrl(SITE.defaultOgImage),
-          email: SITE.email,
-          description,
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: SITE.geo.addressLocality,
-            addressRegion: SITE.geo.addressRegion,
-            addressCountry: SITE.geo.country,
-          },
-          geo: {
-            '@type': 'GeoCoordinates',
-            latitude: SITE.geo.latitude,
-            longitude: SITE.geo.longitude,
-          },
-          areaServed: [
-            {
-              '@type': 'City',
-              name: 'Vancouver',
-              containedInPlace: {
-                '@type': 'AdministrativeArea',
-                name: 'British Columbia',
-              },
-            },
-            {
-              '@type': 'AdministrativeArea',
-              name: 'Metro Vancouver',
-            },
-            ...toSchemaPlaces(),
-          ],
-          priceRange: '$$',
-          sameAs: SOCIAL_LINKS.map((link) => link.href),
-          parentOrganization: { '@id': `${getAbsoluteUrl('/')}#organization` },
         },
         {
           '@type': 'Service',
           '@id': `${pageUrl}#service`,
-          name: 'Vancouver motion design and animation',
+          name: config.serviceName,
           serviceType: 'Motion studio',
-          provider: { '@id': `${pageUrl}#localbusiness` },
-          areaServed: {
-            '@type': 'City',
-            name: 'Vancouver',
-          },
+          provider: { '@id': `${getAbsoluteUrl('/')}#organization` },
+          areaServed: toSchemaPlaces(),
           description,
           url: pageUrl,
           hasOfferCatalog: {
             '@type': 'OfferCatalog',
-            name: 'Numinas Vancouver motion services',
-            itemListElement: VANCOUVER_SERVICES.items.map((item, index) => ({
+            name: config.serviceName,
+            itemListElement: config.mid.points.map((item, index) => ({
               '@type': 'Offer',
               itemOffered: {
                 '@type': 'Service',
@@ -379,7 +348,7 @@ export function buildVancouverSeo(): PageSeoConfig {
           '@type': 'FAQPage',
           '@id': `${pageUrl}#faq`,
           url: `${pageUrl}#faq`,
-          mainEntity: VANCOUVER_FAQS.map((item) => ({
+          mainEntity: config.faqs.map((item) => ({
             '@type': 'Question',
             name: item.question,
             acceptedAnswer: {
@@ -400,7 +369,7 @@ export function buildVancouverSeo(): PageSeoConfig {
             {
               '@type': 'ListItem',
               position: 2,
-              name: 'Vancouver',
+              name: config.breadcrumb,
               item: pageUrl,
             },
           ],
@@ -410,6 +379,14 @@ export function buildVancouverSeo(): PageSeoConfig {
       ],
     },
   }
+}
+
+export function buildVancouverSeo(): PageSeoConfig {
+  const config = getKeywordLandingByPath('/vancouver')
+  if (!config) {
+    throw new Error('Vancouver keyword landing config missing')
+  }
+  return buildKeywordLandingSeo(config)
 }
 
 export function buildPrivacySeo(): PageSeoConfig {
@@ -486,5 +463,5 @@ export function buildPrivacySeo(): PageSeoConfig {
 }
 
 export function getIndexablePaths() {
-  return ['/', '/vancouver', '/privacy', ...PROJECTS.map((project) => `/work/${project.slug}`)]
+  return ['/', ...KEYWORD_LANDING_PATHS, '/privacy', ...PROJECTS.map((project) => `/work/${project.slug}`)]
 }
