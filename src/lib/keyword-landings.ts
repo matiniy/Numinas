@@ -32,8 +32,8 @@ export type KeywordLandingConfig = {
 }
 
 /**
- * Compact GEO / keyword one-pagers (hero + mid/FAQ + contact).
- * Clustered from GSC queries so we avoid thin duplicate doorways.
+ * Keyword landings mirror the homepage (minus Services/wheel).
+ * Page-specific keywords live in hero, mid band + FAQ, contact, and SEO/JSON-LD.
  */
 export const KEYWORD_LANDINGS: KeywordLandingConfig[] = [
   {

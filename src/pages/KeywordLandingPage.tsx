@@ -1,7 +1,13 @@
 import { useId, useState } from 'react'
 import { Nav } from '@/components/layout/Nav'
-import { Contact } from '@/components/sections/Contact'
 import { Hero } from '@/components/sections/Hero'
+import { TrustedBy } from '@/components/sections/TrustedBy'
+import { Pillars } from '@/components/sections/Pillars'
+import { Projects } from '@/components/sections/Projects'
+import { Testimonials } from '@/components/sections/Testimonials'
+import { HowIdeas } from '@/components/sections/HowIdeas'
+import { ContactMarquee } from '@/components/sections/ContactMarquee'
+import { Contact } from '@/components/sections/Contact'
 import { PageSeo } from '@/components/seo/PageSeo'
 import type { KeywordLandingConfig } from '@/lib/keyword-landings'
 import { buildKeywordLandingSeo } from '@/lib/seo'
@@ -57,32 +63,32 @@ function LandingFaq({ faqs }: { faqs: KeywordLandingConfig['faqs'] }) {
   )
 }
 
+/** Homepage layout minus Services/wheel; keyword-specific hero, band, and contact. */
 export function KeywordLandingPage({ config }: { config: KeywordLandingConfig }) {
   const seo = buildKeywordLandingSeo(config)
 
   return (
     <div className="keyword-landing min-h-screen overflow-x-clip">
       <PageSeo {...seo} />
-      <Nav revealDelayMs={1200} />
+      <Nav revealDelayMs={5000} />
       <main>
-        {/* Section 1 — Hero */}
         <Hero
           title={config.hero.title}
           body={config.hero.body}
           accentWords={config.hero.accentWords}
         />
+        <TrustedBy />
+        <Testimonials />
+        <Pillars />
+        <Projects />
 
-        {/* Section 2 — Offer + FAQ */}
         <section
           className="wire-section keyword-landing__mid"
           aria-labelledby={`${config.id}-mid-heading`}
         >
           <div className="wire-container">
             <p className="type-eyebrow mb-3 text-[var(--n-mist)]">{config.mid.eyebrow}</p>
-            <h2
-              id={`${config.id}-mid-heading`}
-              className="type-h2 mb-4 max-w-[20ch] text-balance"
-            >
+            <h2 id={`${config.id}-mid-heading`} className="type-h2 mb-4 max-w-[20ch] text-balance">
               {config.mid.title}
             </h2>
             <p className="type-body mb-10 max-w-2xl text-[var(--n-mist)]">{config.mid.body}</p>
@@ -100,7 +106,8 @@ export function KeywordLandingPage({ config }: { config: KeywordLandingConfig })
           </div>
         </section>
 
-        {/* Section 3 — Contact form */}
+        <HowIdeas />
+        <ContactMarquee />
         <Contact
           label={config.contact.label}
           title={config.contact.title}
